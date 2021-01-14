@@ -21,12 +21,12 @@ public class PlayerMovementScript : MonoBehaviour
     public Rigidbody2D rigidBody;
     public Vector2 velocity;
 
-    float moveSpeed;
+    //float moveSpeed;
     //float maxSpeed;
-    float jumpForce;
+    //float jumpForce;
     [SerializeField] float jumpDuration;
     GameObject player;
-    public float jumpCost;
+    //public float jumpCost;
 
     //[Range(-1, 1)] public float direction;
 
@@ -42,9 +42,9 @@ public class PlayerMovementScript : MonoBehaviour
     void Update()
     {
         //////Move these to Start(), in here now for playtesting and balance tweaks
-        moveSpeed = playerMovementData.moveSpeed;
-        jumpForce = playerMovementData.jumpForce;
-        jumpCost = playerMovementData.jumpCost;
+        //moveSpeed = playerMovementData.moveSpeed;
+        //jumpForce = playerMovementData.jumpForce;
+        //jumpCost = playerMovementData.jumpCost;
         //////Move these to Start(), in here now for playtesting and balance tweaks
     }
 
@@ -83,7 +83,7 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void Move()
     {
-        velocity.x = moveSpeed * playerInputData.leftStickValue;
+        velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
         rigidBody.velocity = velocity;
 
         if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < 8)
@@ -106,12 +106,12 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (playerStatesData.isGrounded)
         {
-            if (playerStaminaData.currentStamina > jumpCost)
+            if (playerStaminaData.currentStamina > playerMovementData.jumpCost)
             {
                 eJumpStarted.Raise();
-                playerStaminaData.staminaCost = jumpCost;
+                playerStaminaData.staminaCost = playerMovementData.jumpCost;
                 eUseStamina.Raise();
-                velocity.y = jumpForce;
+                velocity.y = playerMovementData.jumpForce;
                 rigidBody.velocity = velocity;
             }
             else
@@ -122,7 +122,7 @@ public class PlayerMovementScript : MonoBehaviour
 
         if (playerStatesData.isJumping)
         {
-            velocity.y = jumpForce;
+            velocity.y = playerMovementData.jumpForce;
             rigidBody.velocity = velocity;
         }
 

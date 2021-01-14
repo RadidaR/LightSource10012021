@@ -6,53 +6,63 @@ public class PlayerStatesScript : MonoBehaviour
 {
     public PlayerStates playerStatesData;
 
-    bool isStill;
-    bool isGrounded;
-    bool isJumping;
-    bool isAirborne;
-    bool isFalling;
-    bool isHurt;
-    bool isAttacking;
-    bool isParrying;
-    bool isFloating;
-    bool isDashing;
-    bool inDialogue;
+    //bool isStill;
+    //bool isGrounded;
+    //bool isJumping;
+    //bool isAirborne;
+    //bool isFalling;
+    //bool isHurt;
+    //bool isAttacking;
+    //bool isParrying;
+    //bool isFloating;
+    //bool isDashing;
+    //bool inDialogue;
 
     private void FixedUpdate()
     {
-        playerStatesData.isStill = isStill;
-        playerStatesData.isGrounded = isGrounded;
-        playerStatesData.isJumping = isJumping;
+        //playerStatesData.isStill = isStill;
+        //playerStatesData.isGrounded = isGrounded;
+        //playerStatesData.isJumping = isJumping;
     }
 
     public void Still()
     {
-        isStill = true;
+        playerStatesData.isStill = true;
     }
 
     public void Moving()
     {
-        isStill = false;
+        playerStatesData.isStill = false;
     }
 
     public void Jumping()
     {
-        isJumping = true;
+        playerStatesData.isJumping = true;
     }
 
     public void StopJumping()
     {
-        isJumping = false;
+        playerStatesData.isJumping = false;
     }
 
     public void Grounded()
     {
-        isGrounded = true;
+        playerStatesData.isGrounded = true;
     }
 
     public void NotGrounded()
     {
-        isGrounded = false;
+        playerStatesData.isGrounded = false;
+    }
+
+    public void Floating()
+    {
+        playerStatesData.isFloating = true;
+    }
+
+    public void StopFloating()
+    {
+        playerStatesData.isFloating = false;
     }
 
 }

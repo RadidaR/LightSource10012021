@@ -9,15 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6face027848483549b52667af4d584d2, type: 3}
-  m_Name: Player Stamina
+  m_Script: {fileID: 11500000, guid: e4ed10ae5a1683a47b9ef928ff14a561, type: 3}
+  m_Name: Floating Data
   m_EditorClassIdentifier: 
-  maxStamina: 100
-  currentStamina: 90.51894
-  staminaCost: 15
-  pantingThreshold: 0.5
-  recoveryRate: 5
-  stillRecovery: 5
-  motionRecovery: 3.5
-  pantingModifier: 0.5
-  meditatingModifier: 0
+  floatSpeed: 0
+  floatForce: 0
+  floatGravity: 0
+  fallStabilization: 10
+  floatCost: 0
