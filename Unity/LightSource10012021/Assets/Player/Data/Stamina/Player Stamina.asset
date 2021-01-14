@@ -13,14 +13,11 @@ MonoBehaviour:
   m_Name: Player Stamina
   m_EditorClassIdentifier: 
   maxStamina: 100
-  currentStamina: 100
-  currentRecoveryRate: 5
-  stillRecoveryRate: 5
-  motionRecoveryRate: 3
-  almostFullModifier: 0.5
-  meditateModifier: 2
-  jumpCost: 5
-  attackCost: 5
-  floatCost: 0
-  abilityCost: 0
-  dashCost: 0
+  currentStamina: 90.51894
+  staminaCost: 15
+  pantingThreshold: 0.5
+  recoveryRate: 5
+  stillRecovery: 5
+  motionRecovery: 3.5
+  pantingModifier: 0.5
+  meditatingModifier: 0

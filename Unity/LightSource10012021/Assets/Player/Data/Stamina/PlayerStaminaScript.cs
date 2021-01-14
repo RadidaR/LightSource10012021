@@ -10,7 +10,9 @@ public class PlayerStaminaScript : MonoBehaviour
     public PlayerStamina playerStaminaData;
     public float maxStamina;
     public float currentStamina;
-    public float currentRecoveryRate;
+    float recoveryRate;
+    float pantingThreshold;
+    float pantingModifier;
 
     //public float stillRecoveryRate;
     //public float motionRecoveryRate;
@@ -32,6 +34,9 @@ public class PlayerStaminaScript : MonoBehaviour
 
         maxStamina = playerStaminaData.maxStamina;
         currentStamina = playerStaminaData.currentStamina;
+
+        pantingThreshold = playerStaminaData.pantingThreshold;
+        pantingModifier = playerStaminaData.pantingModifier;
         //currentRecoveryRate = playerStaminaData.currentRecoveryRate;
 
         //stillRecoveryRate = playerStaminaData.stillRecoveryRate;
@@ -45,17 +50,24 @@ public class PlayerStaminaScript : MonoBehaviour
         //floatCost = playerStaminaData.floatCost;
         //abilityCost = playerStaminaData.abilityCost;
         //dashCost = playerStaminaData.dashCost;
-        
-        currentRecoveryRate = playerStaminaData.stillRecoveryRate;
-}
+    }
 
     // Update is called once per frame
     void Update()
-    {      
-       
+    {
+        staminaCost = playerStaminaData.staminaCost;
+        recoveryRate = playerStaminaData.recoveryRate;
+
         if (currentStamina < maxStamina)
         {
-            currentStamina += currentRecoveryRate * Time.deltaTime;
+            if (currentStamina < maxStamina * pantingThreshold)
+            {
+                currentStamina += recoveryRate * Time.deltaTime;
+            }
+            else
+            {
+                currentStamina += recoveryRate * pantingModifier * Time.deltaTime;
+            }
         }
 
         if (currentStamina > maxStamina)
@@ -63,11 +75,27 @@ public class PlayerStaminaScript : MonoBehaviour
             currentStamina = maxStamina;
         }
 
+        if (currentStamina < 0)
+        {
+            currentStamina = 0;
+        }
+
         playerStaminaData.currentStamina = currentStamina;
+
     }
 
-    public void DrainStamina()
+    public void UseStamina()
     {
         currentStamina -= staminaCost;
+    }
+
+    public void StillRecovery()
+    {
+        playerStaminaData.recoveryRate = playerStaminaData.stillRecovery;
+    }
+
+    public void MotionRecovery()
+    {
+        playerStaminaData.recoveryRate = playerStaminaData.motionRecovery;
     }
 }

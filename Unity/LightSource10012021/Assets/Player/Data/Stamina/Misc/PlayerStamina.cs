@@ -8,14 +8,11 @@ public class PlayerStamina: ScriptableObject
 {
     public float maxStamina;
     public float currentStamina;
-    public float currentRecoveryRate;
-    public float stillRecoveryRate;
-    public float motionRecoveryRate;
-    [Range(0, 1)] public float almostFullModifier;
-    public float meditateModifier;
-    public float jumpCost;
-    public float attackCost;
-    public float floatCost;
-    public float abilityCost;
-    public float dashCost;
+    public float staminaCost;
+    [Range(0,1)] public float pantingThreshold;
+    public float recoveryRate;
+    public float stillRecovery;
+    public float motionRecovery;
+    [Range(0,1)] public float pantingModifier;
+    public float meditatingModifier;
 }

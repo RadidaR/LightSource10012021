@@ -7,7 +7,7 @@ public class PlayerInputScript : MonoBehaviour
 {
     ActionMap actionMap;
 
-    public PlayerInput playerInput;
+    public PlayerInput playerInputData;
     float move;
     Vector2 aim;
     float jump;
@@ -19,9 +19,12 @@ public class PlayerInputScript : MonoBehaviour
     float chuck;
     float charge;
 
-    public GameEvent movePressed;
-    public GameEvent jumpPressed;
-    public GameEvent jumpReleased;
+    public GameEvent eLeftPressed;
+    public GameEvent eLeftReleased;
+    public GameEvent eRightPressed;
+    public GameEvent eRightReleased;
+    public GameEvent eJumpPressed;
+    public GameEvent eJumpReleased;
 
     //public Movement movement;
 
@@ -32,6 +35,7 @@ public class PlayerInputScript : MonoBehaviour
         actionMap = new ActionMap();
 
         actionMap.Gameplay.Move.performed += ctx => move = actionMap.Gameplay.Move.ReadValue<float>();
+        actionMap.Gameplay.Move.canceled += ctx => MoveReleased();
         actionMap.Gameplay.Move.canceled += ctx => move = 0;
 
         actionMap.Gameplay.Aim.performed += ctx => aim = actionMap.Gameplay.Aim.ReadValue<Vector2>();
@@ -39,9 +43,8 @@ public class PlayerInputScript : MonoBehaviour
         actionMap.Gameplay.Aim.canceled += ctx => aim = Vector2.zero;
 
         actionMap.Gameplay.Jump.performed += ctx => jump = actionMap.Gameplay.Jump.ReadValue<float>();
-        actionMap.Gameplay.Jump.performed += ctx => jumpPressed.Raise();
-        actionMap.Gameplay.Jump.canceled += ctx => jumpReleased.Raise();
         actionMap.Gameplay.Jump.canceled += ctx => jump = 0;
+        actionMap.Gameplay.Jump.canceled += ctx => eJumpReleased.Raise();
 
         actionMap.Gameplay.Parry.performed += ctx => parry = actionMap.Gameplay.Parry.ReadValue<float>();
         actionMap.Gameplay.Parry.canceled += ctx => parry = 0;
@@ -78,25 +81,67 @@ public class PlayerInputScript : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        playerInput.leftStickValue = move;
-        playerInput.rightStickValue = aim;
-        playerInput.buttonSouth = jump;
-        playerInput.buttonEast = parry;
-        playerInput.buttonWest = attack;
-        playerInput.buttonNorth = interact;
-        playerInput.leftBumper = dash;
-        playerInput.rightBumper = wheel;
-        playerInput.leftTrigger = chuck;
-        playerInput.rightTrigger = charge;
+        playerInputData.leftStickValue = move;
+        playerInputData.rightStickValue = aim;
+        playerInputData.buttonSouth = jump;
+        playerInputData.buttonEast = parry;
+        playerInputData.buttonWest = attack;
+        playerInputData.buttonNorth = interact;
+        playerInputData.leftBumper = dash;
+        playerInputData.rightBumper = wheel;
+        playerInputData.leftTrigger = chuck;
+        playerInputData.rightTrigger = charge;
 
-        if (move != 0)
+        if (move < 0)
         {
-            movePressed.Raise();
+            RaiseLeftPressed();
         }
+
+        if (move > 0)
+        {
+            RaiseRightPressed();
+        }
+
 
         if (jump != 0)
         {
-            jumpPressed.Raise();
+            RaiseJumpPressed();
         }
     }
+
+    private void Update()
+    {
+
+    }
+
+    private void RaiseLeftPressed()
+    {
+        eLeftPressed.Raise();
+
+    }
+
+    private void RaiseRightPressed()
+    {
+        eRightPressed.Raise();
+    }
+
+    private void MoveReleased()
+    {
+        if (move > 0)
+        {
+            eRightReleased.Raise();
+        }
+        if (move < 0)
+        {
+            eLeftReleased.Raise();
+        }
+    }
+
+    private void RaiseJumpPressed()
+    {
+        eJumpPressed.Raise();
+    }
+
+
+
 }

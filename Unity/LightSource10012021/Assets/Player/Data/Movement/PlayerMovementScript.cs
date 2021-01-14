@@ -4,26 +4,37 @@ using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    public PlayerInput playerInput;
-    public PlayerMovement playerMovement;
+    public PlayerInput playerInputData;
+    public PlayerMovement playerMovementData;
+    public PlayerStates playerStatesData;
+    public PlayerStamina playerStaminaData;
 
-    public GameEvent velocityZero;
+    public GameEvent eVelocityZero;
+    public GameEvent eJumpStarted;
+    public GameEvent eJumpEnded;
+    public GameEvent eWalking;
+    public GameEvent eRunning;
+
+    public GameEvent eUseStamina;
+    public GameEvent eInsufficientStamina;
 
     public Rigidbody2D rigidBody;
     public Vector2 velocity;
 
     float moveSpeed;
-    float maxSpeed;
+    //float maxSpeed;
     float jumpForce;
-    float jumpDuration;
-    float jumpCost;
+    [SerializeField] float jumpDuration;
+    GameObject player;
+    public float jumpCost;
 
-    [Range(-1, 1)] public float direction;
+    //[Range(-1, 1)] public float direction;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        jumpDuration = playerMovementData.jumpDuration;
+        player = GameObject.FindWithTag("Player");
         //rigidBody = playerMovement.rigidBody;
     }
 
@@ -31,46 +42,90 @@ public class PlayerMovementScript : MonoBehaviour
     void Update()
     {
         //////Move these to Start(), in here now for playtesting and balance tweaks
-        moveSpeed = playerMovement.moveSpeed;
-        jumpForce = playerMovement.jumpForce;
+        moveSpeed = playerMovementData.moveSpeed;
+        jumpForce = playerMovementData.jumpForce;
+        jumpCost = playerMovementData.jumpCost;
         //////Move these to Start(), in here now for playtesting and balance tweaks
+    }
 
-        direction = playerInput.leftStickValue;
-        if (direction < 0)
-        {
-            playerMovement.direction = -1;
-        }
-        if (direction > 0)
-        {
-            playerMovement.direction = 1;
-        }
-
+    private void FixedUpdate()
+    {
+        //Pass velocity value to Data
         velocity = rigidBody.velocity;
-        playerMovement.playerVelocity = velocity;
+        playerMovementData.playerVelocity = velocity;
 
         if (velocity == Vector2.zero)
         {
-            velocityZero.Raise();
+            eVelocityZero.Raise();
         }
+
+        if (jumpDuration < playerMovementData.jumpDuration && !playerStatesData.isJumping)
+        {
+            jumpDuration = playerMovementData.jumpDuration;
+        }
+    }
+
+    public void FaceLeft()
+    {
+        playerMovementData.facingDirection = -1;
+        Vector2 playerScale = player.transform.localScale;
+        Vector2 scale = new Vector2(-1, playerScale.y);
+        player.transform.localScale = scale;
+    }
+
+    public void FaceRight()
+    {
+        playerMovementData.facingDirection = 1;
+        Vector2 playerScale = player.transform.localScale;
+        Vector2 scale = new Vector2(1, playerScale.y);
+        player.transform.localScale = scale;
     }
 
     public void Move()
     {
-        velocity.x = moveSpeed * playerInput.leftStickValue;
+        velocity.x = moveSpeed * playerInputData.leftStickValue;
         rigidBody.velocity = velocity;
+
+        if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < 8)
+        {
+            eWalking.Raise();
+        }
+        else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) > 8)
+        {
+            eRunning.Raise();
+        }
     }
 
     public void Jump()
     {
-        velocity.y = jumpForce;
-        rigidBody.velocity = velocity;
-        //rigidBody.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-    }
-    //private void FixedUpdate()
-    //{
+        if (jumpDuration < 0)
+        {
+            eJumpEnded.Raise();
+            return;
+        }
 
-    //    Vector2 velocity = rigidBody.velocity;
-    //    velocity.x += playerMovement.moveSpeed * direction;
-    //    rigidBody.velocity = velocity;        
-    //}
+        if (playerStatesData.isGrounded)
+        {
+            if (playerStaminaData.currentStamina > jumpCost)
+            {
+                eJumpStarted.Raise();
+                playerStaminaData.staminaCost = jumpCost;
+                eUseStamina.Raise();
+                velocity.y = jumpForce;
+                rigidBody.velocity = velocity;
+            }
+            else
+            {
+                eInsufficientStamina.Raise();
+            }
+        }
+
+        if (playerStatesData.isJumping)
+        {
+            velocity.y = jumpForce;
+            rigidBody.velocity = velocity;
+        }
+
+        jumpDuration -= Time.fixedDeltaTime;
+    }
 }

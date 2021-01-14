@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerStatesScript : MonoBehaviour
 {
-    public PlayerStates playerStates;
+    public PlayerStates playerStatesData;
 
     bool isStill;
     bool isGrounded;
@@ -20,8 +20,9 @@ public class PlayerStatesScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        playerStates.isStill = isStill;
-        playerStates.isJumping = isJumping;
+        playerStatesData.isStill = isStill;
+        playerStatesData.isGrounded = isGrounded;
+        playerStatesData.isJumping = isJumping;
     }
 
     public void Still()
@@ -44,6 +45,14 @@ public class PlayerStatesScript : MonoBehaviour
         isJumping = false;
     }
 
+    public void Grounded()
+    {
+        isGrounded = true;
+    }
 
+    public void NotGrounded()
+    {
+        isGrounded = false;
+    }
 
 }

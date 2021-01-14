@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Player Movement", menuName = "PlayerData/PlayerMovement")]
 public class PlayerMovement : ScriptableObject
 {
-    [Range(-1, 1)] public int direction;
+    [Range(-1, 1)] public int facingDirection;
     public float moveSpeed;
     public float maxSpeed;
     public float jumpForce;

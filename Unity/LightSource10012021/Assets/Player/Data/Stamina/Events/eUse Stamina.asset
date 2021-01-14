@@ -9,13 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f7635d551256128438e3055528d1d98f, type: 3}
-  m_Name: Player Movement
+  m_Script: {fileID: 11500000, guid: 346bdf5557a2b6344b86f6afc0441e29, type: 3}
+  m_Name: eUse Stamina
   m_EditorClassIdentifier: 
-  facingDirection: -1
-  moveSpeed: 15
-  maxSpeed: 0
-  jumpForce: 45
-  jumpDuration: 0.3
-  jumpCost: 15
-  playerVelocity: {x: 0, y: 0}
