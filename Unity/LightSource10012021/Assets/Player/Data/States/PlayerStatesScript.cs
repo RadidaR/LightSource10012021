@@ -5,24 +5,40 @@ using UnityEngine;
 public class PlayerStatesScript : MonoBehaviour
 {
     public PlayerStates playerStatesData;
-
-    //bool isStill;
-    //bool isGrounded;
-    //bool isJumping;
-    //bool isAirborne;
-    //bool isFalling;
-    //bool isHurt;
-    //bool isAttacking;
-    //bool isParrying;
-    //bool isFloating;
-    //bool isDashing;
-    //bool inDialogue;
+    public PlayerMovement playerMovementData;
 
     private void FixedUpdate()
     {
-        //playerStatesData.isStill = isStill;
-        //playerStatesData.isGrounded = isGrounded;
-        //playerStatesData.isJumping = isJumping;
+        if (!playerStatesData.isGrounded && !playerStatesData.isJumping && !playerStatesData.isFloating)
+        {
+            Airborne();
+        }
+        else
+        {
+            NotAirborne();
+        }
+
+
+        if (playerMovementData.playerVelocity.y < -80f)
+        {
+            Falling();
+        }
+
+        if (playerStatesData.isFalling)
+        {
+            if (playerMovementData.playerVelocity.y > -20f)
+            {
+                NotFalling();
+            }
+        }
+
+
+
+        if (playerStatesData.isFloating)
+        {
+            NotGrounded();
+            StopJumping();
+        }
     }
 
     public void Still()
@@ -63,6 +79,26 @@ public class PlayerStatesScript : MonoBehaviour
     public void StopFloating()
     {
         playerStatesData.isFloating = false;
+    }
+
+    public void Airborne()
+    {
+        playerStatesData.isAirborne = true;
+    }
+
+    public void NotAirborne()
+    {
+        playerStatesData.isAirborne = false;
+    }
+
+    public void Falling()
+    {
+        playerStatesData.isFalling = true;
+    }
+
+    public void NotFalling()
+    {
+        playerStatesData.isFalling = false;
     }
 
 }

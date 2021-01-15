@@ -10,21 +10,18 @@ public class HealthBarScript : MonoBehaviour
 
     //UI elements
     public Slider healthBar;
-    private float currentValue;
 
     // Start is called before the first frame update
     void Start()
     {
         //Assigning slider values
         healthBar.maxValue = playerHealthData.maxHealth;
-        currentValue = playerHealthData.currentHealth;
     }
 
     // Update is called once per frame
     void Update()
     {
         //Update to display UI accurately
-        currentValue = playerHealthData.currentHealth;
-        healthBar.value = currentValue;
+        healthBar.value = playerHealthData.currentHealth;
     }
 }

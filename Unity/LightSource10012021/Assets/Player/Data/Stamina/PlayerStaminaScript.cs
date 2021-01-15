@@ -1,92 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.EventSystems;
 
 public class PlayerStaminaScript : MonoBehaviour
 {
-    //Take data from Scriptable Object
     public PlayerStamina playerStaminaData;
-    public float maxStamina;
-    public float currentStamina;
-    float recoveryRate;
-    float pantingThreshold;
-    float pantingModifier;
 
-    //public float stillRecoveryRate;
-    //public float motionRecoveryRate;
-
-    //public float almostFullModifier;
-    //public float meditateModifier;
-
-    //public float jumpCost;
-    //public float attackCost;
-    //public float floatCost;
-    //public float abilityCost;
-    //public float dashCost;
-
-    private float staminaCost;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-        maxStamina = playerStaminaData.maxStamina;
-        currentStamina = playerStaminaData.currentStamina;
-
-        pantingThreshold = playerStaminaData.pantingThreshold;
-        pantingModifier = playerStaminaData.pantingModifier;
-        //currentRecoveryRate = playerStaminaData.currentRecoveryRate;
-
-        //stillRecoveryRate = playerStaminaData.stillRecoveryRate;
-        //motionRecoveryRate = playerStaminaData.motionRecoveryRate;
-
-        //almostFullModifier = playerStaminaData.almostFullModifier;
-        //meditateModifier = playerStaminaData.meditateModifier;
-
-        //jumpCost = playerStaminaData.jumpCost;
-        //attackCost = playerStaminaData.attackCost;
-        //floatCost = playerStaminaData.floatCost;
-        //abilityCost = playerStaminaData.abilityCost;
-        //dashCost = playerStaminaData.dashCost;
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        staminaCost = playerStaminaData.staminaCost;
-        recoveryRate = playerStaminaData.recoveryRate;
-
-        if (currentStamina < maxStamina)
+        if (playerStaminaData.currentStamina < playerStaminaData.maxStamina)
         {
-            if (currentStamina < maxStamina * pantingThreshold)
+            if (playerStaminaData.currentStamina < playerStaminaData.maxStamina * playerStaminaData.pantingThreshold)
             {
-                currentStamina += recoveryRate * Time.deltaTime;
+                playerStaminaData.currentStamina += playerStaminaData.recoveryRate * Time.deltaTime;
             }
             else
             {
-                currentStamina += recoveryRate * pantingModifier * Time.deltaTime;
+                playerStaminaData.currentStamina += playerStaminaData.recoveryRate * playerStaminaData.pantingModifier * Time.deltaTime;
             }
         }
 
-        if (currentStamina > maxStamina)
+        if (playerStaminaData.currentStamina > playerStaminaData.maxStamina)
         {
-            currentStamina = maxStamina;
+            playerStaminaData.currentStamina = playerStaminaData.maxStamina;
         }
 
-        if (currentStamina < 0)
+        if (playerStaminaData.currentStamina < 0)
         {
-            currentStamina = 0;
+            playerStaminaData.currentStamina = 0;
         }
-
-        playerStaminaData.currentStamina = currentStamina;
 
     }
 
     public void UseStamina()
     {
-        currentStamina -= staminaCost;
+        playerStaminaData.currentStamina -= playerStaminaData.staminaCost;
     }
 
     public void StillRecovery()
@@ -97,5 +45,10 @@ public class PlayerStaminaScript : MonoBehaviour
     public void MotionRecovery()
     {
         playerStaminaData.recoveryRate = playerStaminaData.motionRecovery;
+    }
+
+    public void NoRecovery()
+    {
+        playerStaminaData.recoveryRate = 0f;
     }
 }

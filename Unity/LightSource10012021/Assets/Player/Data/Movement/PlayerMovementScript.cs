@@ -8,12 +8,15 @@ public class PlayerMovementScript : MonoBehaviour
     public PlayerMovement playerMovementData;
     public PlayerStates playerStatesData;
     public PlayerStamina playerStaminaData;
+    public PlayerFloating playerFloatingData;
 
     public GameEvent eVelocityZero;
-    public GameEvent eJumpStarted;
-    public GameEvent eJumpEnded;
     public GameEvent eWalking;
     public GameEvent eRunning;
+    public GameEvent eFloatMove;
+
+    public GameEvent eJumpStarted;
+    public GameEvent eJumpEnded;
 
     public GameEvent eUseStamina;
     public GameEvent eInsufficientStamina;
@@ -21,36 +24,18 @@ public class PlayerMovementScript : MonoBehaviour
     public Rigidbody2D rigidBody;
     public Vector2 velocity;
 
-    //float moveSpeed;
-    //float maxSpeed;
-    //float jumpForce;
     [SerializeField] float jumpDuration;
     GameObject player;
-    //public float jumpCost;
 
-    //[Range(-1, 1)] public float direction;
 
-    // Start is called before the first frame update
     void Start()
     {
         jumpDuration = playerMovementData.jumpDuration;
         player = GameObject.FindWithTag("Player");
-        //rigidBody = playerMovement.rigidBody;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //////Move these to Start(), in here now for playtesting and balance tweaks
-        //moveSpeed = playerMovementData.moveSpeed;
-        //jumpForce = playerMovementData.jumpForce;
-        //jumpCost = playerMovementData.jumpCost;
-        //////Move these to Start(), in here now for playtesting and balance tweaks
     }
 
     private void FixedUpdate()
     {
-        //Pass velocity value to Data
         velocity = rigidBody.velocity;
         playerMovementData.playerVelocity = velocity;
 
@@ -62,6 +47,13 @@ public class PlayerMovementScript : MonoBehaviour
         if (jumpDuration < playerMovementData.jumpDuration && !playerStatesData.isJumping)
         {
             jumpDuration = playerMovementData.jumpDuration;
+        }
+
+        if (playerInputData.leftStickValue == 0)
+        {
+            Vector2 slowDown = rigidBody.velocity;
+            slowDown.x -= slowDown.x * Time.fixedDeltaTime;
+            rigidBody.velocity = slowDown;
         }
     }
 
@@ -83,8 +75,34 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void Move()
     {
-        velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
-        rigidBody.velocity = velocity;
+        if (!playerStatesData.isFalling && !playerStatesData.isHurt)
+        {
+            if (!playerStatesData.isFloating)
+            {
+                if (playerStatesData.isGrounded || playerStatesData.isJumping)
+                {
+                    velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
+                    rigidBody.velocity = velocity;
+                }
+                if (playerStatesData.isAirborne)
+                {                    
+                    if (Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed * 0.75f)
+                    {
+                        Vector2 slowDown = rigidBody.velocity;
+                        slowDown.x -= slowDown.x * 0.4f * Time.fixedDeltaTime;
+                        rigidBody.velocity = slowDown;
+                        return;
+                    }
+                    velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue * 0.75f;
+                    rigidBody.velocity = velocity;
+                }
+            }
+            else
+            {
+                eFloatMove.Raise();
+            }
+
+        }
 
         if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < 8)
         {
@@ -100,6 +118,7 @@ public class PlayerMovementScript : MonoBehaviour
     {
         if (jumpDuration < 0)
         {
+            playerInputData.buttonSouth = 0f;
             eJumpEnded.Raise();
             return;
         }

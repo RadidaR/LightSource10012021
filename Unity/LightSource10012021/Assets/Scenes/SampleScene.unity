@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 152010293}
   - component: {fileID: 152010295}
   - component: {fileID: 152010294}
+  - component: {fileID: 152010296}
   m_Layer: 0
   m_Name: Floating Manager
   m_TagString: Untagged
@@ -258,12 +259,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4d2e17cfb637214d858992d104cbc38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  floatingData: {fileID: 11400000, guid: fdb4ce73ccc50ce49b0e1b003d0e1e3b, type: 2}
+  playerFloatingData: {fileID: 11400000, guid: fdb4ce73ccc50ce49b0e1b003d0e1e3b, type: 2}
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
   playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
+  playerStaminaData: {fileID: 11400000, guid: 814d869f184020c4a870eabff77c52ec, type: 2}
   eFloatStarted: {fileID: 11400000, guid: 913dbe18512b55443a1a95053646c6b3, type: 2}
   eFloatEnded: {fileID: 11400000, guid: 3e554cff89947ca408ae27f37a55bc97, type: 2}
   eStabilizingFall: {fileID: 11400000, guid: b61a682a81aa6fe4d854452cece61295, type: 2}
+  eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
+  eStopRecovery: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   rigidBody: {fileID: 473184156}
 --- !u!114 &152010294
 MonoBehaviour:
@@ -312,6 +316,34 @@ MonoBehaviour:
       - m_Target: {fileID: 695155144}
         m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
         m_MethodName: Floating
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &152010296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 152010291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 7de1328cd48e35a4e828e03e23b8de14, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 152010293}
+        m_TargetAssemblyTypeName: PlayerFloatingScript, Assembly-CSharp
+        m_MethodName: FloatMove
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -758,6 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
+  playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
 --- !u!1 &711382283
 GameObject:
   m_ObjectHideFlags: 0
@@ -810,11 +843,13 @@ MonoBehaviour:
   playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
   playerStaminaData: {fileID: 11400000, guid: 814d869f184020c4a870eabff77c52ec, type: 2}
+  playerFloatingData: {fileID: 11400000, guid: fdb4ce73ccc50ce49b0e1b003d0e1e3b, type: 2}
   eVelocityZero: {fileID: 11400000, guid: 72cd69d7031145f4e9a397ab462f335e, type: 2}
-  eJumpStarted: {fileID: 11400000, guid: 24b35f183b617ab43ac19c406df7090a, type: 2}
-  eJumpEnded: {fileID: 11400000, guid: 66cd387726cc66b4e92e92dc7e3d54b9, type: 2}
   eWalking: {fileID: 11400000, guid: be9fe880b0467ea4593ee9d1aed0658e, type: 2}
   eRunning: {fileID: 11400000, guid: b202b76739c6f39418666856bfe5c150, type: 2}
+  eFloatMove: {fileID: 11400000, guid: 7de1328cd48e35a4e828e03e23b8de14, type: 2}
+  eJumpStarted: {fileID: 11400000, guid: 24b35f183b617ab43ac19c406df7090a, type: 2}
+  eJumpEnded: {fileID: 11400000, guid: 66cd387726cc66b4e92e92dc7e3d54b9, type: 2}
   eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   eInsufficientStamina: {fileID: 11400000, guid: 22e2a28a8df6d9a4482ba79961b6079c, type: 2}
   rigidBody: {fileID: 473184156}
@@ -1915,6 +1950,7 @@ GameObject:
   - component: {fileID: 1855019203}
   - component: {fileID: 1855019204}
   - component: {fileID: 1855019205}
+  - component: {fileID: 1855019206}
   m_Layer: 0
   m_Name: Stamina Manager
   m_TagString: Untagged
@@ -1949,8 +1985,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStaminaData: {fileID: 11400000, guid: 814d869f184020c4a870eabff77c52ec, type: 2}
-  maxStamina: 0
-  currentStamina: 0
 --- !u!114 &1855019205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1970,6 +2004,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1855019204}
         m_TargetAssemblyTypeName: PlayerStaminaScript, Assembly-CSharp
         m_MethodName: UseStamina
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1855019206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855019202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 13c3bfba272e26441ae3e9135c58a85b, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1855019204}
+        m_TargetAssemblyTypeName: PlayerStaminaScript, Assembly-CSharp
+        m_MethodName: NoRecovery
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

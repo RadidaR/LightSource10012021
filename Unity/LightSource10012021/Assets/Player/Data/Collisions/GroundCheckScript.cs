@@ -17,12 +17,10 @@ public class GroundCheckScript : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer))
         {
-            //Debug.Log("Grounded");
             eOverGround.Raise();
         }
         else
         {
-            //Debug.Log("Not Grounded");
             eNoGround.Raise();
         }
     }

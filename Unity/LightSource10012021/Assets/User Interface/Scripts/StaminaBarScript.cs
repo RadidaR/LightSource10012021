@@ -10,7 +10,6 @@ public class StaminaBarScript : MonoBehaviour
 
     //UI elements
     public Slider staminaBar;
-    private float currentValue;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +22,6 @@ public class StaminaBarScript : MonoBehaviour
     void Update()
     {
         //Update to display UI accurately
-        currentValue = playerStaminaData.currentStamina;
-        staminaBar.value = currentValue;
+        staminaBar.value = playerStaminaData.currentStamina;
     }
 }

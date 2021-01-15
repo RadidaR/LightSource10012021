@@ -10,10 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e4ed10ae5a1683a47b9ef928ff14a561, type: 3}
-  m_Name: Floating Data
+  m_Name: Player Floating Data
   m_EditorClassIdentifier: 
-  floatSpeed: 0
-  floatForce: 0
+  floatSpeed: 10
+  floatForce: 1
   floatGravity: 0
-  fallStabilization: 10
-  floatCost: 0
+  moveStabilization: 0.1
+  mStabilizationTime: 10
+  riseStabilization: 1
+  rStabilizationTime: 1
+  fallStabilization: 4
+  fStabilizationTime: 0.25
+  floatCost: 5
