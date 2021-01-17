@@ -9,6 +9,7 @@ public class PlayerMovement : ScriptableObject
     [Range(-1, 1)] public int facingDirection;
     public float moveSpeed;
     public float maxSpeed;
+    public float accelerationRate;
     public float jumpForce;
     public float jumpDuration;
     public float jumpCost;

@@ -44,6 +44,7 @@ public class PlayerFloatingScript : MonoBehaviour
         if (playerStatesData.isFloating)
         {
             playerStaminaData.staminaCost = playerFloatingData.floatCost * Time.fixedDeltaTime;
+            eUseStamina.Raise();
             if (playerMovementData.playerVelocity.y < 0)
             {
                 Vector2 slowDown = rigidBody.velocity;
@@ -74,7 +75,7 @@ public class PlayerFloatingScript : MonoBehaviour
                 rigidBody.velocity = new Vector2(rigidBody.velocity.x, playerFloatingData.floatForce);
             }
             eStopRecovery.Raise();
-            eUseStamina.Raise();
+
         }
     }
 
