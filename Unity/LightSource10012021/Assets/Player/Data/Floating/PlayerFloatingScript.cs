@@ -55,7 +55,7 @@ public class PlayerFloatingScript : MonoBehaviour
 
     public void Float()
     {
-        if (afterDashCD == 0.5f)
+        if (afterDashCD == 0.5f && playerStaminaData.currentStamina > playerFloatingData.floatCost)
         {
             if (playerStatesData.isAirborne)
             {
@@ -98,6 +98,10 @@ public class PlayerFloatingScript : MonoBehaviour
                 }
                 eStopRecovery.Raise();
             }
+        }
+        else
+        {
+            EndFloat();
         }
     }
 

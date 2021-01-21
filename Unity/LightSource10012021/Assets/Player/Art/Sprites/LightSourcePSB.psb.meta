@@ -708,14 +708,14 @@ ScriptedImporter:
     spriteName: 
     isGroup: 1
     parentIndex: -1
-    spriteID: 
+    spriteID: 00000000000000000000000000000000
     layerID: 0
     mosaicPosition: {x: 0, y: 0}
   - name: Front Hand
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 
+    spriteID: 00000000000000000000000000000000
     layerID: -1543251606
     mosaicPosition: {x: 0, y: 0}
   - name: Front Thumb1
@@ -806,7 +806,7 @@ ScriptedImporter:
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 
+    spriteID: 00000000000000000000000000000000
     layerID: -1339914493
     mosaicPosition: {x: 0, y: 0}
   - name: Lantern
@@ -869,7 +869,7 @@ ScriptedImporter:
     spriteName: 
     isGroup: 1
     parentIndex: 0
-    spriteID: 
+    spriteID: 00000000000000000000000000000000
     layerID: 1337980334
     mosaicPosition: {x: 0, y: 0}
   - name: Back Thumb 2

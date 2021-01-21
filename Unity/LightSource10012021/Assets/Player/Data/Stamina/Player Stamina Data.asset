@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Player Stamina Data
   m_EditorClassIdentifier: 
   maxStamina: 100
-  currentStamina: 27.55916
-  staminaCost: 20
-  pantingThreshold: 0.5
+  currentStamina: 64.493805
+  staminaCost: 10
+  pantingThreshold: 0.85
   recoveryRate: 5
   stillRecovery: 5
   motionRecovery: 3
-  pantingModifier: 0.5
+  pantingModifier: 0.75
   meditatingModifier: 0

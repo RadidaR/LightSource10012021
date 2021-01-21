@@ -22,7 +22,6 @@ public class PlayerMovementScript : MonoBehaviour
     public GameEvent eInsufficientStamina;
 
     public Rigidbody2D rigidBody;
-    //public Vector2 velocity;
 
     [SerializeField] float jumpDuration;
     GameObject player;
@@ -36,7 +35,6 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //velocity = rigidBody.velocity;
         playerMovementData.playerVelocity = rigidBody.velocity;
 
         if (rigidBody.velocity == Vector2.zero)
@@ -76,6 +74,16 @@ public class PlayerMovementScript : MonoBehaviour
                 {
                     rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
                 }
+            }
+        }
+
+        if (!playerStatesData.isDashing)
+        {
+            if (Mathf.Abs(rigidBody.velocity.x) > playerMovementData.maxSpeed)
+            {
+                Vector2 velocity = rigidBody.velocity;
+                velocity.x = playerMovementData.maxSpeed * playerMovementData.facingDirection;
+                rigidBody.velocity = velocity;
             }
         }
     }
