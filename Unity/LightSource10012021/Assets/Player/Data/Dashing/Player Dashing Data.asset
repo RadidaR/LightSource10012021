@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd804b3be05dc5748a22df93a08ff85e, type: 3}
   m_Name: Player Dashing Data
   m_EditorClassIdentifier: 
-  dashSpeed: 0
-  dashDuration: 0
-  dashCooldown: 0
-  dashCost: 0
+  dashSpeed: 100
+  dashDuration: 0.25
+  dashCooldown: 2
+  dashCost: 20

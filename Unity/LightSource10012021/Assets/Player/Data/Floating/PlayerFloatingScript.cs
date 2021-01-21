@@ -18,11 +18,13 @@ public class PlayerFloatingScript : MonoBehaviour
 
     public Rigidbody2D rigidBody;
 
+    public float afterDashCD;
     float baseGravity;
 
     private void Start()
     {
         baseGravity = rigidBody.gravityScale;
+        afterDashCD = 0.5f;
     }
 
     private void Update()
@@ -30,52 +32,72 @@ public class PlayerFloatingScript : MonoBehaviour
         playerFloatingData.mStabilizationTime = 1 / playerFloatingData.moveStabilization;
         playerFloatingData.rStabilizationTime = 1 / playerFloatingData.riseStabilization;
         playerFloatingData.fStabilizationTime = 1 / playerFloatingData.fallStabilization;
+    }
 
+    private void FixedUpdate()
+    {
+        if (playerStatesData.isDashing)
+        {
+            afterDashCD = 0f;
+        }
+        else
+        {
+            if (afterDashCD < 0.5f)
+            {
+                afterDashCD += Time.fixedDeltaTime;
+            }
+            else
+            {
+                afterDashCD = 0.5f;
+            }
+        }
     }
 
     public void Float()
     {
-        if (playerStatesData.isAirborne)
+        if (afterDashCD == 0.5f)
         {
-            eFloatStarted.Raise();
-            rigidBody.gravityScale = playerFloatingData.floatGravity;
-        }
-
-        if (playerStatesData.isFloating)
-        {
-            playerStaminaData.staminaCost = playerFloatingData.floatCost * Time.fixedDeltaTime;
-            eUseStamina.Raise();
-            if (playerMovementData.playerVelocity.y < 0)
+            if (playerStatesData.isAirborne)
             {
-                Vector2 slowDown = rigidBody.velocity;
-                if (playerStatesData.isFalling)
-                {
-                    slowDown.y -= slowDown.y * playerFloatingData.fallStabilization * Time.fixedDeltaTime;
-                    rigidBody.velocity = slowDown;
-                    return;
-                }
-                else
-                {
-                    slowDown.y -= slowDown.y * 10 * Time.fixedDeltaTime;
-                    rigidBody.velocity = slowDown;
-                    rigidBody.velocity = new Vector2(rigidBody.velocity.x, playerFloatingData.floatForce);
-                }
-                return;
+                eFloatStarted.Raise();
+                rigidBody.gravityScale = playerFloatingData.floatGravity;
             }
 
-            if (rigidBody.velocity.y > 0)
+            if (playerStatesData.isFloating)
             {
-                if (rigidBody.velocity.y > playerFloatingData.floatForce)
+                playerStaminaData.staminaCost = playerFloatingData.floatCost * Time.fixedDeltaTime;
+                eUseStamina.Raise();
+                if (playerMovementData.playerVelocity.y < 0)
                 {
                     Vector2 slowDown = rigidBody.velocity;
-                    slowDown.y -= slowDown.y * playerFloatingData.riseStabilization * Time.fixedDeltaTime;
-                    rigidBody.velocity = slowDown;
+                    if (playerStatesData.isFalling)
+                    {
+                        slowDown.y -= slowDown.y * playerFloatingData.fallStabilization * Time.fixedDeltaTime;
+                        rigidBody.velocity = slowDown;
+                        return;
+                    }
+                    else
+                    {
+                        slowDown.y -= slowDown.y * 10 * Time.fixedDeltaTime;
+                        rigidBody.velocity = slowDown;
+                        rigidBody.velocity = new Vector2(rigidBody.velocity.x, playerFloatingData.floatForce);
+                    }
                     return;
                 }
-                rigidBody.velocity = new Vector2(rigidBody.velocity.x, playerFloatingData.floatForce);
-            }
-            eStopRecovery.Raise();
 
+                if (rigidBody.velocity.y > 0)
+                {
+                    if (rigidBody.velocity.y > playerFloatingData.floatForce)
+                    {
+                        Vector2 slowDown = rigidBody.velocity;
+                        slowDown.y -= slowDown.y * playerFloatingData.riseStabilization * Time.fixedDeltaTime;
+                        rigidBody.velocity = slowDown;
+                        return;
+                    }
+                    rigidBody.velocity = new Vector2(rigidBody.velocity.x, playerFloatingData.floatForce);
+                }
+                eStopRecovery.Raise();
+            }
         }
     }
 
@@ -83,10 +105,20 @@ public class PlayerFloatingScript : MonoBehaviour
     {
         if (Mathf.Abs(playerMovementData.playerVelocity.x) > playerFloatingData.floatSpeed)
         {
-            Vector2 slowDown = rigidBody.velocity;
-            slowDown.x -= slowDown.x * playerFloatingData.moveStabilization * Time.fixedDeltaTime;
-            rigidBody.velocity = slowDown;
-            return;
+            if (playerMovementData.playerVelocity.x > 0 && playerMovementData.facingDirection == 1)
+            {
+                Vector2 slowDown = rigidBody.velocity;
+                slowDown.x -= slowDown.x * playerFloatingData.moveStabilization * Time.fixedDeltaTime;
+                rigidBody.velocity = slowDown;
+                return;
+            }
+            if (playerMovementData.playerVelocity.x < 0 && playerMovementData.facingDirection == -1)
+            {
+                Vector2 slowDown = rigidBody.velocity;
+                slowDown.x -= slowDown.x * playerFloatingData.moveStabilization * Time.fixedDeltaTime;
+                rigidBody.velocity = slowDown;
+                return;
+            }
         }
 
         Vector2 floatMove = rigidBody.velocity;

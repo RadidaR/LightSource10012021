@@ -21,4 +21,4 @@ MonoBehaviour:
   rStabilizationTime: 1
   fallStabilization: 4
   fStabilizationTime: 0.25
-  floatCost: 5
+  floatCost: 2

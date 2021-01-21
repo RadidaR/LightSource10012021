@@ -18,5 +18,5 @@ MonoBehaviour:
   accelerationRate: 10
   jumpForce: 40
   jumpDuration: 0.325
-  jumpCost: 5
-  playerVelocity: {x: 0, y: 0}
+  jumpCost: 10
+  playerVelocity: {x: 70, y: 0}

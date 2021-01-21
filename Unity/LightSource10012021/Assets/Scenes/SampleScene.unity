@@ -269,6 +269,7 @@ MonoBehaviour:
   eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   eStopRecovery: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   rigidBody: {fileID: 473184156}
+  afterDashCD: 0
 --- !u!114 &152010294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -512,6 +513,7 @@ Transform:
   - {fileID: 695155143}
   - {fileID: 1986633755}
   - {fileID: 152010292}
+  - {fileID: 966806775}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -865,7 +867,6 @@ MonoBehaviour:
   eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   eInsufficientStamina: {fileID: 11400000, guid: 22e2a28a8df6d9a4482ba79961b6079c, type: 2}
   rigidBody: {fileID: 473184156}
-  velocity: {x: 0, y: 0}
   jumpDuration: 0
 --- !u!114 &711382286
 MonoBehaviour:
@@ -1087,6 +1088,130 @@ Transform:
   m_Father: {fileID: 473184154}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &966806774
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 966806775}
+  - component: {fileID: 966806776}
+  - component: {fileID: 966806777}
+  - component: {fileID: 966806778}
+  m_Layer: 0
+  m_Name: Dashing Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &966806775
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966806774}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 473184154}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &966806776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966806774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ec2064bb6032d04090bf384800984c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerDashingData: {fileID: 11400000, guid: 13a9a0254d5d7ac4fb5177579545a1ab, type: 2}
+  playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
+  playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
+  playerStaminaData: {fileID: 11400000, guid: 814d869f184020c4a870eabff77c52ec, type: 2}
+  eDashStarted: {fileID: 11400000, guid: ba48cfcef834868449ae3c91ddd4be8f, type: 2}
+  eDashEnded: {fileID: 11400000, guid: 35a5062696ba69e4c948243cf13437ff, type: 2}
+  eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
+  eInsufficientStamina: {fileID: 11400000, guid: 22e2a28a8df6d9a4482ba79961b6079c, type: 2}
+  rigidBody: {fileID: 473184156}
+  duration: 0
+  cooldown: 0
+--- !u!114 &966806777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966806774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 35a5062696ba69e4c948243cf13437ff, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 695155144}
+        m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
+        m_MethodName: StopDashing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &966806778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 966806774}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: ba48cfcef834868449ae3c91ddd4be8f, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 695155144}
+        m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
+        m_MethodName: Dashing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 152010293}
+        m_TargetAssemblyTypeName: PlayerFloatingScript, Assembly-CSharp
+        m_MethodName: EndFloat
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1113702484
 GameObject:
   m_ObjectHideFlags: 0
@@ -1138,11 +1263,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerInputData: {fileID: 11400000, guid: c1a4b5d98a5bed247aca2f723b7ffc2a, type: 2}
   eLeftPressed: {fileID: 11400000, guid: 030520acb9fb9804b99f441a762e63d7, type: 2}
-  eLeftReleased: {fileID: 11400000, guid: 1867a084245344f4e87d2b749b6b8246, type: 2}
   eRightPressed: {fileID: 11400000, guid: 4b3fc95742f761a4a88e61695869d0fd, type: 2}
-  eRightReleased: {fileID: 11400000, guid: 854019b272becba49b6aa78888aa4c4c, type: 2}
   eJumpPressed: {fileID: 11400000, guid: d0278df8d7ed6fc4899ce2efa0fce683, type: 2}
   eJumpReleased: {fileID: 11400000, guid: 6eaab12a0bd33bc44ae1081982069703, type: 2}
+  eDashPressed: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
+  eDashReleased: {fileID: 11400000, guid: ecaadbd1dde805642990b9e754e328c2, type: 2}
 --- !u!114 &1113702487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1315,13 +1440,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 854019b272becba49b6aa78888aa4c4c, type: 2}
+  Event: {fileID: 11400000, guid: ecaadbd1dde805642990b9e754e328c2, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 711382285}
-        m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
-        m_MethodName: EndMove
+      - m_Target: {fileID: 966806776}
+        m_TargetAssemblyTypeName: PlayerDashingScript, Assembly-CSharp
+        m_MethodName: EndDash
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1343,13 +1468,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 1867a084245344f4e87d2b749b6b8246, type: 2}
+  Event: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 711382285}
-        m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
-        m_MethodName: EndMove
+      - m_Target: {fileID: 966806776}
+        m_TargetAssemblyTypeName: PlayerDashingScript, Assembly-CSharp
+        m_MethodName: Dash
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2179,7 +2304,7 @@ Transform:
   m_GameObject: {fileID: 1862413695}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.46000004, y: -14.597, z: 0}
-  m_LocalScale: {x: 140.5535, y: 18.934, z: 1}
+  m_LocalScale: {x: 1394.4874, y: 18.934, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 5

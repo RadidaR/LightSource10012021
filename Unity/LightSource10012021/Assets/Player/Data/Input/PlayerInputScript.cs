@@ -11,18 +11,20 @@ public class PlayerInputScript : MonoBehaviour
 
 
     public GameEvent eLeftPressed;
-    public GameEvent eLeftReleased;
+    //public GameEvent eLeftReleased;
     public GameEvent eRightPressed;
-    public GameEvent eRightReleased;
+    //public GameEvent eRightReleased;
     public GameEvent eJumpPressed;
     public GameEvent eJumpReleased;
+    public GameEvent eDashPressed;
+    public GameEvent eDashReleased;
 
     private void Awake()
     {
         actionMap = new ActionMap();
 
         actionMap.Gameplay.Move.performed += ctx => playerInputData.leftStickValue = actionMap.Gameplay.Move.ReadValue<float>();
-        actionMap.Gameplay.Move.canceled += ctx => RaiseMoveReleased();
+        //actionMap.Gameplay.Move.canceled += ctx => RaiseMoveReleased();
         actionMap.Gameplay.Move.canceled += ctx => playerInputData.leftStickValue = 0;
 
         actionMap.Gameplay.Aim.performed += ctx => playerInputData.rightStickValue = actionMap.Gameplay.Aim.ReadValue<Vector2>();
@@ -43,6 +45,7 @@ public class PlayerInputScript : MonoBehaviour
         actionMap.Gameplay.Interact.canceled += ctx => playerInputData.buttonNorth = 0;
 
         actionMap.Gameplay.Dash.performed += ctx => playerInputData.leftBumper = actionMap.Gameplay.Dash.ReadValue<float>();
+        actionMap.Gameplay.Dash.canceled += ctx => RaiseDashReleased();
         actionMap.Gameplay.Dash.canceled += ctx => playerInputData.leftBumper = 0;
 
         actionMap.Gameplay.AbilityWheel.performed += ctx => playerInputData.rightBumper = actionMap.Gameplay.AbilityWheel.ReadValue<float>();
@@ -77,6 +80,11 @@ public class PlayerInputScript : MonoBehaviour
         {
             RaiseJumpPressed();
         }
+
+        if (playerInputData.leftBumper != 0)
+        {
+            RaiseDashPressed();
+        }
     }
 
     private void RaiseMovePressed()
@@ -91,17 +99,17 @@ public class PlayerInputScript : MonoBehaviour
         }
     }
 
-    private void RaiseMoveReleased()
-    {
-        if (playerInputData.leftStickValue > 0)
-        {
-            eRightReleased.Raise();
-        }
-        if (playerInputData.leftStickValue < 0)
-        {
-            eLeftReleased.Raise();
-        }
-    }
+    //private void RaiseMoveReleased()
+    //{
+    //    if (playerInputData.leftStickValue > 0)
+    //    {
+    //        eRightReleased.Raise();
+    //    }
+    //    if (playerInputData.leftStickValue < 0)
+    //    {
+    //        eLeftReleased.Raise();
+    //    }
+    //}
 
     private void RaiseJumpPressed()
     {
@@ -111,5 +119,15 @@ public class PlayerInputScript : MonoBehaviour
     private void RaiseJumpReleased()
     {
         eJumpReleased.Raise();
+    }
+
+    private void RaiseDashPressed()
+    {
+        eDashPressed.Raise();
+    }
+
+    private void RaiseDashReleased()
+    {
+        eDashReleased.Raise();
     }
 }

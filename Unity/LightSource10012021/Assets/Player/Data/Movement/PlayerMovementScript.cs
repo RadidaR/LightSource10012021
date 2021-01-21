@@ -22,7 +22,7 @@ public class PlayerMovementScript : MonoBehaviour
     public GameEvent eInsufficientStamina;
 
     public Rigidbody2D rigidBody;
-    public Vector2 velocity;
+    //public Vector2 velocity;
 
     [SerializeField] float jumpDuration;
     GameObject player;
@@ -36,10 +36,10 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        velocity = rigidBody.velocity;
-        playerMovementData.playerVelocity = velocity;
+        //velocity = rigidBody.velocity;
+        playerMovementData.playerVelocity = rigidBody.velocity;
 
-        if (velocity == Vector2.zero)
+        if (rigidBody.velocity == Vector2.zero)
         {
             eVelocityZero.Raise();
         }
@@ -100,67 +100,59 @@ public class PlayerMovementScript : MonoBehaviour
     {
         if (!playerStatesData.isFalling && !playerStatesData.isHurt)
         {
+            Vector2 velocity = rigidBody.velocity;
             if (!playerStatesData.isFloating)
             {
                 if (playerStatesData.isGrounded || playerStatesData.isJumping)
                 {
-                    //DOESN'T ACCELERATE TO MAX SPEED, NEEDS WORKSHOPPING
-                    if (Mathf.Abs(velocity.x) < playerMovementData.moveSpeed)
+                    if (Mathf.Abs(rigidBody.velocity.x) < playerMovementData.moveSpeed)
                     {
                         velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
                         rigidBody.velocity = velocity;
                         return;
                     }
-                    if (playerInputData.leftStickValue < 0 && velocity.x > -playerMovementData.maxSpeed)
-                    {
-                        if (velocity.x < 0)
-                        {
-                            velocity.x -= playerMovementData.accelerationRate * Time.fixedDeltaTime;
-                        }
-                        else
-                        {
-                            velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
-                            rigidBody.velocity = velocity;
-                            return;
-                        }
-                    }
-                    if (playerInputData.leftStickValue > 0 && velocity.x < playerMovementData.maxSpeed)
-                    {
-                        if (velocity.x > 0)
-                        {
-                            velocity.x += playerMovementData.accelerationRate * Time.fixedDeltaTime;
-                        }
-                        else
-                        {
-                            velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
-                            rigidBody.velocity = velocity;
-                            return;
-                        }
-                    }
 
-                    //WORKS BUT PLAYER CONTINUES SLIDING AFTER CHANGING DIRECTION
-                    //if (Mathf.Abs(playerMovementData.playerVelocity.x) <= playerMovementData.maxSpeed)
-                    //{
-                    //    if (playerMovementData.playerVelocity.x > 0 && playerInputData.leftStickValue > 0)
-                    //    {
-                    //        velocity.x += playerMovementData.accelerationRate * Time.fixedDeltaTime;
-                    //        if (rigidBody.velocity.x >= playerMovementData.maxSpeed)
-                    //        {
-                    //            velocity.x = playerMovementData.maxSpeed;
-                    //        }
-                    //    }
-                    //    if (playerMovementData.playerVelocity.x < 0 && playerInputData.leftStickValue < 0)
-                    //    {
-                    //        velocity.x -= playerMovementData.accelerationRate * Time.fixedDeltaTime;
-                    //        if (rigidBody.velocity.x <= -playerMovementData.maxSpeed)
-                    //        {
-                    //            velocity.x = -playerMovementData.maxSpeed;
-                    //        }
-                    //    }
-                    //    rigidBody.velocity = velocity;
-                    //}
+                    if (Mathf.Abs(playerMovementData.playerVelocity.x) >= playerMovementData.moveSpeed)
+                    {
+                        if (rigidBody.velocity.x > 0)
+                        {
+                            if (playerMovementData.facingDirection == 1)
+                            {
+                                velocity.x += playerMovementData.accelerationRate * Time.fixedDeltaTime;
+                                if (rigidBody.velocity.x > playerMovementData.maxSpeed)
+                                {
+                                    velocity.x = playerMovementData.maxSpeed;
+                                }
+                            }
+                            else
+                            {
+                                velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
+                                rigidBody.velocity = velocity;
+                                return;
+                            }
+                        }
 
+                        if (rigidBody.velocity.x < 0)
+                        {
+                            if (playerMovementData.facingDirection == -1)
+                            {
+                                velocity.x -= playerMovementData.accelerationRate * Time.fixedDeltaTime;
+                                if (rigidBody.velocity.x < -playerMovementData.maxSpeed)
+                                {
+                                    velocity.x = -playerMovementData.maxSpeed;
+                                }
+                            }
+                            else
+                            {
+                                velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
+                                rigidBody.velocity = velocity;
+                                return;
+                            }
+                        }
+                        rigidBody.velocity = velocity;
+                    }
                 }
+
                 if (playerStatesData.isAirborne)
                 {                    
                     if (Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed * 0.75f)
@@ -181,11 +173,11 @@ public class PlayerMovementScript : MonoBehaviour
 
         }
 
-        if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < 8)
+        if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < playerMovementData.moveSpeed)
         {
             eWalking.Raise();
         }
-        else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) > 8)
+        else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed)
         {
             eRunning.Raise();
         }
@@ -193,6 +185,8 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void Jump()
     {
+        Vector2 velocity = rigidBody.velocity;
+
         if (jumpDuration < 0)
         {
             playerInputData.buttonSouth = 0f;

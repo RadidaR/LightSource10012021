@@ -9,7 +9,7 @@ public class PlayerStatesScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!playerStatesData.isGrounded && !playerStatesData.isJumping && !playerStatesData.isFloating)
+        if (!playerStatesData.isGrounded && !playerStatesData.isJumping && !playerStatesData.isFloating && !playerStatesData.isDashing)
         {
             Airborne();
         }
@@ -31,10 +31,9 @@ public class PlayerStatesScript : MonoBehaviour
                 NotFalling();
             }
         }
+        
 
-
-
-        if (playerStatesData.isFloating)
+        if (playerStatesData.isFloating || playerStatesData.isDashing)
         {
             NotGrounded();
             StopJumping();
@@ -99,6 +98,16 @@ public class PlayerStatesScript : MonoBehaviour
     public void NotFalling()
     {
         playerStatesData.isFalling = false;
+    }
+
+    public void Dashing()
+    {
+        playerStatesData.isDashing = true;
+    }
+
+    public void StopDashing()
+    {
+        playerStatesData.isDashing = false;
     }
 
 }
