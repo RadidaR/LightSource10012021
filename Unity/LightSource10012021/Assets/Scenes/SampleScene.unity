@@ -269,7 +269,6 @@ MonoBehaviour:
   eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   eStopRecovery: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   rigidBody: {fileID: 473184156}
-  afterDashCD: 0
 --- !u!114 &152010294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -857,7 +856,6 @@ MonoBehaviour:
   playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
   playerStaminaData: {fileID: 11400000, guid: 814d869f184020c4a870eabff77c52ec, type: 2}
-  playerFloatingData: {fileID: 11400000, guid: fdb4ce73ccc50ce49b0e1b003d0e1e3b, type: 2}
   eVelocityZero: {fileID: 11400000, guid: 72cd69d7031145f4e9a397ab462f335e, type: 2}
   eWalking: {fileID: 11400000, guid: be9fe880b0467ea4593ee9d1aed0658e, type: 2}
   eRunning: {fileID: 11400000, guid: b202b76739c6f39418666856bfe5c150, type: 2}
@@ -887,6 +885,18 @@ MonoBehaviour:
       - m_Target: {fileID: 695155144}
         m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
         m_MethodName: StopJumping
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1113702486}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: ResetJump
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1163,6 +1173,18 @@ MonoBehaviour:
       - m_Target: {fileID: 695155144}
         m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
         m_MethodName: StopDashing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1113702486}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: ResetJump
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

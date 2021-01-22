@@ -8,7 +8,7 @@ public class PlayerMovementScript : MonoBehaviour
     public PlayerMovement playerMovementData;
     public PlayerStates playerStatesData;
     public PlayerStamina playerStaminaData;
-    public PlayerFloating playerFloatingData;
+    //public PlayerFloating playerFloatingData;
 
     public GameEvent eVelocityZero;
     public GameEvent eWalking;
@@ -37,26 +37,31 @@ public class PlayerMovementScript : MonoBehaviour
     {
         playerMovementData.playerVelocity = rigidBody.velocity;
 
+        //SIGNALS PLAYER IS STILL
         if (rigidBody.velocity == Vector2.zero)
         {
             eVelocityZero.Raise();
         }
 
+        //RESETS JUMP DURATION
         if (jumpDuration < playerMovementData.jumpDuration && !playerStatesData.isJumping)
         {
             jumpDuration = playerMovementData.jumpDuration;
         }
 
+        //STOPS MOVEMENT IF LEFT STICK IS 0
         if (playerInputData.leftStickValue == 0)
         {
             if (playerStatesData.isGrounded)
             {
+                //GRADUALLY SLOWS DOWN OVER 0.1 SEC
                 if (Mathf.Abs(rigidBody.velocity.x) > 0)
                 {
                     Vector2 slowDown = rigidBody.velocity;
                     slowDown.x -= slowDown.x * 10 * Time.fixedDeltaTime;
                     rigidBody.velocity = slowDown;
                 }
+                //BRINGS TO A HALT
                 if (Mathf.Abs(rigidBody.velocity.x) < 0.05f)
                 {
                     rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
@@ -64,12 +69,14 @@ public class PlayerMovementScript : MonoBehaviour
             }
             if (playerStatesData.isFloating)
             {
+                //GRADUALLY SLOWS DOWN OVER 1 SEC
                 if (Mathf.Abs(rigidBody.velocity.x) > 0)
                 {
                     Vector2 slowDown = rigidBody.velocity;
                     slowDown.x -= slowDown.x * Time.fixedDeltaTime;
                     rigidBody.velocity = slowDown;
                 }
+                //BRINGS TO A HALT
                 if (Mathf.Abs(rigidBody.velocity.x) < 0.05f)
                 {
                     rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
@@ -77,6 +84,7 @@ public class PlayerMovementScript : MonoBehaviour
             }
         }
 
+        //PREVENTS FROM CONTINUING AT HIGH SPEED ONCE DASH IS OVER
         if (!playerStatesData.isDashing)
         {
             if (Mathf.Abs(rigidBody.velocity.x) > playerMovementData.maxSpeed)
@@ -88,6 +96,8 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
+
+    //FLIPS PLAYER LEFT
     public void FaceLeft()
     {
         playerMovementData.facingDirection = -1;
@@ -96,6 +106,7 @@ public class PlayerMovementScript : MonoBehaviour
         player.transform.localScale = scale;
     }
 
+    //FLIPS PLAYER RIGHT
     public void FaceRight()
     {
         playerMovementData.facingDirection = 1;
@@ -106,13 +117,17 @@ public class PlayerMovementScript : MonoBehaviour
 
     public void Move()
     {
+        //WHEN NOT FALLING OR HURT
         if (!playerStatesData.isFalling && !playerStatesData.isHurt)
         {
             Vector2 velocity = rigidBody.velocity;
+            //WHEN NOT FLOATING
             if (!playerStatesData.isFloating)
             {
+                //WHEN GROUNDED OR JUMPING
                 if (playerStatesData.isGrounded || playerStatesData.isJumping)
                 {
+                    //START MOVEMENT
                     if (Mathf.Abs(rigidBody.velocity.x) < playerMovementData.moveSpeed)
                     {
                         velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
@@ -120,18 +135,24 @@ public class PlayerMovementScript : MonoBehaviour
                         return;
                     }
 
+                    //ACCELLERATE TO MAX SPEED
                     if (Mathf.Abs(playerMovementData.playerVelocity.x) >= playerMovementData.moveSpeed)
                     {
+                        //CHECK DIRECTION OF MOTION
                         if (rigidBody.velocity.x > 0)
                         {
+                            //CHECK FACING DIRECTION
                             if (playerMovementData.facingDirection == 1)
                             {
+                                //ACCELERATE OVER TIME
                                 velocity.x += playerMovementData.accelerationRate * Time.fixedDeltaTime;
+                                //DONT EXCEED MAX SPEED
                                 if (rigidBody.velocity.x > playerMovementData.maxSpeed)
                                 {
                                     velocity.x = playerMovementData.maxSpeed;
                                 }
                             }
+                            //TURN AROUND
                             else
                             {
                                 velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
@@ -139,17 +160,21 @@ public class PlayerMovementScript : MonoBehaviour
                                 return;
                             }
                         }
-
+                        //CHECK DIRECTION OF MOTION
                         if (rigidBody.velocity.x < 0)
                         {
+                            //CHECK FACING DIRECTION
                             if (playerMovementData.facingDirection == -1)
                             {
+                                //ACCELERATE OVER TIME
                                 velocity.x -= playerMovementData.accelerationRate * Time.fixedDeltaTime;
+                                //DONT EXCEED MAX SPEED
                                 if (rigidBody.velocity.x < -playerMovementData.maxSpeed)
                                 {
                                     velocity.x = -playerMovementData.maxSpeed;
                                 }
                             }
+                            //TURN AROUND
                             else
                             {
                                 velocity.x = playerMovementData.moveSpeed * playerInputData.leftStickValue;
@@ -160,7 +185,7 @@ public class PlayerMovementScript : MonoBehaviour
                         rigidBody.velocity = velocity;
                     }
                 }
-
+                //WHEN AIRBORNE
                 if (playerStatesData.isAirborne)
                 {                    
                     if (Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed * 0.75f)
@@ -174,6 +199,7 @@ public class PlayerMovementScript : MonoBehaviour
                     rigidBody.velocity = velocity;
                 }
             }
+            //FLOAT MOVE
             else
             {
                 eFloatMove.Raise();
@@ -181,10 +207,12 @@ public class PlayerMovementScript : MonoBehaviour
 
         }
 
+        //RAISES WALKING
         if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < playerMovementData.moveSpeed)
         {
             eWalking.Raise();
         }
+        //RAISES RUNNING
         else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed)
         {
             eRunning.Raise();
@@ -195,35 +223,42 @@ public class PlayerMovementScript : MonoBehaviour
     {
         Vector2 velocity = rigidBody.velocity;
 
+        //END JUMP IF DURATION OVER
         if (jumpDuration < 0)
         {
-            playerInputData.buttonSouth = 0f;
             eJumpEnded.Raise();
             return;
         }
 
+        //IF GROUNDED
         if (playerStatesData.isGrounded)
         {
+            //AND HAS ENOUGH STAMINA
             if (playerStaminaData.currentStamina > playerMovementData.jumpCost)
-            {
-                eJumpStarted.Raise();
+            {                
+                //DRAIN STAMINA
                 playerStaminaData.staminaCost = playerMovementData.jumpCost;
                 eUseStamina.Raise();
+                //AND JUMP
+                eJumpStarted.Raise();
                 velocity.y = playerMovementData.jumpForce;
                 rigidBody.velocity = velocity;
             }
+            //IF NOT ENOUGH STAMINA
             else
             {
                 eInsufficientStamina.Raise();
             }
         }
 
+        //HOLD TO JUMP HIGHER
         if (playerStatesData.isJumping)
         {
             velocity.y = playerMovementData.jumpForce;
             rigidBody.velocity = velocity;
         }
 
+        //TICK AWAY AT DURATION
         jumpDuration -= Time.fixedDeltaTime;
     }
 }

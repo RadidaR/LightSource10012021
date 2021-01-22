@@ -9,6 +9,7 @@ public class PlayerStatesScript : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         if (!playerStatesData.isGrounded && !playerStatesData.isJumping && !playerStatesData.isFloating && !playerStatesData.isDashing)
         {
             Airborne();

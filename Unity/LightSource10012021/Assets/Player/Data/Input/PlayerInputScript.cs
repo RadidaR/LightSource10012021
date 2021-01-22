@@ -121,6 +121,11 @@ public class PlayerInputScript : MonoBehaviour
         eJumpReleased.Raise();
     }
 
+    public void ResetJump()
+    {
+        playerInputData.buttonSouth = 0;
+    }
+
     private void RaiseDashPressed()
     {
         eDashPressed.Raise();
