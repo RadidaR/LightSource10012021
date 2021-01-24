@@ -267,7 +267,8 @@ MonoBehaviour:
   eFloatEnded: {fileID: 11400000, guid: 3e554cff89947ca408ae27f37a55bc97, type: 2}
   eStabilizingFall: {fileID: 11400000, guid: b61a682a81aa6fe4d854452cece61295, type: 2}
   eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
-  eStopRecovery: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
+  eInsufficientStamina: {fileID: 11400000, guid: 22e2a28a8df6d9a4482ba79961b6079c, type: 2}
+  eStopRecovery: {fileID: 11400000, guid: 13c3bfba272e26441ae3e9135c58a85b, type: 2}
   rigidBody: {fileID: 473184156}
 --- !u!114 &152010294
 MonoBehaviour:
