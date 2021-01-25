@@ -122,4 +122,14 @@ public class PlayerStatesScript : MonoBehaviour
         playerStatesData.isHurt = false;
     }
 
+    public void Invincible()
+    {
+        playerStatesData.isInvincible = true;
+    }
+
+    public void NotInvincible()
+    {
+        playerStatesData.isInvincible = false;
+    }
+
 }

@@ -2065,6 +2065,7 @@ GameObject:
   - component: {fileID: 1620975593}
   - component: {fileID: 1620975594}
   - component: {fileID: 1620975595}
+  - component: {fileID: 1620975596}
   m_Layer: 0
   m_Name: Health Manager
   m_TagString: Untagged
@@ -2103,6 +2104,7 @@ MonoBehaviour:
   hurtDuration: 0
   eGotHurt: {fileID: 11400000, guid: 614c6d39dafec3f4a8862bfd9acdd6f6, type: 2}
   eEndHurt: {fileID: 11400000, guid: 614c6d39dafec3f4a8862bfd9acdd6f6, type: 2}
+  eEndInvincibility: {fileID: 11400000, guid: ba6d9b704eb42ce44b616dc50fb88004, type: 2}
 --- !u!114 &1620975594
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2150,6 +2152,34 @@ MonoBehaviour:
       - m_Target: {fileID: 695155144}
         m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
         m_MethodName: Hurting
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1620975596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1620975591}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: ba6d9b704eb42ce44b616dc50fb88004, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 695155144}
+        m_TargetAssemblyTypeName: PlayerStatesScript, Assembly-CSharp
+        m_MethodName: NotInvincible
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2824,6 +2854,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1620975593}
         m_TargetAssemblyTypeName: PlayerHealthScript, Assembly-CSharp
         m_MethodName: Damage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1620975593}
+        m_TargetAssemblyTypeName: PlayerHealthScript, Assembly-CSharp
+        m_MethodName: InvincibilityFrames
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
