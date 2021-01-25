@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 572be3a5f7a6abb4dbede41e882e4cf2, type: 3}
   m_Name: Player States Data
   m_EditorClassIdentifier: 
-  isStill: 0
-  isGrounded: 0
+  isStill: 1
+  isGrounded: 1
   isJumping: 0
   isAirborne: 0
   isFalling: 0

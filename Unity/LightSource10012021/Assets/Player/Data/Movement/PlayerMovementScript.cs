@@ -118,7 +118,7 @@ public class PlayerMovementScript : MonoBehaviour
     public void Move()
     {
         //WHEN NOT FALLING OR HURT
-        if (!playerStatesData.isFalling && !playerStatesData.isHurt)
+        if (!playerStatesData.isFalling /*&& !playerStatesData.isHurt*/)
         {
             Vector2 velocity = rigidBody.velocity;
             //WHEN NOT FLOATING

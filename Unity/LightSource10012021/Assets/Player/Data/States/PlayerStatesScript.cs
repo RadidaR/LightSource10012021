@@ -6,6 +6,7 @@ public class PlayerStatesScript : MonoBehaviour
 {
     public PlayerStates playerStatesData;
     public PlayerMovement playerMovementData;
+    
 
     private void FixedUpdate()
     {
@@ -109,6 +110,16 @@ public class PlayerStatesScript : MonoBehaviour
     public void StopDashing()
     {
         playerStatesData.isDashing = false;
+    }
+
+    public void Hurting()
+    {
+        playerStatesData.isHurt = true;
+    }
+
+    public void StopHurting()
+    {
+        playerStatesData.isHurt = false;
     }
 
 }

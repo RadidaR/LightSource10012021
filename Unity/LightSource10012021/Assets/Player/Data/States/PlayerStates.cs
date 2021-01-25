@@ -16,6 +16,7 @@ public class PlayerStates: ScriptableObject, ISerializationCallbackReceiver
     public bool isAirborne;
     public bool isFalling;
     public bool isHurt;
+    public bool isInvincible;
     public bool isAttacking;
     public bool isParrying;
     public bool isFloating;

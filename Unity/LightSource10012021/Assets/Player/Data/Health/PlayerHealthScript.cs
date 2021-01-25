@@ -6,44 +6,49 @@ using UnityEngine.EventSystems;
 
 public class PlayerHealthScript : MonoBehaviour
 {
-    //Take data from Scriptable Object
     public PlayerHealth playerHealthData;
-    public float maxHealth;
-    public float currentHealth;
+    public PlayerStates playerStatesData;
+    //public float maxHealth;
+    //public float currentHealth;
 
-    //Register events
-    public GameEvent playerDeath;
-    public GameEvent takeDamage;
-    // Start is called before the first frame update
+    public float hurtDuration;
+
+    public GameEvent eGotHurt;
+    public GameEvent eEndHurt;
+
+    //public GameEvent playerDeath;
+    //public GameEvent takeDamage;
 
     void Start()
     {
-        //Set starting values
-        maxHealth = playerHealthData.maxHealth;
-        currentHealth = maxHealth;
-        playerHealthData.currentHealth = currentHealth;
+        playerHealthData.currentHealth = playerHealthData.maxHealth;
     }
 
-    //Called when takeDamage event is Raised
+
     public void Damage()
     {
-        currentHealth -= 10;
-        if (currentHealth <= 0)
+        if (!playerStatesData.isInvincible)
         {
-            Die();
+            eGotHurt.Raise();
+            hurtDuration = playerHealthData.hurtDuration;
+            playerHealthData.currentHealth -= 10;
         }
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        //Update Scriptable Object
-        playerHealthData.currentHealth = currentHealth;
-    }
-
-    //Raises playerDeath event
-    public void Die()
-    {
-        playerDeath.Raise();
+        if (hurtDuration > 0)
+        {
+            hurtDuration -= Time.deltaTime;
+        }
+        else if (hurtDuration < 0)
+        {
+            hurtDuration = 0;
+        }
+        else if (hurtDuration == 0)
+        {
+            playerStatesData.isHurt = false; 
+        }
     }
 }
