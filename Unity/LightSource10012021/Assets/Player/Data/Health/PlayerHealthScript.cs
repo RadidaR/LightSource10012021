@@ -27,7 +27,7 @@ public class PlayerHealthScript : MonoBehaviour
 
     public void Damage()
     {
-        if (!playerStatesData.isInvincible)
+        if (!playerStatesData.isHurt)
         {
             eGotHurt.Raise();
             hurtDuration = playerHealthData.hurtDuration;
