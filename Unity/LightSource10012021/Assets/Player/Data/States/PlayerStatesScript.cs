@@ -124,6 +124,7 @@ public class PlayerStatesScript : MonoBehaviour
 
     public void Invincible()
     {
+        Debug.Log("Invincible");
         playerStatesData.isInvincible = true;
     }
 
