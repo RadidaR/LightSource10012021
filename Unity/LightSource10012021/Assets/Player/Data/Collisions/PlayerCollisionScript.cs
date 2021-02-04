@@ -10,12 +10,23 @@ public class PlayerCollisionScript : MonoBehaviour
     public Vector2 playerBodySize;
     public LayerMask damagingLayers;
 
+    public GameEvent eEndInvincibility;
+
+    public int invincibilityCounter = 4;
+    public GameObject player;
+
+    bool invincibilityRunning = false;
+
     //public List<Collider2D> collisions;
     //public Collider2D[] collisions;
     //float a;
 
     public GameEvent eCollided;
 
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+    }
     private void Update()
     {
         ////IF NOT HURT
@@ -27,6 +38,11 @@ public class PlayerCollisionScript : MonoBehaviour
         //        RaiseCollision();
         //    }
         //}
+
+        if (playerStatesData.isInvincible)
+        {
+            StartInvulnerability();
+        }
     }
 
     public void RaiseCollision()
@@ -72,4 +88,98 @@ public class PlayerCollisionScript : MonoBehaviour
     {
         //Debug.Log("Collision" + collision.gameObject.layer.ToString());
     }
+
+    public void StartInvulnerability()
+    {
+        if (!invincibilityRunning)
+        {
+            StartCoroutine(InvincibilityFrames());
+        }
+    }
+
+    public IEnumerator InvincibilityFrames()
+    {
+        invincibilityRunning = true;
+        SpriteRenderer[] sprites = player.GetComponentsInChildren<SpriteRenderer>();
+
+        for (int i = 0; i < sprites.Length; i++)
+        {
+            while (sprites[i].color.a > 0.3f)
+            {
+                Color spriteColor = sprites[i].color;
+                spriteColor.a -= Time.deltaTime;
+                sprites[i].color = spriteColor;
+                if (sprites[i].color.a <= 0.3f)
+                {
+                    break;
+                }
+            }
+            //invincibilityCounter--;
+            yield return new WaitForSeconds(0.25f);
+
+            while (sprites[i].color.a < 0.7f)
+            {
+                Color spriteColor = sprites[i].color;
+                spriteColor.a += Time.deltaTime;
+                sprites[i].color = spriteColor;
+                if (sprites[i].color.a >= 0.7f)
+                {
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(0.25f);
+
+            while (sprites[i].color.a > 0.3f)
+            {
+                Color spriteColor = sprites[i].color;
+                spriteColor.a -= Time.deltaTime;
+                sprites[i].color = spriteColor;
+                if (sprites[i].color.a <= 0.3f)
+                {
+                    break;
+                }
+            }
+
+            yield return new WaitForSeconds(0.25f);
+
+            while (sprites[i].color.a < 1f)
+            {
+                Color spriteColor = sprites[i].color;
+                spriteColor.a += Time.deltaTime;
+                sprites[i].color = spriteColor;
+                if (sprites[i].color.a >= 1f)
+                {
+                    break;
+                }
+            }
+
+            invincibilityRunning = false;
+            eEndInvincibility.Raise();
+        }
+    }
+    //GameObject player = gameObject.GetComponentInParent<GameObject>();
+    
+
+    //public void InvincibilityFrame2s()
+    //{
+    //    //GameObject player = GameObject.FindGameObjectWithTag("Player");
+    //    SpriteRenderer[] sprites = player.GetComponentsInChildren<SpriteRenderer>();
+
+    //    for (int i = 0; i < sprites.Length; i++)
+    //    {
+
+    //        while (sprites[i].color.a > 0.3f)
+    //        {
+    //            Color spriteColor = sprites[i].color;
+    //            spriteColor.a -= Time.deltaTime;
+    //            sprites[i].color = spriteColor;
+    //            if (sprites[i].color.a <= 0.3f)
+    //            {
+    //                break;
+    //            }
+    //        }
+    //        eEndInvincibility.Raise();
+    //    }
+    //}
 }

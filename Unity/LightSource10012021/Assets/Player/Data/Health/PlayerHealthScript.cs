@@ -39,27 +39,27 @@ public class PlayerHealthScript : MonoBehaviour
         }
     }
 
-    public void InvincibilityFrames()
-    {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        SpriteRenderer[] sprites = player.GetComponentsInChildren<SpriteRenderer>();
+    //public void InvincibilityFrames()
+    //{
+    //    GameObject player = GameObject.FindGameObjectWithTag("Player");
+    //    SpriteRenderer[] sprites = player.GetComponentsInChildren<SpriteRenderer>();
 
-        for (int i = 0; i < sprites.Length; i++)
-        {
+    //    for (int i = 0; i < sprites.Length; i++)
+    //    {
 
-            while (sprites[i].color.a > 0.3f)
-            {
-                Color spriteColor = sprites[i].color;
-                spriteColor.a -= Time.deltaTime;
-                sprites[i].color = spriteColor;
-                if (sprites[i].color.a <= 0.3f)
-                {
-                    break;
-                }
-            }
-            eEndInvincibility.Raise();
-        }
-    }
+    //        while (sprites[i].color.a > 0.3f)
+    //        {
+    //            Color spriteColor = sprites[i].color;
+    //            spriteColor.a -= Time.deltaTime;
+    //            sprites[i].color = spriteColor;
+    //            if (sprites[i].color.a <= 0.3f)
+    //            {
+    //                break;
+    //            }
+    //        }
+    //        eEndInvincibility.Raise();
+    //    }
+    //}
 
 
     void Update()
@@ -77,9 +77,9 @@ public class PlayerHealthScript : MonoBehaviour
             playerStatesData.isHurt = false; 
         }
 
-        if (playerStatesData.isInvincible)
-        {
-            InvincibilityFrames();
-        }
+        //if (playerStatesData.isInvincible)
+        //{
+        //    InvincibilityFrames();
+        //}
     }
 }

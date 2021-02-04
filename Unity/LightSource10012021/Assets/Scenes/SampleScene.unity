@@ -448,7 +448,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 473184153}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.83, y: 136.8, z: 0}
+  m_LocalPosition: {x: 6.83, y: -2.6, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1731434973}
@@ -892,6 +892,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3613212468821493804, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
   m_PrefabInstance: {fileID: 3613212469514809835}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &695155144 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3613212468821493795, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+  m_PrefabInstance: {fileID: 3613212469514809835}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f3bea7dab63ad489f012661c87b3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &711382284 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6722470487962260032, guid: 78ee0250bfe9d5449851ec35cbf94363, type: 3}
@@ -1213,6 +1224,9 @@ MonoBehaviour:
   damagingLayers:
     serializedVersion: 2
     m_Bits: 64
+  eEndInvincibility: {fileID: 11400000, guid: ba6d9b704eb42ce44b616dc50fb88004, type: 2}
+  invincibilityCounter: 4
+  player: {fileID: 0}
   eCollided: {fileID: 11400000, guid: 38937689b2abc8e4eba393dba5ffcb6c, type: 2}
 --- !u!1 &1250213723
 GameObject:
@@ -3072,6 +3086,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 473184154}
     m_Modifications:
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 695155144}
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Invincible
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerStatesScript, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3613212468319529219, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
+      propertyPath: Response.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3613212468821493804, guid: ad3d583b4c3bc9a429edcf89d1587c94, type: 3}
       propertyPath: m_RootOrder
       value: 4
