@@ -15,13 +15,14 @@ public class PlayerDashingScript : MonoBehaviour
     public GameEvent eUseStamina;
     public GameEvent eInsufficientStamina;
 
-    public Rigidbody2D rigidBody;
+    Rigidbody2D rigidBody;
 
-    public float duration;
-    public float cooldown;
+    float duration;
+    float cooldown;
 
     private void Start()
     {
+        rigidBody = gameObject.GetComponentInParent<Rigidbody2D>();
         duration = playerDashingData.dashDuration;
         cooldown = 0;
     }

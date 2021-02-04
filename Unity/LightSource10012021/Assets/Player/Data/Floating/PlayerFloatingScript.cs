@@ -17,12 +17,13 @@ public class PlayerFloatingScript : MonoBehaviour
     public GameEvent eInsufficientStamina;
     public GameEvent eStopRecovery;
 
-    public Rigidbody2D rigidBody;
+    Rigidbody2D rigidBody;
     
     float baseGravity;
 
     private void Start()
     {
+        rigidBody = gameObject.GetComponentInParent<Rigidbody2D>();
         //ASIGN BASE GRAVITY
         baseGravity = rigidBody.gravityScale;
     }

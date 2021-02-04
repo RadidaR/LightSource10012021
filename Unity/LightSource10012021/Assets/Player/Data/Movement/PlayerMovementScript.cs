@@ -8,7 +8,6 @@ public class PlayerMovementScript : MonoBehaviour
     public PlayerMovement playerMovementData;
     public PlayerStates playerStatesData;
     public PlayerStamina playerStaminaData;
-    //public PlayerFloating playerFloatingData;
 
     public GameEvent eVelocityZero;
     public GameEvent eWalking;
@@ -21,16 +20,18 @@ public class PlayerMovementScript : MonoBehaviour
     public GameEvent eUseStamina;
     public GameEvent eInsufficientStamina;
 
-    public Rigidbody2D rigidBody;
+    float jumpDuration;
 
-    [SerializeField] float jumpDuration;
+    Rigidbody2D rigidBody;
+
     GameObject player;
 
 
     void Start()
     {
         jumpDuration = playerMovementData.jumpDuration;
-        player = GameObject.FindWithTag("Player");
+        rigidBody = gameObject.GetComponentInParent<Rigidbody2D>();
+        player = rigidBody.gameObject;
     }
 
     private void FixedUpdate()
