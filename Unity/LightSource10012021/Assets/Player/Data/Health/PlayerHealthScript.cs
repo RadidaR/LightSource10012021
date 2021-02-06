@@ -14,7 +14,7 @@ public class PlayerHealthScript : MonoBehaviour
     public float hurtDuration;
 
     public GameEvent eGotHurt;
-    public GameEvent eEndHurt;
+    //public GameEvent eEndHurt;
     public GameEvent eEndInvincibility;
 
     bool decreasingOpacity;
@@ -31,11 +31,10 @@ public class PlayerHealthScript : MonoBehaviour
 
     public void Damage()
     {
-        if (!playerStatesData.isHurt)
+        if (!playerStatesData.isInvincible)
         {
+            playerHealthData.currentHealth -= playerHealthData.healthLost;
             eGotHurt.Raise();
-            hurtDuration = playerHealthData.hurtDuration;
-            playerHealthData.currentHealth -= 10;
         }
     }
 
@@ -64,22 +63,17 @@ public class PlayerHealthScript : MonoBehaviour
 
     void Update()
     {
-        if (hurtDuration > 0)
-        {
-            hurtDuration -= Time.deltaTime;
-        }
-        else if (hurtDuration < 0)
-        {
-            hurtDuration = 0;
-        }
-        else if (hurtDuration == 0)
-        {
-            playerStatesData.isHurt = false; 
-        }
-
-        //if (playerStatesData.isInvincible)
+        //if (hurtDuration > 0)
         //{
-        //    InvincibilityFrames();
+        //    hurtDuration -= Time.deltaTime;
+        //}
+        //else if (hurtDuration < 0)
+        //{
+        //    hurtDuration = 0;
+        //}
+        //else if (hurtDuration == 0)
+        //{
+        //    playerStatesData.isHurt = false; 
         //}
     }
 }

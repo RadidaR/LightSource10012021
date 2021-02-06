@@ -5,15 +5,24 @@ using UnityEngine;
 public class PlayerCollisionScript : MonoBehaviour
 {
     public PlayerStates playerStatesData;
+    public PlayerHealth playerHealthData;
+    public PlayerCollision playerCollisionData;
 
     public Transform playerBodyPosition;
     public Vector2 playerBodySize;
     public LayerMask damagingLayers;
 
-    public GameEvent eEndInvincibility;
+    [Header("Hurt Stuff")]
+    float hurtDuration;
+    float invincibilityDuration;
 
-    public int invincibilityCounter = 4;
+    public NPCStats colliderStats;
+
+
+
+    public int flashCounter = 4;
     public GameObject player;
+    public SpriteRenderer[] sprites;
 
     bool invincibilityRunning = false;
 
@@ -22,13 +31,49 @@ public class PlayerCollisionScript : MonoBehaviour
     //float a;
 
     public GameEvent eCollided;
+    public GameEvent eEndHurt;
+    public GameEvent eEndInvincibility;
+
 
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        sprites = player.GetComponentsInChildren<SpriteRenderer>();
     }
+
     private void Update()
     {
+        if (hurtDuration > 0)
+        {
+            hurtDuration -= Time.deltaTime;
+        }
+        else if (hurtDuration < 0)
+        {
+            hurtDuration = 0;
+        }
+        else if (hurtDuration == 0)
+        {
+            eEndHurt.Raise();
+            //playerStatesData.isHurt = false;
+        }
+
+        if (invincibilityDuration > 0)
+        {
+            invincibilityDuration -= Time.deltaTime;
+        }
+        else if (invincibilityDuration < 0)
+        {
+            invincibilityDuration = 0;
+        }
+        else if (invincibilityDuration == 0)
+        {
+            eEndInvincibility.Raise();
+            //playerStatesData.isHurt = false;
+        }
+
+
+
+
         ////IF NOT HURT
         //if (!playerStatesData.isHurt)
         //{
@@ -39,135 +84,99 @@ public class PlayerCollisionScript : MonoBehaviour
         //    }
         //}
 
-        if (playerStatesData.isInvincible)
-        {
-            StartInvulnerability();
-        }
+        //if (playerStatesData.isInvincible)
+        //{
+        //    StartInvulnerability();
+        //}
     }
 
-    public void RaiseCollision()
+    public void GotHurtCountdowns()
     {
-        eCollided.Raise();
-    }
-
-    void OnDrawGizmosSelected()
-    {
-        if (playerBodySize == Vector2.zero)
-        {
-            return;
-        }
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(playerBodyPosition.position, playerBodySize);
+        hurtDuration = playerCollisionData.hurtDuration;
+        invincibilityDuration = playerCollisionData.invincibilityDuration;
+        StartCoroutine(InvincibilityFrames());
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!playerStatesData.isHurt)
+        if (collision.gameObject.layer == 6)
         {
-            if (collision.gameObject.layer == 6)
-            {
-                RaiseCollision();
-            }
+            colliderStats = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStats;
+            playerHealthData.healthLost = colliderStats.attackDamage;
+            eCollided.Raise();
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //Debug.Log("Collision" + collision.gameObject.layer.ToString());
-        if (!playerStatesData.isHurt)
-        {
-            if (collision.gameObject.layer == 6)
-            {
-                RaiseCollision();
-            }
-        }
-    }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        //Debug.Log("Collision" + collision.gameObject.layer.ToString());
-    }
-
-    public void StartInvulnerability()
-    {
-        if (!invincibilityRunning)
+        if (collision.gameObject.layer == 6)
         {
-            StartCoroutine(InvincibilityFrames());
+            colliderStats = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStats;
+            playerHealthData.healthLost = colliderStats.attackDamage;
+            eCollided.Raise();
         }
     }
 
     public IEnumerator InvincibilityFrames()
     {
         invincibilityRunning = true;
-        SpriteRenderer[] sprites = player.GetComponentsInChildren<SpriteRenderer>();
-
-        for (int i = 0; i < sprites.Length; i++)
+        int temp = 0;
+        while (temp < flashCounter)
         {
-            while (sprites[i].color.a > 0.3f)
+            for (int i = 0; i < sprites.Length; i++)
             {
-                Color spriteColor = sprites[i].color;
-                spriteColor.a -= Time.deltaTime;
-                sprites[i].color = spriteColor;
-                if (sprites[i].color.a <= 0.3f)
-                {
-                    break;
-                }
+                Color color;
+                color = sprites[i].color;
+                color.a = 0.3f;
+                sprites[i].color = color;
             }
-            //invincibilityCounter--;
-            yield return new WaitForSeconds(0.25f);
-
-            while (sprites[i].color.a < 0.7f)
+            yield return new WaitForSeconds(playerCollisionData.invincibilityDuration / flashCounter / 2);
+            for (int i = 0; i < sprites.Length; i++)
             {
-                Color spriteColor = sprites[i].color;
-                spriteColor.a += Time.deltaTime;
-                sprites[i].color = spriteColor;
-                if (sprites[i].color.a >= 0.7f)
-                {
-                    break;
-                }
+                Color color;
+                color = sprites[i].color;
+                color.a = 1f;
+                sprites[i].color = color;
             }
-
-            yield return new WaitForSeconds(0.25f);
-
-            while (sprites[i].color.a > 0.3f)
-            {
-                Color spriteColor = sprites[i].color;
-                spriteColor.a -= Time.deltaTime;
-                sprites[i].color = spriteColor;
-                if (sprites[i].color.a <= 0.3f)
-                {
-                    break;
-                }
-            }
-
-            yield return new WaitForSeconds(0.25f);
-
-            while (sprites[i].color.a < 1f)
-            {
-                Color spriteColor = sprites[i].color;
-                spriteColor.a += Time.deltaTime;
-                sprites[i].color = spriteColor;
-                if (sprites[i].color.a >= 1f)
-                {
-                    break;
-                }
-            }
-
-            invincibilityRunning = false;
-            eEndInvincibility.Raise();
+            yield return new WaitForSeconds(playerCollisionData.invincibilityDuration / flashCounter / 2);
+            temp++;
         }
+        invincibilityRunning = false;
     }
-    //GameObject player = gameObject.GetComponentInParent<GameObject>();
-    
 
-    //public void InvincibilityFrame2s()
+    //public IEnumerator InvincibilityFrames()
     //{
-    //    //GameObject player = GameObject.FindGameObjectWithTag("Player");
+    //    invincibilityRunning = true;
     //    SpriteRenderer[] sprites = player.GetComponentsInChildren<SpriteRenderer>();
 
     //    for (int i = 0; i < sprites.Length; i++)
     //    {
+    //        while (sprites[i].color.a > 0.3f)
+    //        {
+    //            Color spriteColor = sprites[i].color;
+    //            spriteColor.a -= Time.deltaTime;
+    //            sprites[i].color = spriteColor;
+    //            if (sprites[i].color.a <= 0.3f)
+    //            {
+    //                break;
+    //            }
+    //        }
+    //        //invincibilityCounter--;
+    //        yield return new WaitForSeconds(0.25f);
+
+    //        while (sprites[i].color.a < 0.7f)
+    //        {
+    //            Color spriteColor = sprites[i].color;
+    //            spriteColor.a += Time.deltaTime;
+    //            sprites[i].color = spriteColor;
+    //            if (sprites[i].color.a >= 0.7f)
+    //            {
+    //                break;
+    //            }
+    //        }
+
+    //        yield return new WaitForSeconds(0.25f);
 
     //        while (sprites[i].color.a > 0.3f)
     //        {
@@ -179,6 +188,21 @@ public class PlayerCollisionScript : MonoBehaviour
     //                break;
     //            }
     //        }
+
+    //        yield return new WaitForSeconds(0.25f);
+
+    //        while (sprites[i].color.a < 1f)
+    //        {
+    //            Color spriteColor = sprites[i].color;
+    //            spriteColor.a += Time.deltaTime;
+    //            sprites[i].color = spriteColor;
+    //            if (sprites[i].color.a >= 1f)
+    //            {
+    //                break;
+    //            }
+    //        }
+
+    //        invincibilityRunning = false;
     //        eEndInvincibility.Raise();
     //    }
     //}

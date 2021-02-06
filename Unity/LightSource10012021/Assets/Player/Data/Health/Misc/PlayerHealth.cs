@@ -12,6 +12,4 @@ public class PlayerHealth : ScriptableObject
     [Range(0, 1)] public float criticalThreshold;
     public float healthRegained;
     public float healthLost;
-
-    public float hurtDuration;
 }

@@ -119,7 +119,7 @@ public class PlayerMovementScript : MonoBehaviour
     public void Move()
     {
         //WHEN NOT FALLING OR HURT
-        if (!playerStatesData.isFalling /*&& !playerStatesData.isHurt*/)
+        if (!playerStatesData.isFalling && !playerStatesData.isHurt)
         {
             Vector2 velocity = rigidBody.velocity;
             //WHEN NOT FLOATING
@@ -205,7 +205,6 @@ public class PlayerMovementScript : MonoBehaviour
             {
                 eFloatMove.Raise();
             }
-
         }
 
         //RAISES WALKING
@@ -232,7 +231,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         //IF GROUNDED
-        if (playerStatesData.isGrounded)
+        if (playerStatesData.isGrounded && !playerStatesData.isHurt)
         {
             //AND HAS ENOUGH STAMINA
             if (playerStaminaData.currentStamina > playerMovementData.jumpCost)

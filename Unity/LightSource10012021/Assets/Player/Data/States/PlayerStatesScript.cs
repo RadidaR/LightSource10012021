@@ -8,7 +8,7 @@ public class PlayerStatesScript : MonoBehaviour
     public PlayerMovement playerMovementData;
     
 
-    private void FixedUpdate()
+    private void Update()
     {
 
         if (!playerStatesData.isGrounded && !playerStatesData.isJumping && !playerStatesData.isFloating && !playerStatesData.isDashing)

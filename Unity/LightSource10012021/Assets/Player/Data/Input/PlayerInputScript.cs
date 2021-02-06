@@ -99,6 +99,11 @@ public class PlayerInputScript : MonoBehaviour
         }
     }
 
+    public void ResetLeftStick()
+    {
+        playerInputData.leftStickValue = 0;
+    }
+
     //private void RaiseMoveReleased()
     //{
     //    if (playerInputData.leftStickValue > 0)
