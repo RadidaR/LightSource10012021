@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Player Stamina", menuName = "PlayerData/PlayerStamina")]
-public class PlayerStamina: ScriptableObject
+[CreateAssetMenu(fileName = "Player Stamina Data", menuName = "PlayerData/Stamina")]
+public class PlayerStaminaData: ScriptableObject
 {
     public float maxStamina;
     public float currentStamina;

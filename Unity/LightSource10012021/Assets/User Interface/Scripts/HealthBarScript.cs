@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HealthBarScript : MonoBehaviour
 {
     //Take data from Scriptable Object
-    public PlayerHealth playerHealthData;
+    public PlayerHealthData playerHealthData;
 
     //UI elements
     public Slider healthBar;

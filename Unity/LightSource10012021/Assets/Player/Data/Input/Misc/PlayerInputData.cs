@@ -5,8 +5,8 @@ using UnityEngine;
 
 
 //////////IF VALUE WILL BE MODIFIED EXTERNALLY AT RUNTIME, USE THIS//////////
-[CreateAssetMenu(fileName = "Player Input", menuName = "PlayerData/PlayerInput")]
-public class PlayerInput : ScriptableObject, ISerializationCallbackReceiver
+[CreateAssetMenu(fileName = "Player Input Data", menuName = "PlayerData/Input")]
+public class PlayerInputData : ScriptableObject, ISerializationCallbackReceiver
 {
     int reset = 0;
 

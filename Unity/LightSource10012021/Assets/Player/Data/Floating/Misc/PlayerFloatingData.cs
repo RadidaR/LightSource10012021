@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Player Floating Data", menuName = "PlayerData/PlayerFloating")]
-public class PlayerFloating : ScriptableObject
+[CreateAssetMenu(fileName = "Player Floating Data", menuName = "PlayerData/Floating")]
+public class PlayerFloatingData : ScriptableObject
 {
     public float floatSpeed;
     public float floatForce;

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    public PlayerInput playerInputData;
-    public PlayerMovement playerMovementData;
-    public PlayerStates playerStatesData;
-    public PlayerStamina playerStaminaData;
+    [Header("Data Types")]
+    public PlayerInputData playerInputData;
+    public PlayerMovementData playerMovementData;
+    public PlayerStatesData playerStatesData;
+    public PlayerStaminaData playerStaminaData;
 
+    [Header("Events")]
     public GameEvent eVelocityZero;
     public GameEvent eWalking;
     public GameEvent eRunning;
@@ -20,11 +22,10 @@ public class PlayerMovementScript : MonoBehaviour
     public GameEvent eUseStamina;
     public GameEvent eInsufficientStamina;
 
-    float jumpDuration;
-
-    Rigidbody2D rigidBody;
-
-    GameObject player;
+    [Header("Local Variables")]
+    [SerializeField] float jumpDuration;
+    [SerializeField] Rigidbody2D rigidBody;
+    [SerializeField] GameObject player;
 
 
     void Start()

@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerStatesScript : MonoBehaviour
 {
-    public PlayerStates playerStatesData;
-    public PlayerMovement playerMovementData;
+    public PlayerStatesData playerStatesData;
+    public PlayerMovementData playerMovementData;
     
 
     private void Update()
@@ -124,7 +124,6 @@ public class PlayerStatesScript : MonoBehaviour
 
     public void Invincible()
     {
-        Debug.Log("Invincible");
         playerStatesData.isInvincible = true;
     }
 

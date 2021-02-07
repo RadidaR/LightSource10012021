@@ -5,8 +5,8 @@ using UnityEngine;
 
 
 //////////IF VALUE WILL BE MODIFIED EXTERNALLY AT RUNTIME, USE THIS//////////
-[CreateAssetMenu(fileName = "Player States", menuName = "PlayerData/PlayerStates")]
-public class PlayerStates: ScriptableObject, ISerializationCallbackReceiver
+[CreateAssetMenu(fileName = "Player States Data", menuName = "PlayerData/States")]
+public class PlayerStatesData: ScriptableObject, ISerializationCallbackReceiver
 {
     bool reset = false;
 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GroundCheckScript : MonoBehaviour
 {
-    //public PlayerStates playerStatesData;
-
     public Transform groundCheckPosition;
     public float groundCheckRadius;
     public LayerMask groundLayer;

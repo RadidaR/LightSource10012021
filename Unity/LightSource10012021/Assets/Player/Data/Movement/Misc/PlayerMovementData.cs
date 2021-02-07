@@ -3,8 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Player Movement", menuName = "PlayerData/PlayerMovement")]
-public class PlayerMovement : ScriptableObject
+[CreateAssetMenu(fileName = "Player Movement Data", menuName = "PlayerData/Movement")]
+public class PlayerMovementData : ScriptableObject
 {
     [Range(-1, 1)] public int facingDirection;
     public float moveSpeed;

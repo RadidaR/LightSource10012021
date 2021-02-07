@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6796276958206284496}
   - component: {fileID: 6796276958206284499}
+  - component: {fileID: 1188177031}
   m_Layer: 0
   m_Name: Input Manager
   m_TagString: Untagged
@@ -44,13 +45,107 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b18977b510080a3488d6b710af7b3108, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInputData: {fileID: 11400000, guid: c1a4b5d98a5bed247aca2f723b7ffc2a, type: 2}
+  playerInputData: {fileID: 11400000, guid: 6e6776cf1085a5d4c90259e32d3903e1, type: 2}
   eLeftPressed: {fileID: 11400000, guid: 030520acb9fb9804b99f441a762e63d7, type: 2}
   eRightPressed: {fileID: 11400000, guid: 4b3fc95742f761a4a88e61695869d0fd, type: 2}
   eJumpPressed: {fileID: 11400000, guid: d0278df8d7ed6fc4899ce2efa0fce683, type: 2}
   eJumpReleased: {fileID: 11400000, guid: 6eaab12a0bd33bc44ae1081982069703, type: 2}
   eDashPressed: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
   eDashReleased: {fileID: 11400000, guid: ecaadbd1dde805642990b9e754e328c2, type: 2}
+--- !u!114 &1188177031
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6796276958206284497}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: e33318468d9e40d49a707bf187775ceb, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6796276958206284499}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: MovePressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 1ccacd2d-75a0-4360-8619-0b147fa0526c
+    m_ActionName: Gameplay/Move[/XInputControllerWindows/leftStick/x]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 04d5e7fe-8268-4bc7-8230-304d9675b08f
+    m_ActionName: Gameplay/Aim[/XInputControllerWindows/rightStick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6796276958206284499}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: JumpPressed
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: af4d2819-564f-45ae-b133-c420db6ef9d2
+    m_ActionName: Gameplay/Jump[/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: f3441d93-e563-43a1-8376-9335f6b642fe
+    m_ActionName: Gameplay/Parry[/XInputControllerWindows/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 0c0a92c8-71b8-4093-955c-54e3e1a822cc
+    m_ActionName: Gameplay/Attack[/XInputControllerWindows/buttonWest]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ae185cfc-3677-4c49-8970-fa5347733721
+    m_ActionName: Gameplay/Interact[/XInputControllerWindows/buttonNorth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d5259498-8ead-440c-b1ca-ba08fa596887
+    m_ActionName: Gameplay/Dash[/XInputControllerWindows/leftShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d5dd89a7-112a-44e9-a647-17f60713f35c
+    m_ActionName: Gameplay/Ability Wheel[/XInputControllerWindows/rightShoulder]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d8528745-e3ef-4acb-97a0-990bce86999e
+    m_ActionName: Gameplay/Throw[/XInputControllerWindows/leftTrigger]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1a9124a0-2523-4bd1-b8d3-c62461698645
+    m_ActionName: Gameplay/Charge Ability[/XInputControllerWindows/rightTrigger]
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &6796276958857082360
 GameObject:
   m_ObjectHideFlags: 0
@@ -62,6 +157,7 @@ GameObject:
   - component: {fileID: 6796276958857082363}
   - component: {fileID: 6796276958857082117}
   - component: {fileID: 6796276958857082362}
+  - component: {fileID: 215267320}
   m_Layer: 0
   m_Name: Listener
   m_TagString: Untagged
@@ -130,6 +226,34 @@ MonoBehaviour:
       - m_Target: {fileID: 6796276958206284499}
         m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
         m_MethodName: ResetJump
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &215267320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6796276958857082360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 614c6d39dafec3f4a8862bfd9acdd6f6, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6796276958206284499}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: ResetLeftStick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

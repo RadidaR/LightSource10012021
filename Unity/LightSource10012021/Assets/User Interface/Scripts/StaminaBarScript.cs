@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class StaminaBarScript : MonoBehaviour
 {
     //Take data from Scriptable Object
-    public PlayerStamina playerStaminaData;
+    public PlayerStaminaData playerStaminaData;
 
     //UI elements
     public Slider staminaBar;

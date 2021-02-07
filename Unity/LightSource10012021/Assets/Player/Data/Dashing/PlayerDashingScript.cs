@@ -4,21 +4,23 @@ using UnityEngine;
 
 public class PlayerDashingScript : MonoBehaviour
 {
-    public PlayerDashing playerDashingData;
-    public PlayerMovement playerMovementData;
-    public PlayerStates playerStatesData;
-    public PlayerStamina playerStaminaData;
+    [Header("Data Types")]
+    public PlayerDashingData playerDashingData;
+    public PlayerMovementData playerMovementData;
+    public PlayerStatesData playerStatesData;
+    public PlayerStaminaData playerStaminaData;
 
+    [Header("Events")]
     public GameEvent eDashStarted;
     public GameEvent eDashEnded;
 
     public GameEvent eUseStamina;
     public GameEvent eInsufficientStamina;
 
-    Rigidbody2D rigidBody;
-
-    float duration;
-    float cooldown;
+    [Header("Local Variables")]
+    [SerializeField] Rigidbody2D rigidBody;
+    [SerializeField] float duration;
+    [SerializeField] float cooldown;
 
     private void Start()
     {
@@ -84,7 +86,6 @@ public class PlayerDashingScript : MonoBehaviour
                 EndDash();
             }
         }
-
     }
 
     public void EndDash()

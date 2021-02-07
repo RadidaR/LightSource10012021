@@ -196,7 +196,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6722470487962260039}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b2c4db6c360bd41b8a5e890db5aad8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInputData: {fileID: 11400000, guid: c1a4b5d98a5bed247aca2f723b7ffc2a, type: 2}
+  playerInputData: {fileID: 11400000, guid: 6e6776cf1085a5d4c90259e32d3903e1, type: 2}
   playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
   playerStaminaData: {fileID: 11400000, guid: 814d869f184020c4a870eabff77c52ec, type: 2}
@@ -228,3 +228,6 @@ MonoBehaviour:
   eJumpEnded: {fileID: 11400000, guid: 66cd387726cc66b4e92e92dc7e3d54b9, type: 2}
   eUseStamina: {fileID: 11400000, guid: 47d9379f1067ef64f82c0b34d20b6785, type: 2}
   eInsufficientStamina: {fileID: 11400000, guid: 22e2a28a8df6d9a4482ba79961b6079c, type: 2}
+  jumpDuration: 0
+  rigidBody: {fileID: 0}
+  player: {fileID: 0}

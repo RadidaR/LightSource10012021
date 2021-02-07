@@ -36,7 +36,7 @@ public class @ActionMap : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Jump"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""af4d2819-564f-45ae-b133-c420db6ef9d2"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

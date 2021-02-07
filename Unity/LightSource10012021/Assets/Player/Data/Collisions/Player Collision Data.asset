@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd9847bae307ea04183b66a04a8c4dab, type: 3}
+  m_Name: Player Collision Data
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerCollision
+  hurtDuration: 0.2
+  invincibilityDuration: 1.5
+  collisionStats: {fileID: 11400000, guid: 92b8b10fdfe6a35498f58ac47d52caf8, type: 2}

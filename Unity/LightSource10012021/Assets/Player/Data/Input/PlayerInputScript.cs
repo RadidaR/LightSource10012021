@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class PlayerInputScript : MonoBehaviour
 {
-    ActionMap actionMap;
+    [Header("Data Types")]
+    public PlayerInputData playerInputData;
 
-    public PlayerInput playerInputData;
-
-
+    [Header("Events")]
     public GameEvent eLeftPressed;
     //public GameEvent eLeftReleased;
     public GameEvent eRightPressed;
@@ -18,6 +17,8 @@ public class PlayerInputScript : MonoBehaviour
     public GameEvent eJumpReleased;
     public GameEvent eDashPressed;
     public GameEvent eDashReleased;
+
+    ActionMap actionMap;
 
     private void Awake()
     {

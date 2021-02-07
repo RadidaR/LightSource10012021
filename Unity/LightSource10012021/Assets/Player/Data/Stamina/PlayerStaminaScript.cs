@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class PlayerStaminaScript : MonoBehaviour
 {
-    public PlayerStamina playerStaminaData;
+    [Header("Data Types")]
+    public PlayerStaminaData playerStaminaData;
 
     void Update()
     {

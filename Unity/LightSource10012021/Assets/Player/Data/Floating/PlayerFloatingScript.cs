@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class PlayerFloatingScript : MonoBehaviour
 {
-    public PlayerFloating playerFloatingData;
-    public PlayerStates playerStatesData;
-    public PlayerMovement playerMovementData;
-    public PlayerStamina playerStaminaData;
+    [Header("Data Types")]
+    public PlayerFloatingData playerFloatingData;
+    public PlayerStatesData playerStatesData;
+    public PlayerMovementData playerMovementData;
+    public PlayerStaminaData playerStaminaData;
 
+    [Header("Events")]
     public GameEvent eFloatStarted;
     public GameEvent eFloatEnded;
     public GameEvent eStabilizingFall;
@@ -17,19 +19,15 @@ public class PlayerFloatingScript : MonoBehaviour
     public GameEvent eInsufficientStamina;
     public GameEvent eStopRecovery;
 
-    Rigidbody2D rigidBody;
-    
-    float baseGravity;
+    [Header("Local Variables")]
+    [SerializeField] Rigidbody2D rigidBody;
+    [SerializeField] float baseGravity;
 
     private void Start()
     {
         rigidBody = gameObject.GetComponentInParent<Rigidbody2D>();
         //ASIGN BASE GRAVITY
         baseGravity = rigidBody.gravityScale;
-    }
-
-    private void Update()
-    {
         //CALCULATE STABILIZATION TIMES
         playerFloatingData.mStabilizationTime = 1 / playerFloatingData.moveStabilization;
         playerFloatingData.rStabilizationTime = 1 / playerFloatingData.riseStabilization;
