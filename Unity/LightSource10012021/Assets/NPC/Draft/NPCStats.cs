@@ -8,4 +8,6 @@ public class NPCStats : ScriptableObject
 {
     public int maxHealth;
     public int attackDamage;
+
+    public float visionRange;
 }
