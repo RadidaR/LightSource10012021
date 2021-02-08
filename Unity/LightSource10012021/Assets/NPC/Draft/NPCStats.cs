@@ -10,4 +10,5 @@ public class NPCStats : ScriptableObject
     public int attackDamage;
 
     public float visionRange;
+    public float visionExpansion;
 }

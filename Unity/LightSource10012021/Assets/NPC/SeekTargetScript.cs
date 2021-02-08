@@ -9,37 +9,51 @@ public class SeekTargetScript : MonoBehaviour
 
     public Collider2D[] targetsInSight = new Collider2D[10];
     public GameObject currentTarget;
+    public float visionRange;
+    public bool visionExpanded = false;
+    //public float visionExpansion;
     //public static int OverlapCircle(Vector2 point, float radius, ContactFilter2D contactFilter, Collider2D[] results);
 
     // Start is called before the first frame update
     void OnValidate()
     {
         npcStats = GetComponent<NPCStatsScript>().npcStats;
+        visionRange = npcStats.visionRange;
     }
 
     // Update is called once per frame
     void Update()
     {
-        targetsInSight = Physics2D.OverlapCircleAll(gameObject.transform.position, npcStats.visionRange, targetLayers);
+        targetsInSight = Physics2D.OverlapCircleAll(gameObject.transform.position, visionRange, targetLayers);
 
         if (targetsInSight != null)
         {
-            PrintName();
+            FindTarget();
+        }
+
+        if (targetsInSight.Length == 0)
+        {
+            LoseTarget();
+        }
+
+        if (currentTarget != null)
+        {
+            ExpandVision();
         }
     }
 
     void OnDrawGizmosSelected()
     {
-        if (npcStats.visionRange == 0)
+        if (visionRange == 0)
         {
             return;
         }
 
         Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(transform.position, npcStats.visionRange);
+        Gizmos.DrawWireSphere(transform.position, visionRange);
     }
 
-    void PrintName()
+    void FindTarget()
     {
         for (int i = 0; i < targetsInSight.Length; i++)
         {
@@ -59,6 +73,23 @@ public class SeekTargetScript : MonoBehaviour
             //{
             //    currentTarget = targetsInSight[i].gameObject;
             //}
+        }
+    }
+
+    void LoseTarget()
+    {
+        //Debug.Log("Target Lost");
+        currentTarget = null;
+        visionExpanded = false;
+        visionRange = npcStats.visionRange;
+    }
+
+    void ExpandVision()
+    {
+        if (!visionExpanded)
+        {
+            visionRange += npcStats.visionExpansion;
+            visionExpanded = true;
         }
     }
 }
