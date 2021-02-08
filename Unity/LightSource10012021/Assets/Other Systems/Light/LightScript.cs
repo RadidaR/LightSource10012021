@@ -5,18 +5,18 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class LightScript : MonoBehaviour
 {
-    CircleCollider2D collider;
-    Light2D light;
+    CircleCollider2D lightRange;
+    Light2D lightSource;
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponent<CircleCollider2D>();
-        light = GetComponent<Light2D>();
+        lightRange = GetComponent<CircleCollider2D>();
+        lightSource = GetComponent<Light2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        collider.radius = light.pointLightOuterRadius;
+        lightRange.radius = lightSource.pointLightOuterRadius;
     }
 }

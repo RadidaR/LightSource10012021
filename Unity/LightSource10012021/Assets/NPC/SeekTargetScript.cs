@@ -58,15 +58,66 @@ public class SeekTargetScript : MonoBehaviour
         for (int i = 0; i < targetsInSight.Length; i++)
         {
             GameObject checkTarget = targetsInSight[i].GetComponentInParent<OfInterest>().gameObject;
-            if (checkTarget.tag == "Player")
+            if (currentTarget == null)
             {
-                currentTarget = checkTarget;
-                return;
+                if (checkTarget.tag == "Player")
+                {
+                    currentTarget = checkTarget;
+                    return;
+                }
+                else if (checkTarget.tag == "Light")
+                {
+                    currentTarget = checkTarget;
+                    return;
+                }
             }
-            else if (checkTarget.tag == "Light")
+            else if (currentTarget != null)
             {
-                currentTarget = checkTarget;
-                return;
+                if (checkTarget.tag == "Player")
+                {
+                    if (currentTarget.tag == "Player")
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        currentTarget = checkTarget;
+                        return;
+                    }
+                }
+                else if (checkTarget.tag == "Light")
+                {
+                    if (currentTarget.tag == "Player")
+                    {
+                        for (int k = 0; k < targetsInSight.Length; k++)
+                        {
+                            if (targetsInSight[k].GetComponentInParent<OfInterest>().gameObject == currentTarget)
+                            {
+                                return;
+                            }
+                            else
+                            {
+                                if (Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position) - currentTarget.GetComponentInChildren<CircleCollider2D>().radius > visionRange)
+                                {
+                                    LoseTarget();
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    else if (checkTarget != currentTarget)
+                    {
+                        float distanceToTarget = Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position);
+                        //Debug.Log("Distance to current target is " + distanceToTarget.ToString());
+                        float distanceToCheckTarget = Vector2.Distance(gameObject.transform.position, checkTarget.gameObject.transform.position);
+                        //Debug.Log("Distance to target being check is " + distanceToCheckTarget.ToString());
+                        if (distanceToTarget > distanceToCheckTarget)
+                        {
+                            currentTarget = checkTarget;
+                            return;
+                        }
+                    }
+                }
             }
 
             //if (targetsInSight[i].gameObject.tag == "Light")

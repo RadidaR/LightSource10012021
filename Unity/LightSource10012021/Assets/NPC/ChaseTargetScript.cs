@@ -31,8 +31,10 @@ public class ChaseTargetScript : MonoBehaviour
                 directionToTarget = -1;
             }
 
-               Debug.Log(directionToTarget.ToString());
             rigidBody.AddForce(new Vector2(npcStatsData.movementSpeed * directionToTarget * Time.deltaTime, 0));
+            
+            //rigidBody.AddForce(new Vector2(Vector2.Distance(gameObject.transform.position, seekTarget.currentTarget.transform.position), 0));
+            //rigidBody.MovePosition(new Vector2(Mathf.Lerp(gameObject.transform.position.x, seekTarget.currentTarget.transform.position.x, 10), Mathf.Lerp(gameObject.transform.position.y, seekTarget.currentTarget.transform.position.y, 10)));
         }
     }
 }
