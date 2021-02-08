@@ -3,11 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NPC Stats", menuName = "NPC/Stats")]
-public class NPCStats : ScriptableObject
+[CreateAssetMenu(fileName = "NPC Stats Data", menuName = "NPC/Stats")]
+public class NPCStatsData : ScriptableObject
 {
     public int maxHealth;
     public int attackDamage;
+    public float movementSpeed;
 
     public float visionRange;
     public float visionExpansion;

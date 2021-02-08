@@ -8,5 +8,5 @@ public class PlayerCollisionData: ScriptableObject
 {
     public float hurtDuration;
     public float invincibilityDuration;
-    public NPCStats collisionStats;
+    public NPCStatsData collisionStatsData;
 }

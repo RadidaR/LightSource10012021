@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SeekTargetScript : MonoBehaviour
 {
-    public NPCStats npcStats;
+    public NPCStatsData npcStatsData;
     public LayerMask targetLayers;
 
     public Collider2D[] targetsInSight = new Collider2D[10];
@@ -15,10 +15,10 @@ public class SeekTargetScript : MonoBehaviour
     //public static int OverlapCircle(Vector2 point, float radius, ContactFilter2D contactFilter, Collider2D[] results);
 
     // Start is called before the first frame update
-    void OnValidate()
+    void Awake()
     {
-        npcStats = GetComponent<NPCStatsScript>().npcStats;
-        visionRange = npcStats.visionRange;
+        npcStatsData = GetComponent<NPCStatsScript>().npcStatsData;
+        visionRange = npcStatsData.visionRange;
     }
 
     // Update is called once per frame
@@ -81,14 +81,14 @@ public class SeekTargetScript : MonoBehaviour
         //Debug.Log("Target Lost");
         currentTarget = null;
         visionExpanded = false;
-        visionRange = npcStats.visionRange;
+        visionRange = npcStatsData.visionRange;
     }
 
     void ExpandVision()
     {
         if (!visionExpanded)
         {
-            visionRange += npcStats.visionExpansion;
+            visionRange += npcStatsData.visionExpansion;
             visionExpanded = true;
         }
     }

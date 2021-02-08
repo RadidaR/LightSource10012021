@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class NPCStatsScript : MonoBehaviour
 {
-    public NPCStats npcStats;
+    public NPCStatsData npcStatsData;
 }

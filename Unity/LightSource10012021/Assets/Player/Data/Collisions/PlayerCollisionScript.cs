@@ -18,7 +18,7 @@ public class PlayerCollisionScript : MonoBehaviour
     [SerializeField] int flashCounter;
     [SerializeField] float hurtDuration;
     [SerializeField] float invincibilityDuration;
-    [SerializeField] NPCStats collisionStats;
+    [SerializeField] NPCStatsData collisionStatsData;
     [SerializeField] GameObject player;
     [SerializeField] SpriteRenderer[] sprites;
 
@@ -74,9 +74,9 @@ public class PlayerCollisionScript : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
-            collisionStats = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStats;
-            playerCollisionData.collisionStats = collisionStats;
-            playerHealthData.healthLost = collisionStats.attackDamage;
+            collisionStatsData = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStatsData;
+            playerCollisionData.collisionStatsData = collisionStatsData;
+            playerHealthData.healthLost = collisionStatsData.attackDamage;
             eCollided.Raise();
         }
     }
@@ -85,9 +85,9 @@ public class PlayerCollisionScript : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
-            collisionStats = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStats;
-            playerCollisionData.collisionStats = collisionStats;
-            playerHealthData.healthLost = collisionStats.attackDamage;
+            collisionStatsData = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStatsData;
+            playerCollisionData.collisionStatsData = collisionStatsData;
+            playerHealthData.healthLost = collisionStatsData.attackDamage;
             eCollided.Raise();
         }
     }
