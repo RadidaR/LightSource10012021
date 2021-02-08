@@ -11,126 +11,145 @@ public class SeekTargetScript : MonoBehaviour
     public GameObject currentTarget;
     public float visionRange;
     public bool visionExpanded = false;
-    //public float visionExpansion;
-    //public static int OverlapCircle(Vector2 point, float radius, ContactFilter2D contactFilter, Collider2D[] results);
 
-    // Start is called before the first frame update
     void Awake()
     {
         npcStatsData = GetComponent<NPCStatsScript>().npcStatsData;
         visionRange = npcStatsData.visionRange;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        //GATHERS ALL TARGETS WITHIN VISION RANGE
         targetsInSight = Physics2D.OverlapCircleAll(gameObject.transform.position, visionRange, targetLayers);
 
+        //IF THERE'S ANY TARGETS IN SIGHT - PICK ONE
         if (targetsInSight != null)
         {
             FindTarget();
         }
 
+        //IF NO TARGETS IN SIGHT - LOSE TARGET
         if (targetsInSight.Length == 0)
         {
             LoseTarget();
         }
 
+        //EXPAND VISION RANGE WHEN YOU HAVE A TARGET
         if (currentTarget != null)
         {
             ExpandVision();
         }
     }
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         if (visionRange == 0)
         {
             return;
         }
 
-        Gizmos.color = Color.white;
+        Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);
     }
 
     void FindTarget()
     {
+        //CHECK TARGETS IN SIGHT
         for (int i = 0; i < targetsInSight.Length; i++)
         {
+            //STORE TARGET BEING CHECKED IN VARIABLE
             GameObject checkTarget = targetsInSight[i].GetComponentInParent<OfInterest>().gameObject;
+            //IF THERE IS NO TARGET AT THE MOMENT
             if (currentTarget == null)
             {
+                //IF CHECKED TARGET HAS TAG OF PLAYER
                 if (checkTarget.tag == "Player")
                 {
+                    //ASSIGN PLAYER AS NEW TARGET
                     currentTarget = checkTarget;
                     return;
                 }
+                //ELSE IF TAG IS LIGHT
                 else if (checkTarget.tag == "Light")
                 {
+                    //PICK IT
                     currentTarget = checkTarget;
                     return;
                 }
             }
+            //IF THERE IS A TARGET AT THE MOMENT
             else if (currentTarget != null)
             {
+                //CHECK IF THE CHECKED ONE HAS PLAYER TAG
                 if (checkTarget.tag == "Player")
                 {
+                    //AND CHECK IF CURRENT TARGET HAS PLAYER TAG
                     if (currentTarget.tag == "Player")
                     {
+                        //IF SO - RETURN
                         return;
                     }
+                    //ELSE IF CURRENT TARGET ISN'T PLAYER
                     else
                     {
+                        //MAKE PLAYER THE TARGET
                         currentTarget = checkTarget;
                         return;
                     }
                 }
+                //ELSE IF CHECKED TARGET HAS LIGHT TAG
                 else if (checkTarget.tag == "Light")
                 {
+                    //CHECK IF CURRENT TARGET HAS PLAYER TAG
                     if (currentTarget.tag == "Player")
                     {
+                        //CYCLE THROUGH TARGETS IN VISION RANGE
                         for (int k = 0; k < targetsInSight.Length; k++)
                         {
+                            //TO CHECK IF ONE OF THEM IS THE PLAYER
                             if (targetsInSight[k].GetComponentInParent<OfInterest>().gameObject == currentTarget)
                             {
+                                //IF SO - RETURN
                                 return;
                             }
+                            //IF NOT 
                             else
                             {
+                                //CHECK IF THE PLAYER'S LIGHT IS AT A FURTHER DISTANCE THAN VISION RANGE
                                 if (Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position) - currentTarget.GetComponentInChildren<CircleCollider2D>().radius > visionRange)
                                 {
+                                    //IF SO - LOSE TARGET
                                     LoseTarget();
                                     return;
                                 }
                             }
                         }
                     }
+                    //IF CURRENT TARGET ISN'T PLAYER && THE CHECKED TARGET ISN'T THE SAME AS THE CURRENT ONE
                     else if (checkTarget != currentTarget)
                     {
+                        //CALCULATE DISTANCES TO CURRENT AND CHECKED TARGETS
                         float distanceToTarget = Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position);
-                        //Debug.Log("Distance to current target is " + distanceToTarget.ToString());
                         float distanceToCheckTarget = Vector2.Distance(gameObject.transform.position, checkTarget.gameObject.transform.position);
-                        //Debug.Log("Distance to target being check is " + distanceToCheckTarget.ToString());
+                        //IF DISTANCE TO TARGET IS GREATER THAN DISTANCE TO CHECKED TARGET
                         if (distanceToTarget > distanceToCheckTarget)
                         {
+                            //CHANGE CURRENT TARGET TO CHECKED TARGET
                             currentTarget = checkTarget;
                             return;
                         }
                     }
                 }
             }
-
-            //if (targetsInSight[i].gameObject.tag == "Light")
-            //{
-            //    currentTarget = targetsInSight[i].gameObject;
-            //}
         }
     }
 
     void LoseTarget()
     {
-        //Debug.Log("Target Lost");
+        //NO CURRENT TARGET
         currentTarget = null;
+        //RESET VISION RANGE
         visionExpanded = false;
         visionRange = npcStatsData.visionRange;
     }
