@@ -12,10 +12,14 @@ public class SeekTargetScript : MonoBehaviour
     public float visionRange;
     public bool visionExpanded = false;
 
+    NavMeshAgent2D agent;
+    public Vector2 lastKnownPosition;
+
     void Awake()
     {
         npcStatsData = GetComponent<NPCStatsScript>().npcStatsData;
         visionRange = npcStatsData.visionRange;
+        agent = GetComponent<NavMeshAgent2D>();
     }
 
     void Update()
@@ -29,17 +33,43 @@ public class SeekTargetScript : MonoBehaviour
             FindTarget();
         }
 
-        //IF NO TARGETS IN SIGHT - LOSE TARGET
+        //IF NO TARGETS IN SIGHT
         if (targetsInSight.Length == 0)
         {
+            //IF THERE IS A LAST KNOWN POSITION
+            if (lastKnownPosition != Vector2.zero)
+            {
+                //IF THE DISTANCE TO LAST KNOWN POSITION IS LESS THAN STOPPING DISTANCE
+                if (Vector2.Distance(transform.position, lastKnownPosition) <= agent.stoppingDistance)
+                {
+                    //ERASE LAST KNOWN POSITION AND RETURN
+                    lastKnownPosition = Vector2.zero; ;
+                    return;
+                }
+                //IF FURTHER AWAY THAT STOPPING DISTANCE - CONTINUE TOWARDS LAST KNOWN POSITION
+                agent.destination = lastKnownPosition;
+            }
+            //LOSE TARGET
             LoseTarget();
         }
 
-        //EXPAND VISION RANGE WHEN YOU HAVE A TARGET
+        //IF THERE IS A CURRENT TARGET
         if (currentTarget != null)
         {
+            //ASSING NAV MESH AGENT'S DESTINATION TO TARGET'S POSITION
+            agent.destination = currentTarget.transform.position;
+            //AND EXPAND VISION
             ExpandVision();
+
+            //IF TARGET'S CIRCLE COLLIDER IS DISABLED
+            if (currentTarget.tag != "Player" && !currentTarget.GetComponent<CircleCollider2D>().enabled)
+            {
+                //LOSE TARGET
+                LoseTarget();
+                return;
+            }
         }
+
     }
 
     void OnDrawGizmos()
@@ -123,6 +153,11 @@ public class SeekTargetScript : MonoBehaviour
                                     LoseTarget();
                                     return;
                                 }
+                                //else if (!currentTarget.GetComponentInChildren<CircleCollider2D>().enabled)
+                                //{
+                                //    LoseTarget();
+                                //    return;
+                                //}
                             }
                         }
                     }
@@ -147,8 +182,18 @@ public class SeekTargetScript : MonoBehaviour
 
     void LoseTarget()
     {
-        //NO CURRENT TARGET
-        currentTarget = null;
+        //IF THERE IS A CURRENT TARGET
+        if (currentTarget != null)
+        {
+            //IF IT IS FURTHER AWAY THAN VISION RANGE
+            if (Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position) > visionRange)
+            {
+                //ASSIGN IT'S POSITION AS LAST KNOWN POSITION
+                lastKnownPosition = currentTarget.transform.position;
+            }
+            //AND LOSE TARGET
+            currentTarget = null;
+        }
         //RESET VISION RANGE
         visionExpanded = false;
         visionRange = npcStatsData.visionRange;

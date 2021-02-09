@@ -5,8 +5,8 @@ using UnityEngine.Experimental.Rendering.Universal;
 
 public class LightScript : MonoBehaviour
 {
-    CircleCollider2D lightRange;
-    Light2D lightSource;
+    [SerializeField] CircleCollider2D lightRange;
+    [SerializeField] Light2D lightSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,4 +19,6 @@ public class LightScript : MonoBehaviour
     {
         lightRange.radius = lightSource.pointLightOuterRadius;
     }
+
+
 }
