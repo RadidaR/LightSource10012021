@@ -15,6 +15,7 @@ public class WeaponThrowScript : MonoBehaviour
     public GameEvent eWeaponThrown;
 
     public float chargeTime = 0;
+    public float maxCharge;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,10 +31,9 @@ public class WeaponThrowScript : MonoBehaviour
             {
                 chargeTime += Time.deltaTime;
 
-                if (chargeTime >= 1.25f)
+                if (chargeTime >= maxCharge)
                 {
                     chargeTime = 0;
-                    Debug.Log("Charged");
                     eWeaponThrown.Raise();
                 }
             }
@@ -52,15 +52,14 @@ public class WeaponThrowScript : MonoBehaviour
 
     public void ThrowWeapon()
     {
+        Rigidbody2D rigidBody = weapon.GetComponent<Rigidbody2D>();
         weapon.transform.SetParent(null);
-        Vector2 dropPosition = weapon.transform.position;
-        dropPosition.x += 2 * playerMovementData.facingDirection;
-        dropPosition.y += 0.5f;
-        weapon.transform.position = dropPosition;
-        weapon.GetComponent<Rigidbody2D>().isKinematic = false;
-        weapon.GetComponent<Rigidbody2D>().AddForce(new Vector2(playerWeaponData.throwForce.x * playerMovementData.facingDirection, playerWeaponData.throwForce.y), ForceMode2D.Impulse);
-        weapon.GetComponent<Rigidbody2D>().AddTorque(playerWeaponData.throwTorque * -playerMovementData.facingDirection, ForceMode2D.Impulse);
-        weapon.layer = 8;
-        Debug.Log("Weapon Thrown");
+        Vector2 throwPosition = weapon.transform.position;
+        throwPosition.x += 2 * playerMovementData.facingDirection;
+        throwPosition.y += 0.5f;
+        weapon.transform.position = throwPosition;
+        rigidBody.isKinematic = false;
+        rigidBody.AddForce(new Vector2(playerWeaponData.throwForce.x * playerMovementData.facingDirection, playerWeaponData.throwForce.y), ForceMode2D.Impulse);
+        rigidBody.AddTorque(playerWeaponData.throwTorque * -playerMovementData.facingDirection, ForceMode2D.Impulse);
     }
 }

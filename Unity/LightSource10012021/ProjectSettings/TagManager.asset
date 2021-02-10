@@ -13,11 +13,11 @@ TagManager:
   - Ground Layer
   - Water
   - UI
-  - Damaging Layer
+  - NPC Damage Layer
   - Light Layer
   - Interactable Layer
-  - 
-  - 
+  - Weapon Damage Layer
+  - Player Weapon Layer
   - 
   - 
   - 

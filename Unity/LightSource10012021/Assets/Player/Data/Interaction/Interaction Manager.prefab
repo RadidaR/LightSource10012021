@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b99d8e30b5066b341b68c09ae1198f31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerInputData: {fileID: 11400000, guid: 6e6776cf1085a5d4c90259e32d3903e1, type: 2}
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
   playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
   interactablesInReach: []
@@ -54,7 +55,8 @@ MonoBehaviour:
   parentHand: {fileID: 0}
   weaponPosition: {fileID: 0}
   eGotArmed: {fileID: 11400000, guid: 34d13e45fc7f3c64ab0b937f73441ea3, type: 2}
-  weapon: {fileID: 0}
+  eDropWeapon: {fileID: 11400000, guid: a205989efec7e994f9800cf383b0653e, type: 2}
+  currentWeapon: {fileID: 0}
 --- !u!70 &8204127667657411448
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

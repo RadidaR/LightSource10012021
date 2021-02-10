@@ -24,7 +24,7 @@ public class PlayerCollisionScript : MonoBehaviour
 
     private void Start()
     {
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GetComponentInParent<OfInterest>().gameObject;
         sprites = player.GetComponentsInChildren<SpriteRenderer>();
     }
 
@@ -78,6 +78,11 @@ public class PlayerCollisionScript : MonoBehaviour
             playerCollisionData.collisionStatsData = collisionStatsData;
             playerHealthData.healthLost = collisionStatsData.attackDamage;
             eCollided.Raise();
+        }
+
+        if (collision.gameObject.layer == 9)
+        {
+            Debug.Log("Hit by weapon");
         }
     }
 
