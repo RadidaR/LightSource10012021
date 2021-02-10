@@ -22,6 +22,7 @@ public class PlayerStatesData: ScriptableObject, ISerializationCallbackReceiver
     public bool isFloating;
     public bool isDashing;
     public bool inDialogue;
+    public bool isArmed;
 
     public void OnAfterDeserialize()
     {
@@ -36,6 +37,7 @@ public class PlayerStatesData: ScriptableObject, ISerializationCallbackReceiver
         isFloating = reset;
         isDashing = reset;
         inDialogue = reset;
+        isArmed = reset;
     }
 
     public void OnBeforeSerialize()

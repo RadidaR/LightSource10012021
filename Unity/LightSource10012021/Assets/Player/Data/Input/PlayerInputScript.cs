@@ -17,6 +17,7 @@ public class PlayerInputScript : MonoBehaviour
     public GameEvent eJumpReleased;
     public GameEvent eDashPressed;
     public GameEvent eDashReleased;
+    public GameEvent eInteractionPressed;
 
     ActionMap actionMap;
 
@@ -43,6 +44,7 @@ public class PlayerInputScript : MonoBehaviour
         actionMap.Gameplay.Attack.canceled += ctx => playerInputData.buttonWest = 0;
 
         actionMap.Gameplay.Interact.performed += ctx => playerInputData.buttonNorth = actionMap.Gameplay.Interact.ReadValue<float>();
+        actionMap.Gameplay.Interact.performed += ctx => RaiseInteractionPressed();
         actionMap.Gameplay.Interact.canceled += ctx => playerInputData.buttonNorth = 0;
 
         actionMap.Gameplay.Dash.performed += ctx => playerInputData.leftBumper = actionMap.Gameplay.Dash.ReadValue<float>();
@@ -140,5 +142,10 @@ public class PlayerInputScript : MonoBehaviour
     private void RaiseDashReleased()
     {
         eDashReleased.Raise();
+    }
+
+    private void RaiseInteractionPressed()
+    {
+        eInteractionPressed.Raise();
     }
 }

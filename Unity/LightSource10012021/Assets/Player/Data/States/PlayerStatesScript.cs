@@ -132,4 +132,14 @@ public class PlayerStatesScript : MonoBehaviour
         playerStatesData.isInvincible = false;
     }
 
+    public void Armed()
+    {
+        playerStatesData.isArmed = true;
+    }
+
+    public void Unarmed()
+    {
+        playerStatesData.isArmed = false;
+    }
+
 }
