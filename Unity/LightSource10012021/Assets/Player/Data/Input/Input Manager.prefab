@@ -52,6 +52,7 @@ MonoBehaviour:
   eJumpReleased: {fileID: 11400000, guid: 6eaab12a0bd33bc44ae1081982069703, type: 2}
   eDashPressed: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
   eDashReleased: {fileID: 11400000, guid: ecaadbd1dde805642990b9e754e328c2, type: 2}
+  eInteractionPressed: {fileID: 11400000, guid: 854019b272becba49b6aa78888aa4c4c, type: 2}
 --- !u!114 &1188177031
 MonoBehaviour:
   m_ObjectHideFlags: 0

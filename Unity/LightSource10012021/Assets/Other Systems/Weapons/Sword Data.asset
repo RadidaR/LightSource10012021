@@ -15,3 +15,5 @@ MonoBehaviour:
   weaponName: Sword
   durability: 5
   damage: 15
+  throwForce: {x: 5, y: 0}
+  throwRotation: {x: 0, y: 0, z: 0, w: 0}

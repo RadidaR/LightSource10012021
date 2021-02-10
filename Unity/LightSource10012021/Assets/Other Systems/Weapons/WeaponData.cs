@@ -9,4 +9,7 @@ public class WeaponData : ScriptableObject
     public string weaponName;
     public int durability;
     public int damage;
+
+    public Vector2 throwForce;
+    public Quaternion throwRotation;
 }
