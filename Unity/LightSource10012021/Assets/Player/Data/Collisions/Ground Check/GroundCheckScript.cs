@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GroundCheckScript : MonoBehaviour
 {
+    public PlayerStatesData playerStatesData;
     public Transform groundCheckPosition;
     public float groundCheckRadius;
     public LayerMask groundLayer;
@@ -13,13 +14,16 @@ public class GroundCheckScript : MonoBehaviour
 
     private void Update()
     {
-        if (Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer))
+        if (!playerStatesData.isFloating)
         {
-            eOverGround.Raise();
-        }
-        else
-        {
-            eNoGround.Raise();
+            if (Physics2D.OverlapCircle(groundCheckPosition.position, groundCheckRadius, groundLayer))
+            {
+                eOverGround.Raise();
+            }
+            else
+            {
+                eNoGround.Raise();
+            }
         }
     }
 

@@ -13,31 +13,9 @@ public class PlayerInteractionScript : MonoBehaviour
     public Transform weaponPosition;
     public GameEvent eGotArmed;
 
-    public GameObject weapon;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public GameObject currentWeapon;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //Collider2D[] interactables = Physics2D.OverlapCapsuleAll(transform.position, GetComponent<CapsuleCollider2D>().size, CapsuleDirection2D.Horizontal, 0);
-        //if (interactables != null)
-        //{
-        //    for (int i = 0; i < interactables.Length; i++)
-        //    {
-        //        if (interactables[i].tag == "Weapon" && playerInputData.buttonNorth != 0)
-        //        {
-        //            Debug.Log("Pickup!");
-        //        }
-        //    }
-        //}
-
-    }
-
-    public void InteractionPressed()
+    public void Interact()
     {
         interactablesInReach = Physics2D.OverlapCapsuleAll(gameObject.transform.position, GetComponent<CapsuleCollider2D>().size, CapsuleDirection2D.Horizontal, 0, interactableLayers);
 
@@ -52,67 +30,89 @@ public class PlayerInteractionScript : MonoBehaviour
             {
                 if (!playerStatesData.isArmed)
                 {
-                    interactable.transform.parent = parentHand.transform;
-                    interactable.GetComponent<Rigidbody2D>().isKinematic = true;
-                    interactable.transform.position = weaponPosition.position;
-                    interactable.transform.localScale = weaponPosition.localScale;
-                    //Vector2 scale = interactable.transform.localScale;
-                    //scale.x = playerMovementData.facingDirection;
-                    //interactable.transform.localScale = scale;
-                    interactable.layer = 0;
-                    eGotArmed.Raise();
+                    PickUpWeapon(interactable);
                 }
                 else
                 {
-                    //DROP WEAPON                    
-                    GameObject player = GetComponentInParent<OfInterest>().gameObject;
-                    weapon = player.GetComponentInChildren<WeaponScript>().gameObject;
-                    weapon.transform.SetParent(null);
-                    Vector2 dropPosition = weapon.transform.position;
-                    dropPosition.x += playerMovementData.facingDirection;
-                    dropPosition.y -= 0.5f;
-                    weapon.transform.position = dropPosition;
-                    weapon.GetComponent<Rigidbody2D>().isKinematic = false;
-                    //Transform weaponPosition = weapon.transform;
-                    //weapon.transform.SetParent(null);
-                    //Vector2 dropPosition = weaponPosition.position;
-                    //dropPosition.x += 3 * playerMovementData.facingDirection;
-                    //weaponPosition.position = dropPosition;
-                    //weapon.transform.position = weaponPosition.position;
-                    weapon.layer = 8;
+                    //DROP WEAPON
+                    DropWeapon();
 
                     //PICK UP NEW WEAPON
-                    interactable.transform.parent = parentHand.transform;
-                    interactable.GetComponent<Rigidbody2D>().isKinematic = true;
-                    interactable.transform.position = weaponPosition.position;
-                    interactable.transform.localScale = weaponPosition.localScale;
-                    interactable.layer = 0;
-                    return;
+                    PickUpWeapon(interactable);
                 }
             }
         }
         else if (interactablesInReach.Length == 2)
         {
+            GameObject player = GetComponentInParent<OfInterest>().gameObject;
             GameObject interactable1 = interactablesInReach[0].gameObject;
-            GameObject interactable2 = interactablesInReach[1].gameObject;                
+            GameObject interactable2 = interactablesInReach[1].gameObject;
+
+            float distanceTo1 = Vector2.Distance(player.transform.position, interactable1.transform.position);
+            float distanceTo2 = Vector2.Distance(player.transform.position, interactable2.transform.position);
+
+            if (distanceTo1 <= distanceTo2)
+            {
+                if (interactable1.tag == "Weapon")
+                {
+                    if (!playerStatesData.isArmed)
+                    {
+                        PickUpWeapon(interactable1);
+                    }
+                    else
+                    {
+                        //DROP WEAPON
+                        DropWeapon();
+
+                        //PICK UP NEW WEAPON
+                        PickUpWeapon(interactable1);
+                    }
+                }
+            }
+            else
+            {
+                if (interactable2.tag == "Weapon")
+                {
+                    if (!playerStatesData.isArmed)
+                    {
+                        PickUpWeapon(interactable2);
+                    }
+                    else
+                    {
+                        //DROP WEAPON
+                        DropWeapon();
+
+                        //PICK UP NEW WEAPON
+                        PickUpWeapon(interactable2);
+                    }
+                }
+            }
         }
+    }
 
+    public void PickUpWeapon(GameObject weapon)
+    {
+        Rigidbody2D rigidBody = weapon.GetComponent<Rigidbody2D>();
+        rigidBody.velocity = Vector2.zero;
+        rigidBody.angularVelocity = 0;
+        rigidBody.isKinematic = true;
+        weapon.transform.parent = parentHand.transform;
+        weapon.transform.position = weaponPosition.position;
+        weapon.transform.localScale = weaponPosition.localScale;
+        weapon.transform.rotation = weaponPosition.rotation;
+        weapon.layer = 0;
+        currentWeapon = weapon;
+        eGotArmed.Raise();
+    }
 
-
-        //    if (!playerStatesData.isArmed)
-        //{
-        //    //interactablesInReach = Physics2D.OverlapCapsuleAll(gameObject.transform.position, GetComponent<CapsuleCollider2D>().size, CapsuleDirection2D.Horizontal, 0, interactableLayers);
-        //    for (int i = 0; i < interactablesInReach.Length; i++)
-        //    {
-        //        if (interactablesInReach[i].tag == "Weapon")
-        //        {
-        //            //GameObject weapon = interactablesInReach[i].gameObject;
-        //            interactablesInReach[i].gameObject.GetComponent<Rigidbody2D>().isKinematic = true;
-        //            interactablesInReach[i].gameObject.transform.position = weaponPosition.position;
-        //            interactablesInReach[i].gameObject.transform.parent = parentHand.transform;
-        //            eGotArmed.Raise();
-        //        }
-        //    }
-        //}
+    public void DropWeapon()
+    {
+        currentWeapon.transform.SetParent(null);
+        Vector2 dropPosition = currentWeapon.transform.position;
+        dropPosition.x += playerMovementData.facingDirection;
+        dropPosition.y -= 0.5f;
+        currentWeapon.transform.position = dropPosition;
+        currentWeapon.GetComponent<Rigidbody2D>().isKinematic = false;
+        currentWeapon.layer = 8;
     }
 }

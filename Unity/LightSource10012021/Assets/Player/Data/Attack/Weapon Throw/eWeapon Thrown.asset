@@ -9,11 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 859a5323ad32aad4284c754017fadc20, type: 3}
-  m_Name: Sword Data
+  m_Script: {fileID: 11500000, guid: 346bdf5557a2b6344b86f6afc0441e29, type: 3}
+  m_Name: eWeapon Thrown
   m_EditorClassIdentifier: 
-  weaponName: Sword
-  durability: 5
-  damage: 15
-  throwForce: {x: 25, y: 20}
-  throwTorque: 15

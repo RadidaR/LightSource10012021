@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 425218931809016539}
   - component: {fileID: 425218931809016538}
   - component: {fileID: 425218931809016537}
+  - component: {fileID: 4008546316603808637}
   m_Layer: 0
   m_Name: Listener
   m_TagString: Untagged
@@ -195,6 +196,34 @@ MonoBehaviour:
       - m_Target: {fileID: 425218932852133844}
         m_TargetAssemblyTypeName: PlayerStaminaScript, Assembly-CSharp
         m_MethodName: NoRecovery
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4008546316603808637
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 425218931809016535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 3e554cff89947ca408ae27f37a55bc97, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 425218932852133844}
+        m_TargetAssemblyTypeName: PlayerStaminaScript, Assembly-CSharp
+        m_MethodName: MotionRecovery
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

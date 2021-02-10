@@ -43,8 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcf43da956ac59b409f0bc2ce8777662, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
   groundCheckPosition: {fileID: 8066770532820911439}
-  groundCheckRadius: 0.25
+  groundCheckRadius: 0.125
   groundLayer:
     serializedVersion: 2
     m_Bits: 8

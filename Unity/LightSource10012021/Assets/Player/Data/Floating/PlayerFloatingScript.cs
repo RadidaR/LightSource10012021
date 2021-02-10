@@ -53,6 +53,8 @@ public class PlayerFloatingScript : MonoBehaviour
                 //DRAIN STAMINA
                 playerStaminaData.staminaCost = playerFloatingData.floatCost * Time.fixedDeltaTime;
                 eUseStamina.Raise();
+                //STOP STAMINA FROM RECOVERING
+                eStopRecovery.Raise();
                 //IF DESCENDING
                 if (playerMovementData.playerVelocity.y < 0)
                 {
@@ -92,8 +94,6 @@ public class PlayerFloatingScript : MonoBehaviour
                     //OR RISE BY FLOATING SPEED OF ASCENTION
                     rigidBody.velocity = new Vector2(rigidBody.velocity.x, playerFloatingData.floatForce);
                 }
-                //STOP STAMINA FROM RECOVERING
-                eStopRecovery.Raise();
             }
         }
         //IF NOT ENOUGH STAMINA

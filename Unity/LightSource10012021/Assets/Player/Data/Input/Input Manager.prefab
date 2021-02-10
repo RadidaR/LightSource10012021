@@ -159,6 +159,7 @@ GameObject:
   - component: {fileID: 6796276958857082117}
   - component: {fileID: 6796276958857082362}
   - component: {fileID: 215267320}
+  - component: {fileID: 3626341746265489997}
   m_Layer: 0
   m_Name: Listener
   m_TagString: Untagged
@@ -255,6 +256,34 @@ MonoBehaviour:
       - m_Target: {fileID: 6796276958206284499}
         m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
         m_MethodName: ResetLeftStick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3626341746265489997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6796276958857082360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 3e554cff89947ca408ae27f37a55bc97, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6796276958206284499}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: ResetJump
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

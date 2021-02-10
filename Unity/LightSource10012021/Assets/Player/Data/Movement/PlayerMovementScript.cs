@@ -209,7 +209,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         //RAISES WALKING
-        if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) < playerMovementData.moveSpeed)
+        if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) <= playerMovementData.moveSpeed)
         {
             eWalking.Raise();
         }
@@ -232,7 +232,7 @@ public class PlayerMovementScript : MonoBehaviour
         }
 
         //IF GROUNDED
-        if (playerStatesData.isGrounded && !playerStatesData.isHurt)
+        if (playerStatesData.isGrounded && !playerStatesData.isHurt && !playerStatesData.isJumping && !playerStatesData.isAirborne)
         {
             //AND HAS ENOUGH STAMINA
             if (playerStaminaData.currentStamina > playerMovementData.jumpCost)

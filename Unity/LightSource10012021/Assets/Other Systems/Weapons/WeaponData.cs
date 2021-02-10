@@ -11,5 +11,5 @@ public class WeaponData : ScriptableObject
     public int damage;
 
     public Vector2 throwForce;
-    public Quaternion throwRotation;
+    public float throwTorque;
 }
