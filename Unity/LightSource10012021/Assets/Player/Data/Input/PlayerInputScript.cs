@@ -19,6 +19,9 @@ public class PlayerInputScript : MonoBehaviour
     public GameEvent eDashReleased;
     public GameEvent eInteractionPressed;
 
+    public GameEvent eThrowPressed;
+    public GameEvent eThrowReleased;
+
     ActionMap actionMap;
 
     private void Awake()
@@ -56,6 +59,7 @@ public class PlayerInputScript : MonoBehaviour
 
         actionMap.Gameplay.Throw.performed += ctx => playerInputData.leftTrigger = actionMap.Gameplay.Throw.ReadValue<float>();
         actionMap.Gameplay.Throw.canceled += ctx => playerInputData.leftTrigger = 0;
+        actionMap.Gameplay.Throw.canceled += ctx => RaiseThrowReleased();
 
         actionMap.Gameplay.ChargeAbility.performed += ctx => playerInputData.rightTrigger = actionMap.Gameplay.ChargeAbility.ReadValue<float>();
         actionMap.Gameplay.ChargeAbility.canceled += ctx => playerInputData.rightTrigger = 0;
@@ -87,6 +91,14 @@ public class PlayerInputScript : MonoBehaviour
         if (playerInputData.leftBumper != 0)
         {
             RaiseDashPressed();
+        }
+    }
+
+    private void Update()
+    {
+        if (playerInputData.leftTrigger > 0.75f)
+        {
+            RaiseThrowPressed();
         }
     }
 
@@ -147,5 +159,20 @@ public class PlayerInputScript : MonoBehaviour
     private void RaiseInteractionPressed()
     {
         eInteractionPressed.Raise();
+    }
+
+    private void RaiseThrowPressed()
+    {
+        eThrowPressed.Raise();
+    }
+
+    private void RaiseThrowReleased()
+    {
+        eThrowReleased.Raise();
+    }
+
+    public void ResetLeftTrigger()
+    {
+        playerInputData.leftTrigger = 0;
     }
 }

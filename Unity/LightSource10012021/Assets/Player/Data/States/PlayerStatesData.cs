@@ -22,7 +22,9 @@ public class PlayerStatesData: ScriptableObject, ISerializationCallbackReceiver
     public bool isFloating;
     public bool isDashing;
     public bool inDialogue;
+
     public bool isArmed;
+    public bool isThrowing;
 
     public void OnAfterDeserialize()
     {

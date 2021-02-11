@@ -142,4 +142,14 @@ public class PlayerStatesScript : MonoBehaviour
         playerStatesData.isArmed = false;
     }
 
+    public void Throwing()
+    {
+        playerStatesData.isThrowing = true;
+    }
+
+    public void NotThrowing()
+    {
+        playerStatesData.isThrowing = false;
+    }
+
 }

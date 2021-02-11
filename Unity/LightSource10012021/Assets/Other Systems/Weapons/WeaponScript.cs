@@ -43,28 +43,38 @@ public class WeaponScript : MonoBehaviour
             damageCollider.enabled = false;
         }
 
-        //ASSIGN DAMAGE COLLIDER TO CORRECT LAYER IF PLAYER IS WIELDER
+        //IF THERE IS A WIELDER
         if (wielder != null)
         {
+            //IF THEIR TAG IS PLAYER
             if (wielder.tag == "Player")
             {
+                //PUT DAMAGE COLLIDER ON PLAYER WEAPON LAYER
                 damageCollider.gameObject.layer = 10;
+                //IF PLAYER IS ATTACKING
                 if (wielder.GetComponentInChildren<PlayerStatesScript>().playerStatesData.isAttacking)
                 {
+                    //TURN ON DAMAGE COLLIDER
                     damageCollider.enabled = true;
                 }
+                //IF NOT
                 else
                 {
+                    //TURN OFF DAMAGE COLLIDER
                     damageCollider.enabled = false;
                 }
             }
+            //IF WIELDER ISN'T PLAYER
             else
             {
+                //PUT DAMAGE COLLIDER ON WEAPON DAMAGE LAYER
                 damageCollider.gameObject.layer = 9;
             }
         }
+        //IF THERE IS NO WIELDER
         else
         {
+            //PUT DAMAGE COLLIDER ON WEAPON DAMAGE LAYER
             damageCollider.gameObject.layer = 9;
         }
     }

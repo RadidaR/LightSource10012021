@@ -7,14 +7,26 @@ public class PlayerInteractionScript : MonoBehaviour
     public PlayerInputData playerInputData;
     public PlayerStatesData playerStatesData;
     public PlayerMovementData playerMovementData;
-    public Collider2D[] interactablesInReach = new Collider2D[2];
+    public Collider2D[] interactablesInReach;
     public LayerMask interactableLayers;
     public GameObject parentHand;
     public Transform weaponPosition;
     public GameEvent eGotArmed;
     public GameEvent eDropWeapon;
+    public GameEvent eStopThrow;
 
     public GameObject currentWeapon;
+    public GameObject player;
+
+    public float distanceToClosest;
+    public float[] distances;
+
+    public GameObject closestInteractable;
+
+    private void Start()
+    {
+        player = GetComponentInParent<OfInterest>().gameObject;
+    }
 
     private void Update()
     {
@@ -23,98 +35,80 @@ public class PlayerInteractionScript : MonoBehaviour
             interactablesInReach = null;
         }
     }
+
     public void Interact()
     {
-        //GATHER INTERACTABLES
-        interactablesInReach = Physics2D.OverlapCapsuleAll(gameObject.transform.position, GetComponent<CapsuleCollider2D>().size, CapsuleDirection2D.Horizontal, 0, interactableLayers);
-
-        //AVOID ERROR
-        if (interactablesInReach.Length == 0)
+        if (playerStatesData.isThrowing)
         {
-            if (playerStatesData.isArmed)
-            {
-                Debug.Log("Dropped");
-                DropWeapon();
-            }
+            eStopThrow.Raise();
             return;
         }
-        //IF ONLY ONE INTERACTABLE IN REACH
-        else if (interactablesInReach.Length == 1)
-        {
-            //ASSIGN IT TO A VARIABLE
-            GameObject interactable = interactablesInReach[0].gameObject;
-            //CHECK IF TAG IS WEAPON
-            if (interactable.tag == "Weapon")
-            {
-                //IF PLAYER IS UNARMED - PICK IT UP
-                if (!playerStatesData.isArmed)
-                {
-                    //PASS VARIABLE TO METHOD
-                    PickUpWeapon(interactable);
-                }
-                //IF PLAYER IS ARMED
-                else
-                {
-                    //DROP CURRENT WEAPON
-                    DropWeapon();
+        //GATHER INTERACTABLES IN REACH IN ARRAY
+        interactablesInReach = Physics2D.OverlapCapsuleAll(gameObject.transform.position, GetComponent<CapsuleCollider2D>().size, CapsuleDirection2D.Horizontal, 0, interactableLayers);
+        //MAKE DISTANCES ARRAY SAME SIZE AS INTERACTABLES IN REACH
+        distances = new float[interactablesInReach.Length];
+        //LOCAL VARIABLE DISTANCE TO INTERACTABLE THAT IS CURRENTLY BEING CHECKED
+        float distanceToInteractable;
 
-                    //AND PICK UP NEW WEAPON
-                    PickUpWeapon(interactable);
-                }
+        //LOOP THROUGH ALL INTERACTABLES
+        for (int i = 0; i < interactablesInReach.Length; i++)
+        {
+            //CALCULATE DISTANCE TO INTERACTABLE THAT IS CURRENTLY BEING CHECKED
+            distanceToInteractable = Vector2.Distance(player.transform.position, interactablesInReach[i].transform.position);
+            //ASSIGN VALUE TO SAME NUMBERED ELEMENT IN DISTANCES ARRAY
+            distances[i] = distanceToInteractable;
+
+            //IF LAST INTERACTABLE IN THE ARRAY IS BEING CHECKED
+            if (i == interactablesInReach.Length - 1)
+            {
+                //CHECK WHICH INTERACTABLE IS CLOSEST
+                distanceToClosest = Mathf.Min(distances);
             }
         }
-        //IF TWO INTERACTABLES IN REACH
-        else if (interactablesInReach.Length == 2)
+
+        //LOOP THROUGH INTERACTABLES AGAIN
+        for (int i = 0; i < interactablesInReach.Length; i++)
         {
-            //GET PLAYER AND BOTH INTERACTABLES
-            GameObject player = GetComponentInParent<OfInterest>().gameObject;
-            GameObject interactable1 = interactablesInReach[0].gameObject;
-            GameObject interactable2 = interactablesInReach[1].gameObject;
+            //CHECK DISTANCE TO INTERACTABLE THAT IS CURRENTLY BEING CHECKED
+            distanceToInteractable = Vector2.Distance(player.transform.position, interactablesInReach[i].transform.position);
 
-            //MEASURE DISTANCE BETWEEN PLAYER AND INTERACTABLES
-            float distanceTo1 = Vector2.Distance(player.transform.position, interactable1.transform.position);
-            float distanceTo2 = Vector2.Distance(player.transform.position, interactable2.transform.position);
-
-            //COMPARE DISTANCES - IF 1ST INTERACTABLE IS CLOSER
-            if (distanceTo1 <= distanceTo2)
+            //IF IT IS THE SAME AS THE CLOSEST INTERACTABLE
+            if (distanceToClosest == distanceToInteractable)
             {
-                //CHECK IF TAG IS WEAPON
-                if (interactable1.tag == "Weapon")
-                {
-                    //IF PLAYER IS UNARMED
-                    if (!playerStatesData.isArmed)
-                    {
-                        //PICK CLOSER WEAPON
-                        PickUpWeapon(interactable1);
-                    }
-                    else
-                    {
-                        //DROP WEAPON
-                        DropWeapon();
-
-                        //PICK UP NEW WEAPON
-                        PickUpWeapon(interactable1);
-                    }
-                }
+                //ASSIGN THAT INTERACTABLE AS THE ONE TO BE INTERACTED WITH
+                closestInteractable = interactablesInReach[i].gameObject;
             }
-            //IF 2ND IS CLOSER - DO THE SAME THING
+        }
+
+        //IF NO INTERACTABLES IN REACH
+        if (interactablesInReach.Length == 0)
+        {
+            //AND IF PLAYER IS ARMED
+            if (playerStatesData.isArmed)
+            {
+                //DROP CURRENT WEAPON
+                DropWeapon();
+            }
+            //RETURN TO AVOID ERRORS
+            return;
+        }
+
+        //IF CLOSEST INTERACTABLE HAS WEAPON TAG
+        if (closestInteractable.tag == "Weapon")
+        {
+            //AND IF PLAYER IS UNARMED
+            if (!playerStatesData.isArmed)
+            {
+                //PICK UP CLOSEST INTERACTABLE
+                PickUpWeapon(closestInteractable);
+            }
+            //ELSE IF PLAYER IS ARMED
             else
             {
-                if (interactable2.tag == "Weapon")
-                {
-                    if (!playerStatesData.isArmed)
-                    {
-                        PickUpWeapon(interactable2);
-                    }
-                    else
-                    {
-                        //DROP WEAPON
-                        DropWeapon();
-
-                        //PICK UP NEW WEAPON
-                        PickUpWeapon(interactable2);
-                    }
-                }
+                //DROP CURRENT WEAPON
+                DropWeapon();
+                //AND PICK UP CLOSEST INTERACTABLE
+                PickUpWeapon(closestInteractable);
             }
         }
     }
