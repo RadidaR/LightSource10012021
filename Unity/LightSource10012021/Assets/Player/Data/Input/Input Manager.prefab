@@ -53,6 +53,8 @@ MonoBehaviour:
   eDashPressed: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
   eDashReleased: {fileID: 11400000, guid: ecaadbd1dde805642990b9e754e328c2, type: 2}
   eInteractionPressed: {fileID: 11400000, guid: 854019b272becba49b6aa78888aa4c4c, type: 2}
+  eThrowPressed: {fileID: 11400000, guid: f25f0519c22ec4342965f553bf37f32e, type: 2}
+  eThrowReleased: {fileID: 11400000, guid: 6a28665917574814fb669bfa040bf749, type: 2}
 --- !u!114 &1188177031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,6 +162,7 @@ GameObject:
   - component: {fileID: 6796276958857082362}
   - component: {fileID: 215267320}
   - component: {fileID: 3626341746265489997}
+  - component: {fileID: 950012622}
   m_Layer: 0
   m_Name: Listener
   m_TagString: Untagged
@@ -284,6 +287,34 @@ MonoBehaviour:
       - m_Target: {fileID: 6796276958206284499}
         m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
         m_MethodName: ResetJump
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &950012622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6796276958857082360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 44a115d122e904b4fad9dff3483bfedf, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6796276958206284499}
+        m_TargetAssemblyTypeName: PlayerInputScript, Assembly-CSharp
+        m_MethodName: ResetLeftTrigger
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

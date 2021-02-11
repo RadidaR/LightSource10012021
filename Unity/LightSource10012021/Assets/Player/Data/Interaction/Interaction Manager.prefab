@@ -56,7 +56,12 @@ MonoBehaviour:
   weaponPosition: {fileID: 0}
   eGotArmed: {fileID: 11400000, guid: 34d13e45fc7f3c64ab0b937f73441ea3, type: 2}
   eDropWeapon: {fileID: 11400000, guid: a205989efec7e994f9800cf383b0653e, type: 2}
+  eStopThrow: {fileID: 11400000, guid: 44a115d122e904b4fad9dff3483bfedf, type: 2}
   currentWeapon: {fileID: 0}
+  player: {fileID: 0}
+  distanceToClosest: 0
+  distances: []
+  closestInteractable: {fileID: 0}
 --- !u!70 &8204127667657411448
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

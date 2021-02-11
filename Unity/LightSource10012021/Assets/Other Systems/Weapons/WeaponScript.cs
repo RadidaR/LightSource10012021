@@ -13,6 +13,7 @@ public class WeaponScript : MonoBehaviour
 
     public bool isCarried;
     public GameObject wielder;
+    public Transform wieldingHand;
 
     public int durability;
     // Start is called before the first frame update
@@ -46,6 +47,8 @@ public class WeaponScript : MonoBehaviour
         //IF THERE IS A WIELDER
         if (wielder != null)
         {
+            //UPDATE SWORD POSITION                         //NEEDS WORKSHOPPING
+            transform.position = wieldingHand.position;
             //IF THEIR TAG IS PLAYER
             if (wielder.tag == "Player")
             {
@@ -82,6 +85,7 @@ public class WeaponScript : MonoBehaviour
     {
         //ASSIGN WIELDER
         wielder = GetComponentInParent<OfInterest>().gameObject;
+        wieldingHand = wielder.GetComponentInChildren<MainHandScript>().gameObject.transform;
         isCarried = true;
         //STOP WEAPON'S MOTION
         rigidBody.velocity = Vector2.zero;

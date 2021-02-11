@@ -96,7 +96,7 @@ public class PlayerInputScript : MonoBehaviour
 
     private void Update()
     {
-        if (playerInputData.leftTrigger > 0.75f)
+        if (playerInputData.leftTrigger > 0.85f)
         {
             RaiseThrowPressed();
         }

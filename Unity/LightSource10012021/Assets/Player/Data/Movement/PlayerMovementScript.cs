@@ -35,6 +35,21 @@ public class PlayerMovementScript : MonoBehaviour
         player = rigidBody.gameObject;
     }
 
+    private void Update()
+    {        
+        if (playerStatesData.isThrowing)
+        {
+            if (playerInputData.rightStickValue.x > 0)
+            {
+                FaceRight();
+            }
+            if (playerInputData.rightStickValue.x < 0)
+            {
+                FaceLeft();
+            }
+        }
+    }
+
     private void FixedUpdate()
     {
         playerMovementData.playerVelocity = rigidBody.velocity;
@@ -97,6 +112,8 @@ public class PlayerMovementScript : MonoBehaviour
             }
         }
     }
+
+
 
 
     //FLIPS PLAYER LEFT
