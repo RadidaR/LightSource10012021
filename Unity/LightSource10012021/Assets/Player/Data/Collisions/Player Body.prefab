@@ -51,12 +51,15 @@ MonoBehaviour:
   eCollided: {fileID: 11400000, guid: 38937689b2abc8e4eba393dba5ffcb6c, type: 2}
   eEndHurt: {fileID: 11400000, guid: 5b19137f01430b04394ebfc3e9369b20, type: 2}
   eEndInvincibility: {fileID: 11400000, guid: ba6d9b704eb42ce44b616dc50fb88004, type: 2}
-  flashCounter: 3
-  hurtDuration: 0
-  invincibilityDuration: 0
-  collisionStats: {fileID: 0}
   player: {fileID: 0}
+  flashCounter: 3
+  invincibilityDuration: 0
   sprites: []
+  hurtDuration: 0
+  npcCollisionData: {fileID: 0}
+  npcCollisionLayer: 6
+  weaponCollisionData: {fileID: 0}
+  weaponCollisionLayer: 9
 --- !u!70 &7343699540096403853
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

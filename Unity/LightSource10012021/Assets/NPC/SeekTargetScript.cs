@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class SeekTargetScript : MonoBehaviour
 {
@@ -147,7 +148,7 @@ public class SeekTargetScript : MonoBehaviour
                             else
                             {
                                 //CHECK IF THE PLAYER'S LIGHT IS AT A FURTHER DISTANCE THAN VISION RANGE
-                                if (Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position) - currentTarget.GetComponentInChildren<CircleCollider2D>().radius > visionRange)
+                                if (Vector2.Distance(gameObject.transform.position, currentTarget.gameObject.transform.position) - currentTarget.GetComponentInChildren<Light2D>().pointLightOuterRadius> visionRange)
                                 {
                                     //IF SO - LOSE TARGET
                                     LoseTarget();

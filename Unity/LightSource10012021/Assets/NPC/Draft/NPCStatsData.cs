@@ -7,6 +7,9 @@ using UnityEngine;
 public class NPCStatsData : ScriptableObject
 {
     public int maxHealth;
+    public float hurtDuration;
+
+    public int collisionDamage;
     public int attackDamage;
     public float movementSpeed;
 

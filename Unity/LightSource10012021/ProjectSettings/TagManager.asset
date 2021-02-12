@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Light
   - Weapon
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -13,7 +14,7 @@ TagManager:
   - Ground Layer
   - Water
   - UI
-  - NPC Damage Layer
+  - NPC Collision Layer
   - Light Layer
   - Interactable Layer
   - Weapon Damage Layer

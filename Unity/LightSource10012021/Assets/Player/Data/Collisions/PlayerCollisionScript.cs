@@ -15,12 +15,20 @@ public class PlayerCollisionScript : MonoBehaviour
     public GameEvent eEndInvincibility;
 
     [Header("Local Variables")]
-    [SerializeField] int flashCounter;
-    [SerializeField] float hurtDuration;
-    [SerializeField] float invincibilityDuration;
-    [SerializeField] NPCStatsData collisionStatsData;
     [SerializeField] GameObject player;
+
+    [Header("Invincibility Frames Variables")]
+    [SerializeField] int flashCounter;
+    [SerializeField] float invincibilityDuration;
     [SerializeField] SpriteRenderer[] sprites;
+
+    [Header("Collisions Variables")]
+    [SerializeField] float hurtDuration;
+    [SerializeField] NPCStatsData npcCollisionData;
+    [SerializeField] int npcCollisionLayer;
+    [SerializeField] WeaponData weaponCollisionData;
+    [SerializeField] int weaponCollisionLayer;
+
 
     private void Start()
     {
@@ -72,17 +80,19 @@ public class PlayerCollisionScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == npcCollisionLayer)
         {
-            collisionStatsData = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStatsData;
-            playerCollisionData.collisionStatsData = collisionStatsData;
-            playerHealthData.healthLost = collisionStatsData.attackDamage;
+            npcCollisionData = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStatsData;
+            //playerCollisionData.collisionStatsData = npcCollisionData;
+            playerHealthData.healthLost = npcCollisionData.collisionDamage;
             eCollided.Raise();
         }
 
-        if (collision.gameObject.layer == 9)
+        if (collision.gameObject.layer == weaponCollisionLayer)
         {
-            Debug.Log("Hit by weapon");
+            weaponCollisionData = collision.gameObject.GetComponentInParent<WeaponScript>().weaponData;
+            playerHealthData.healthLost = weaponCollisionData.damage;
+            eCollided.Raise();
         }
     }
 
@@ -90,9 +100,9 @@ public class PlayerCollisionScript : MonoBehaviour
     {
         if (collision.gameObject.layer == 6)
         {
-            collisionStatsData = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStatsData;
-            playerCollisionData.collisionStatsData = collisionStatsData;
-            playerHealthData.healthLost = collisionStatsData.attackDamage;
+            npcCollisionData = collision.gameObject.GetComponentInParent<NPCStatsScript>().npcStatsData;
+            //playerCollisionData.collisionStatsData = npcCollisionData;
+            playerHealthData.healthLost = npcCollisionData.collisionDamage;
             eCollided.Raise();
         }
     }

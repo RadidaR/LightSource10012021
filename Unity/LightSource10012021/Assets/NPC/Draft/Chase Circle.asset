@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cef37790e56c0544b67f853e877db1e, type: 3}
   m_Name: Chase Circle
   m_EditorClassIdentifier: 
-  maxHealth: 21
-  attackDamage: 38
-  movementSpeed: 46.38
-  visionRange: 25
+  maxHealth: 30
+  hurtDuration: 0.375
+  collisionDamage: 10
+  attackDamage: 0
+  movementSpeed: 40
+  visionRange: 20
   visionExpansion: 15

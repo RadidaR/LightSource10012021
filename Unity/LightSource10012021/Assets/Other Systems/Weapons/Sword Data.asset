@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sword Data
   m_EditorClassIdentifier: 
   weaponName: Sword
-  durability: 5
-  damage: 15
+  durability: 4
+  damage: 10
   throwForce: {x: 40, y: 20}
   throwTorque: 12

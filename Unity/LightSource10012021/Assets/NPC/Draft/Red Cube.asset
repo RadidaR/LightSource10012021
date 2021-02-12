@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: Red Cube
   m_EditorClassIdentifier: 
   maxHealth: 5
-  attackDamage: 25
+  hurtDuration: 0
+  collisionDamage: 7
+  attackDamage: 36
+  movementSpeed: 0
+  visionRange: 0
+  visionExpansion: 0

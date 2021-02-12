@@ -115,5 +115,10 @@ public class WeaponScript : MonoBehaviour
         damageCollider.gameObject.layer = 9;
     }
 
+    public void Break()
+    {
+        Destroy(gameObject, 0.25f);
+    }
+
 
 }

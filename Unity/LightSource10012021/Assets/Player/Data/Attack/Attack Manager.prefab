@@ -472,21 +472,20 @@ MonoBehaviour:
   playerMovementData: {fileID: 11400000, guid: e04ea110cd8823743ac2ea075a453b3a, type: 2}
   playerInputData: {fileID: 11400000, guid: 6e6776cf1085a5d4c90259e32d3903e1, type: 2}
   playerWeaponData: {fileID: 0}
+  eWeaponThrown: {fileID: 11400000, guid: f7a88021cf2816943a1864f004a4165b, type: 2}
+  eChargeThrow: {fileID: 11400000, guid: e2ab9ba3b93bfdc40b7a4ba9cb4a7b52, type: 2}
   player: {fileID: 0}
   weapon: {fileID: 0}
   rigidBody: {fileID: 0}
-  eWeaponThrown: {fileID: 11400000, guid: f7a88021cf2816943a1864f004a4165b, type: 2}
-  eChargeThrow: {fileID: 11400000, guid: e2ab9ba3b93bfdc40b7a4ba9cb4a7b52, type: 2}
   chargeTime: 0
   maxCharge: 1.5
   throwPosition: {fileID: 4676357464883066992}
   aimAnchor: {fileID: 1719716110}
   lineRenderer: {fileID: 4676357464883066995}
   resolution: 50
-  yLimit: -25
-  g: 0
+  yLimit: -2000
+  gravitationalPull: 0
   linecastResolution: 50
   canHit:
     serializedVersion: 2
     m_Bits: 8
-  direction: {x: 0, y: 0}

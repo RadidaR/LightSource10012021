@@ -97,9 +97,10 @@ GameObject:
   - component: {fileID: 2730755417245762423}
   - component: {fileID: 2730755417245762422}
   - component: {fileID: 2730755417245762417}
+  - component: {fileID: 4009294628814088893}
   m_Layer: 0
   m_Name: Flying Enemy
-  m_TagString: Untagged
+  m_TagString: NPC
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,6 +134,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   npcStatsData: {fileID: 11400000, guid: 0a90a8cfcb9572b40a2077916daacd48, type: 2}
+  currentHealth: 0
+  healthLost: 0
+  hurtDuration: 0
+  isHurt: 0
+  flashCounter: 5
+  sprites: []
+  flashOpacity: 0.1
 --- !u!114 &2730755417245762421
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -195,7 +203,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2
+  m_Radius: 2.12
 --- !u!50 &2730755417245762422
 Rigidbody2D:
   serializedVersion: 4
@@ -230,14 +238,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 10
-  _angularSpeed: 120
+  _angularSpeed: 10
   _acceleration: 6
   _stoppingDistance: 5
   _autoBraking: 1
-  _radius: 2
+  _radius: 3.75
   _quality: 0
-  _priority: 50
+  _priority: 2
   _autoRepath: 1
+--- !u!114 &4009294628814088893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2730755417245762416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b271eea97b08d15438f0e16fff45eff3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2730755417285632730
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,6 +269,7 @@ GameObject:
   - component: {fileID: 2730755417285632731}
   - component: {fileID: 2730755417285632729}
   - component: {fileID: 2730755417285632728}
+  - component: {fileID: 5407487008108348843}
   m_Layer: 6
   m_Name: Circle
   m_TagString: Untagged
@@ -336,4 +357,22 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.49999997
+  m_Radius: 0.475
+--- !u!114 &5407487008108348843
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2730755417285632730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83279def5a5fe934ea62301323a85b05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcStatsScript: {fileID: 0}
+  npcStatsData: {fileID: 0}
+  npcCollisionData: {fileID: 0}
+  npcCollisionLayer: 6
+  weaponCollisionData: {fileID: 0}
+  weaponCollisionLayer: 9
