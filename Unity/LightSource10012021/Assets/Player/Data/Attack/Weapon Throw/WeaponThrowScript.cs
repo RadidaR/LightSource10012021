@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class WeaponThrowScript : MonoBehaviour
 {
+    [Header("Data Types")]
     public PlayerStatesData playerStatesData;
     public PlayerMovementData playerMovementData;
     public PlayerInputData playerInputData;
     public WeaponData playerWeaponData;
+
 
     public GameObject player;
     public GameObject weapon;
@@ -194,23 +196,23 @@ public class WeaponThrowScript : MonoBehaviour
         float x;
         float y;
         //FACING DIRECTION
-        if (playerInputData.rightStickValue == Vector2.zero)
-        {
+        //if (playerInputData.rightStickValue == Vector2.zero)
+        //{
             x = playerWeaponData.throwForce.x * chargeTime * playerMovementData.facingDirection * t;
             y = (playerWeaponData.throwForce.y * t) - (g * Mathf.Pow(t, 2) / 2);
-        }
-        else
-        {
-            x = playerWeaponData.throwForce.x * chargeTime * /*playerInputData.rightStickValue.x **/ t;
-            if (playerMovementData.facingDirection == 1)
-            {
-                y = playerWeaponData.throwForce.y * playerInputData.rightStickValue.y * t;
-            }
-            else
-            {
-                y = playerWeaponData.throwForce.y * -playerInputData.rightStickValue.y * t;
-            }
-        }
+        //}
+        //else
+        //{
+        //    x = playerWeaponData.throwForce.x * chargeTime * /*playerInputData.rightStickValue.x **/ t;
+        //    if (playerMovementData.facingDirection == 1)
+        //    {
+        //        y = playerWeaponData.throwForce.y * playerInputData.rightStickValue.y * t;
+        //    }
+        //    else
+        //    {
+        //        y = playerWeaponData.throwForce.y * -playerInputData.rightStickValue.y * t;
+        //    }
+        //}
 
         return new Vector3(x + throwPosition.position.x, y + throwPosition.position.y);
 

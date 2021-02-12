@@ -4,45 +4,45 @@ using UnityEngine;
 
 public class PlayerInteractionScript : MonoBehaviour
 {
+    [Header("Data Types")]
     public PlayerInputData playerInputData;
     public PlayerStatesData playerStatesData;
     public PlayerMovementData playerMovementData;
-    public Collider2D[] interactablesInReach;
-    public LayerMask interactableLayers;
-    public GameObject parentHand;
-    public Transform weaponPosition;
+
+    [Header("Events")]
     public GameEvent eGotArmed;
     public GameEvent eDropWeapon;
     public GameEvent eStopThrow;
 
-    public GameObject currentWeapon;
-    public GameObject player;
+    [Header("Local Variables")]
+    [SerializeField] GameObject player;
+    [SerializeField] Transform weaponPosition;
+    [SerializeField] GameObject currentWeapon;
 
-    public float distanceToClosest;
-    public float[] distances;
-
-    public GameObject closestInteractable;
+    [Header("Interactables Variables")]
+    [SerializeField] LayerMask interactableLayers;
+    [SerializeField] Collider2D[] interactablesInReach;
+    [SerializeField] float[] distances;
+    [SerializeField] float distanceToClosest;
+    [SerializeField] GameObject closestInteractable;
 
     private void Start()
     {
         player = GetComponentInParent<OfInterest>().gameObject;
-    }
-
-    private void Update()
-    {
-        if (playerInputData.leftTrigger == 0)
-        {
-            interactablesInReach = null;
-        }
+        weaponPosition = player.GetComponentInChildren<MainHandScript>().gameObject.transform;
     }
 
     public void Interact()
     {
+        //IF PLAYER IS PREPARING TO THROW WEAPON
         if (playerStatesData.isThrowing)
         {
+            //RAISE STOP THROW
             eStopThrow.Raise();
+            //AND RETURN
             return;
         }
+
         //GATHER INTERACTABLES IN REACH IN ARRAY
         interactablesInReach = Physics2D.OverlapCapsuleAll(gameObject.transform.position, GetComponent<CapsuleCollider2D>().size, CapsuleDirection2D.Horizontal, 0, interactableLayers);
         //MAKE DISTANCES ARRAY SAME SIZE AS INTERACTABLES IN REACH
@@ -113,10 +113,19 @@ public class PlayerInteractionScript : MonoBehaviour
         }
     }
 
+    //RESETS ALL INFO GATHERED FOR INTERACTION
+    public void ResetInteractables()
+    {
+        interactablesInReach = null;
+        distances = null;
+        distanceToClosest = 0;
+        closestInteractable = null;
+    }
+
     public void PickUpWeapon(GameObject weapon)
     {
         //ASSIGN WEAPON TO PARENT HAND
-        weapon.transform.parent = parentHand.transform;
+        weapon.transform.parent = weaponPosition.transform;
         //CHANGE WEAPONS TRANSFORM
         weapon.transform.position = weaponPosition.position;
         weapon.transform.localScale = weaponPosition.localScale;
@@ -136,7 +145,11 @@ public class PlayerInteractionScript : MonoBehaviour
         dropPosition.x += 1.75f * playerMovementData.facingDirection;
         dropPosition.y -= 0.75f;
         currentWeapon.transform.position = dropPosition;
+        //DISABLE WEAPON'S DAMAGING COLLIDER
         currentWeapon.GetComponentInChildren<BoxCollider2D>().enabled = false;
+        //REMOVE CURRENT WEAPON
+        currentWeapon = null;
+        //RAISE DROP WEAPON
         eDropWeapon.Raise();
     }
 }

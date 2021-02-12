@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class WeaponScript : MonoBehaviour
 {
+    [Header("Data Types")]
     public WeaponData weaponData;
-    public CircleCollider2D interactionCollider;
-    public BoxCollider2D damageCollider;
-    public CapsuleCollider2D groundCollider;
 
-    public Rigidbody2D rigidBody;
+    [Header("Weapon Colliders")]
+    [SerializeField] CircleCollider2D interactionCollider;
+    [SerializeField] BoxCollider2D damageCollider;
+    [SerializeField] CapsuleCollider2D groundCollider;
 
-    public bool isCarried;
-    public GameObject wielder;
-    public Transform wieldingHand;
+    [Header("Weapon's Rigidbody")]
+    [SerializeField] Rigidbody2D rigidBody;
+
+    [Header("Local Variables")]
+    [SerializeField] bool isCarried;
+    [SerializeField] GameObject wielder;
 
     public int durability;
     // Start is called before the first frame update
@@ -47,8 +51,6 @@ public class WeaponScript : MonoBehaviour
         //IF THERE IS A WIELDER
         if (wielder != null)
         {
-            //UPDATE SWORD POSITION                         //NEEDS WORKSHOPPING
-            transform.position = wieldingHand.position;
             //IF THEIR TAG IS PLAYER
             if (wielder.tag == "Player")
             {
@@ -85,7 +87,6 @@ public class WeaponScript : MonoBehaviour
     {
         //ASSIGN WIELDER
         wielder = GetComponentInParent<OfInterest>().gameObject;
-        wieldingHand = wielder.GetComponentInChildren<MainHandScript>().gameObject.transform;
         isCarried = true;
         //STOP WEAPON'S MOTION
         rigidBody.velocity = Vector2.zero;

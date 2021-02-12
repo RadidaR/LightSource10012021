@@ -53,6 +53,7 @@ MonoBehaviour:
   eDashPressed: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
   eDashReleased: {fileID: 11400000, guid: ecaadbd1dde805642990b9e754e328c2, type: 2}
   eInteractionPressed: {fileID: 11400000, guid: 854019b272becba49b6aa78888aa4c4c, type: 2}
+  eInteractionReleased: {fileID: 11400000, guid: 2868f299df573ae41b264eeea8a71d8e, type: 2}
   eThrowPressed: {fileID: 11400000, guid: f25f0519c22ec4342965f553bf37f32e, type: 2}
   eThrowReleased: {fileID: 11400000, guid: 6a28665917574814fb669bfa040bf749, type: 2}
 --- !u!114 &1188177031
