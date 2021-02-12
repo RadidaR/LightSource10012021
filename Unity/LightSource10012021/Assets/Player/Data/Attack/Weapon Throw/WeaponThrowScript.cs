@@ -10,68 +10,93 @@ public class WeaponThrowScript : MonoBehaviour
     public PlayerInputData playerInputData;
     public WeaponData playerWeaponData;
 
-
-    public GameObject player;
-    public GameObject weapon;
-    public Rigidbody2D rigidBody;
-
+    [Header("Events")]
     public GameEvent eWeaponThrown;
     public GameEvent eChargeThrow;
 
-    public float chargeTime = 0;
-    public float maxCharge;
+    [Header("Local Variables")]
+    [SerializeField] GameObject player;
+    [SerializeField] GameObject weapon;
 
-    //public bool reeling;
+    [Header("Weapon's Rigidbody")]
+    [SerializeField] Rigidbody2D rigidBody;
 
-    //public Vector2 throwPosition;
-    public Transform throwPosition;
+    [Header("Charge Throw Variables")]
+    [SerializeField] float chargeTime = 0;
+    [SerializeField] float maxCharge;
 
-    [Header("Line renderer variables")]
-    public LineRenderer lineRenderer;
-    [Range(2, 50)] public int resolution;
+    [Header("Aim Anchor and Launch Position")]
+    [SerializeField] Transform throwPosition;
+    [SerializeField] Transform aimAnchor;
 
-    [Header("Formula variables")]
-    //public Vector2 velocity;
-    public float yLimit;
-    public float g;
+    [Header("Line Renderer Variables")]
+    [SerializeField] LineRenderer lineRenderer;
+    [Range(2, 50)] [SerializeField] int resolution;
 
-    [Header("Linecast variables")]
-    [Range(2, 50)] public int linecastResolution;
-    public LayerMask canHit;
+    [Header("Formula Variables")]
+    [SerializeField] float yLimit;
+    [SerializeField] float gravitationalPull;
 
-    public Vector2 direction;
+    [Header("Linecast Variables")]
+    [Range(2, 50)] [SerializeField] int linecastResolution;
+    [SerializeField] LayerMask canHit;
 
-    // Start is called before the first frame update
     void Start()
     {
         player = GetComponentInParent<OfInterest>().gameObject;
-
-        //ASSIGN GRAVITY TO POSITIVE NUMBER
+        lineRenderer = GetComponentInChildren<LineRenderer>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        direction = playerInputData.rightStickValue.normalized;
-
+        //IF PLAYER ISN'T PRESSING LEFT TRIGGER
         if (playerInputData.leftTrigger == 0f)
         {
+            //RESET CHARGE TIME
             chargeTime = 0;
         }
+
     }
 
     public void ChargeThrow()
     {
+        //IF PLAYER IS ARMED
         if (playerStatesData.isArmed)
         {
+            //RAISE CHARGE THROW
             eChargeThrow.Raise();
+            //INCREASE CHARGE TIME
             chargeTime += Time.deltaTime;
 
+            //IF PLAYER IS AIMING WITH RIGHT STICK
+            if (playerInputData.rightStickValue != Vector2.zero)
+            {
+                //UPDATE AIM POSITION TO MATCH RIGHT STICK
+                Vector2 aimPosition = aimAnchor.position;
+                aimPosition.x += playerInputData.rightStickValue.x + (2f * playerMovementData.facingDirection);
+                aimPosition.y += playerInputData.rightStickValue.y * 2f;
+                //ASSIGN THROW POSITION TO AIM POSITION
+                throwPosition.position = aimPosition;
+            }
+            //ELSE IF PLAYER ISN'T AIMING WITH RIGHT STICK
+            else
+            {
+                //ASSIGN AIM POSITION TO STATIC POSITION
+                Vector2 aimPosition = aimAnchor.position;
+                aimPosition.x += 2f * playerMovementData.facingDirection;
+                aimPosition.y += 1f;
+                //ASSIGN THROW POSITION TO AIM POSITION
+                throwPosition.position = aimPosition;
+            }
+
+            //IF CHARGE TIME ISN'T 0
             if (chargeTime > 0)
             {
+                //START LINE RENDERER
                 StartCoroutine(RenderArc());
             }
 
+            //PREVENTS FROM OVERCHARGING
             if (chargeTime >= maxCharge)
             {
                 chargeTime = maxCharge;
@@ -81,76 +106,69 @@ public class WeaponThrowScript : MonoBehaviour
 
     public void WeaponCarried()
     {
+        //TAKE WEAPON'S DATA
         playerWeaponData = player.GetComponentInChildren<WeaponScript>().weaponData;
+        //ASSIGN WEAPON
         weapon = player.GetComponentInChildren<WeaponScript>().gameObject;
+        //TAKE IT'S RIGIDBODY
         rigidBody = weapon.GetComponent<Rigidbody2D>();
 
-        //ASSIGN GRAVITY TO BE POSITIVE NUMBER * RIGIDBODY GRAVITY
-        g = Mathf.Abs(Physics2D.gravity.y) * rigidBody.gravityScale;
+        //ASSIGN GRAVITATIONAL PULL TO BE POSITIVE NUMBER * WEAPON'S RIGIDBODY GRAVITY
+        gravitationalPull = Mathf.Abs(Physics2D.gravity.y) * rigidBody.gravityScale;
     }
 
     public void ThrowWeapon()
     {
+        //IF PLAYER IS PREPARING TO THROW WEAPON
         if (playerStatesData.isThrowing)
         {
+            //RAISE WEAPON THROWN
             eWeaponThrown.Raise();
+            //DETATCH WEAPON FROM PLAYER OBJECT
             weapon.transform.SetParent(null);
 
+            //ASSIGN WEAPON POSITION TO LAUNCH POSITION
             weapon.transform.position = throwPosition.position;
+            //MAKE WEAPON DYNAMIC AGAIN
             rigidBody.isKinematic = false;
 
-            //THROWS IN FACING DIRECTION
+            //IF PLAYER ISN'T USING RIGHT STICK TO AIM
             if (playerInputData.rightStickValue == Vector2.zero)
             {
-                rigidBody.AddForce(new Vector2(playerWeaponData.throwForce.x * playerMovementData.facingDirection * chargeTime, playerWeaponData.throwForce.y), ForceMode2D.Impulse);
+                //THROW IN FACING DIRECTION
+                rigidBody.velocity = new Vector2(playerWeaponData.throwForce.x * playerMovementData.facingDirection * chargeTime, playerWeaponData.throwForce.y);
             }
+            //ELSE IF PLAYER IS USING RIGHT STICK
             else
             {
-                rigidBody.AddForce(new Vector2(playerWeaponData.throwForce.x * playerInputData.rightStickValue.x * chargeTime, playerWeaponData.throwForce.y * playerInputData.rightStickValue.y), ForceMode2D.Impulse);
+                //THROW IN DIRECTION OF STICK
+                rigidBody.velocity = new Vector2(playerWeaponData.throwForce.x * playerMovementData.facingDirection * chargeTime, playerWeaponData.throwForce.y * chargeTime * playerInputData.rightStickValue.y);
             }
 
-
-            //THROWS WHERE RSTICK IS POINTED, BUT FORCE IS LIMITED
-            //rigidBody.AddForce(new Vector2(playerWeaponData.throwForce.x * playerInputData.rightStickValue.x * chargeTime, playerWeaponData.throwForce.y * playerInputData.rightStickValue.y), ForceMode2D.Impulse);
-
-            //NORMALIZED RSTICK
-            //rigidBody.AddForce(new Vector2(playerWeaponData.throwForce.x * direction.x * chargeTime, playerWeaponData.throwForce.y * direction.y), ForceMode2D.Impulse);
-            //rigidBody.AddForce(new Vector2((playerWeaponData.throwForce.x * chargeTime) + direction.x * playerWeaponData.throwForce.x , playerWeaponData.throwForce.y + (playerWeaponData.throwForce.y * direction.y)), ForceMode2D.Impulse);
+            //ADD ROTATION
             rigidBody.AddTorque(playerWeaponData.throwTorque * -playerMovementData.facingDirection, ForceMode2D.Impulse);
+            //UNASSIGN WEAPON DETAILS
             RemoveWeapon();
+            //RESET CHARGE TIME
             chargeTime = 0;
+            //RAISE WEAPON THROWN
             eWeaponThrown.Raise();
         }
     }
 
+    //UNASSIGNS WEAPON AND WEAPON DATA
     public void RemoveWeapon()
     {
         playerWeaponData = null;
         weapon = null;
     }
 
+    ////////////TRAJECTORY PATH////////////
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //TRAJECTORY PATH STUFF
     private IEnumerator RenderArc()
     {
         lineRenderer.enabled = true;
-        lineRenderer.positionCount = resolution + 1;
+        lineRenderer.positionCount = resolution;
         lineRenderer.SetPositions(CalculateLineArray());
         yield return null;
     }
@@ -158,13 +176,13 @@ public class WeaponThrowScript : MonoBehaviour
     private Vector3[] CalculateLineArray()
     {
         eChargeThrow.Raise();
-        Vector3[] lineArray = new Vector3[resolution + 1];
+        Vector3[] lineArray = new Vector3[resolution];
 
-        var lowestTimeValue = MaxTimeX() / resolution;
+        float lowestTimeValue = MaxTimeX() / resolution;
 
         for (int i = 0; i < lineArray.Length; i++)
         {
-            var t = lowestTimeValue * i;
+            float t = lowestTimeValue * i;
             lineArray[i] = CalculateLinePoint(t);
         }
 
@@ -173,14 +191,14 @@ public class WeaponThrowScript : MonoBehaviour
 
     private Vector2 HitPosition()
     {
-        var lowestTimeValue = MaxTimeY() / linecastResolution;
+        float lowestTimeValue = MaxTimeY() / linecastResolution;
 
         for (int i = 0; i < linecastResolution + 1; i++)
         {
-            var t = lowestTimeValue * i;
-            var tt = lowestTimeValue * (i + 1);
+            float t = lowestTimeValue * i;
+            float tt = lowestTimeValue * (i + 1);
 
-            var hit = Physics2D.Linecast(CalculateLinePoint(t), CalculateLinePoint(tt), canHit);
+            RaycastHit2D hit = Physics2D.Linecast(CalculateLinePoint(t), CalculateLinePoint(tt), canHit);
 
             if (hit)
             {
@@ -193,53 +211,34 @@ public class WeaponThrowScript : MonoBehaviour
 
     private Vector2 CalculateLinePoint(float t)
     {
-        float x;
+        float x = playerWeaponData.throwForce.x * chargeTime * playerMovementData.facingDirection * t;
         float y;
-        //FACING DIRECTION
-        //if (playerInputData.rightStickValue == Vector2.zero)
-        //{
-            x = playerWeaponData.throwForce.x * chargeTime * playerMovementData.facingDirection * t;
-            y = (playerWeaponData.throwForce.y * t) - (g * Mathf.Pow(t, 2) / 2);
-        //}
-        //else
-        //{
-        //    x = playerWeaponData.throwForce.x * chargeTime * /*playerInputData.rightStickValue.x **/ t;
-        //    if (playerMovementData.facingDirection == 1)
-        //    {
-        //        y = playerWeaponData.throwForce.y * playerInputData.rightStickValue.y * t;
-        //    }
-        //    else
-        //    {
-        //        y = playerWeaponData.throwForce.y * -playerInputData.rightStickValue.y * t;
-        //    }
-        //}
+
+        if (playerInputData.rightStickValue == Vector2.zero)
+        {
+            y = (playerWeaponData.throwForce.y * t) - (gravitationalPull * Mathf.Pow(t, 2) / 2);
+        }
+        else
+        {
+            y = (playerWeaponData.throwForce.y * chargeTime * playerInputData.rightStickValue.y * t) - (gravitationalPull * Mathf.Pow(t, 2) / 2); 
+        }
 
         return new Vector3(x + throwPosition.position.x, y + throwPosition.position.y);
-
-        //RSTICK
-        //float x = playerWeaponData.throwForce.x * chargeTime * playerInputData.rightStickValue.x * t;
-        //float y = (playerWeaponData.throwForce.y * playerInputData.rightStickValue.y * t) - (g * Mathf.Pow(t, 2) / 2);
-
-        //NORMALIZED
-        //float x = playerWeaponData.throwForce.x * chargeTime * direction.x * playerMovementData.facingDirection * t;
-        //float y = (playerWeaponData.throwForce.y * direction.y * t) - (g * Mathf.Pow(t, 2) / 2);
-
-        //return new Vector3(x + throwPosition.position.x, y + throwPosition.position.y);
     }
 
     private float MaxTimeY()
     {
-        var y = playerWeaponData.throwForce.y;
-        var yy = y * y;
+        float y = playerWeaponData.throwForce.y;
+        float yy = y * y;
 
-        var t = (y + Mathf.Sqrt(yy + 2 * g * (throwPosition.position.y - yLimit))) / g;
+        float t = (y + Mathf.Sqrt(yy + 2 * gravitationalPull * (throwPosition.position.y - yLimit))) / gravitationalPull;
         return t;
     }
 
     private float MaxTimeX()
     {
-        var x = playerWeaponData.throwForce.x * playerMovementData.facingDirection * chargeTime;
-        var t = (HitPosition().x - throwPosition.position.x /** playerMovementData.facingDirection*/) / x;
+        float x = playerWeaponData.throwForce.x * playerMovementData.facingDirection * chargeTime;
+        float t = (HitPosition().x - throwPosition.position.x) / x;
         return t;
     }
 
@@ -247,9 +246,10 @@ public class WeaponThrowScript : MonoBehaviour
     {
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
-        //chargeTime = 0;
     }
-    //TRAJECTORY PATH STUFF
+
+
+    ////////////TRAJECTORY PATH////////////
 
 
 
