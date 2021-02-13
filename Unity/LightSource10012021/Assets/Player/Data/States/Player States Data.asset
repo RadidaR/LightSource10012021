@@ -24,4 +24,5 @@ MonoBehaviour:
   isFloating: 0
   isDashing: 0
   inDialogue: 0
-  isArmed: 1
+  isArmed: 0
+  isThrowing: 0

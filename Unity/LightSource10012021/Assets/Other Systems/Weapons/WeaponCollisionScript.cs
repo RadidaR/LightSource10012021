@@ -9,9 +9,10 @@ public class WeaponCollisionScript : MonoBehaviour
 
     public NPCStatsData npcCollisionData;
     public int npcCollisionLayer;
+    public int playerBodyLayer;
 
-    public float invincibilityDuration;
-    public bool invincible;
+    public float unbreakableDuration;
+    public bool unBreakable;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,41 +22,71 @@ public class WeaponCollisionScript : MonoBehaviour
 
     private void Update()
     {
-        if (invincibilityDuration > 0)
+        if (unbreakableDuration > 0)
         {            
-            invincibilityDuration -= Time.deltaTime;
+            unbreakableDuration -= Time.deltaTime;
+            GetComponent<BoxCollider2D>().enabled = false;
         }
         else
         {
-            invincibilityDuration = 0;
-            invincible = false;
+            unbreakableDuration = 0;
+            unBreakable = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == npcCollisionLayer)
+        if (collision.gameObject.layer == npcCollisionLayer || collision.gameObject.layer == playerBodyLayer)
         {
-            if (!invincible)
+            if (!unBreakable)
             {
-                invincible = true;
-                if (collision.GetComponentInParent<OfInterest>().gameObject.tag == "Player")
+                unBreakable = true;
+                if (collision.tag == "Body")
                 {
-                    GameObject player = collision.GetComponentInParent<OfInterest>().gameObject;
-                    invincibilityDuration = player.GetComponentInChildren<PlayerCollisionScript>().playerCollisionData.invincibilityDuration;
-                    weaponScript.durability -= 1;
+                    GameObject hit = collision.GetComponentInParent<OfInterest>().gameObject;
+                    if (hit.tag == "Player")
+                    {
+                        unbreakableDuration = collision.GetComponent<PlayerCollisionScript>().playerCollisionData.invincibilityDuration;
+                    }
+                    else if (hit.tag == "NPC")
+                    {
+                        unbreakableDuration = collision.GetComponent<NPCCollisionScript>().npcStatsData.hurtDuration;
+                    }
                 }
-                else if (collision.GetComponentInParent<OfInterest>().gameObject.tag == "NPC")
-                {
-                    GameObject NPC = collision.GetComponentInParent<OfInterest>().gameObject;
-                    invincibilityDuration = NPC.GetComponentInChildren<NPCCollisionScript>().npcStatsData.hurtDuration;
-                    weaponScript.durability -= 1;
-                }
-                if (weaponScript.durability <= 0)
-                {
-                    weaponScript.Break();
-                }
+                weaponScript.durability -= 1;
             }
+
+
+            if (weaponScript.durability <= 0)
+            {
+                weaponScript.Break();
+            }
+
+
         }
+
+        //if (collision.gameObject.layer == npcCollisionLayer)
+        //{
+        //    if (!invincible)
+        //    {
+        //        invincible = true;
+        //        if (collision.GetComponentInParent<OfInterest>().gameObject.tag == "Player")
+        //        {
+        //            GameObject player = collision.GetComponentInParent<OfInterest>().gameObject;
+        //            invincibilityDuration = player.GetComponentInChildren<PlayerCollisionScript>().playerCollisionData.invincibilityDuration;
+        //            weaponScript.durability -= 1;
+        //        }
+        //        else if (collision.GetComponentInParent<OfInterest>().gameObject.tag == "NPC")
+        //        {
+        //            GameObject NPC = collision.GetComponentInParent<OfInterest>().gameObject;
+        //            invincibilityDuration = NPC.GetComponentInChildren<NPCCollisionScript>().npcStatsData.hurtDuration;
+        //            weaponScript.durability -= 1;
+        //        }
+        //        if (weaponScript.durability <= 0)
+        //        {
+        //            weaponScript.Break();
+        //        }
+        //    }
+        //}
     }
 }

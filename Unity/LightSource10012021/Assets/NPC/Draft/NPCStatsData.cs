@@ -9,9 +9,13 @@ public class NPCStatsData : ScriptableObject
     public int maxHealth;
     public float hurtDuration;
 
-    public int collisionDamage;
-    public int attackDamage;
+    public bool canFly;
     public float movementSpeed;
+
+    public int collisionDamage;
+
+    public float attackRange;
+    public int attackDamage;
 
     public float visionRange;
     public float visionExpansion;

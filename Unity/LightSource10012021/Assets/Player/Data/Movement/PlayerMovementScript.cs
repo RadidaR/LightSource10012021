@@ -37,17 +37,17 @@ public class PlayerMovementScript : MonoBehaviour
 
     private void Update()
     {        
-        if (playerStatesData.isThrowing)
-        {
-            if (playerInputData.rightStickValue.x > 0)
-            {
-                FaceRight();
-            }
-            if (playerInputData.rightStickValue.x < 0)
-            {
-                FaceLeft();
-            }
-        }
+        //if (playerStatesData.isThrowing)
+        //{
+        //    if (playerInputData.rightStickValue.x > 0)
+        //    {
+        //        FaceRight();
+        //    }
+        //    if (playerInputData.rightStickValue.x < 0)
+        //    {
+        //        FaceLeft();
+        //    }
+        //}
     }
 
     private void FixedUpdate()
@@ -117,6 +117,31 @@ public class PlayerMovementScript : MonoBehaviour
 
 
     //FLIPS PLAYER LEFT
+    public void FacingDirection()
+    {
+        if (!playerStatesData.isThrowing && playerInputData.rightStickValue == Vector2.zero)
+        {
+            if (playerInputData.leftStickValue < 0)
+            {
+                FaceLeft();
+            }
+            else if (playerInputData.leftStickValue > 0)
+            {
+                FaceRight();
+            }
+        }
+        else
+        {
+            if (playerInputData.rightStickValue.x < 0)
+            {
+                FaceLeft();
+            }
+            else if (playerInputData.rightStickValue.x > 0)
+            {
+                FaceRight();
+            }
+        }
+    }
     public void FaceLeft()
     {
         playerMovementData.facingDirection = -1;

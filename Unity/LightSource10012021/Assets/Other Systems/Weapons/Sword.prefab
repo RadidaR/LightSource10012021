@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9104323094176059426}
   - component: {fileID: 1144780034194454514}
   - component: {fileID: 4779950370404749702}
-  m_Layer: 10
+  m_Layer: 9
   m_Name: Damage Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70,6 +70,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ed6b7a6acf3f3647a7c67b66a64382a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponScript: {fileID: 0}
+  weaponData: {fileID: 0}
+  npcCollisionData: {fileID: 0}
+  npcCollisionLayer: 6
+  playerBodyLayer: 11
+  unbreakableDuration: 0
+  unBreakable: 0
 --- !u!1 &4351328603641209754
 GameObject:
   m_ObjectHideFlags: 0

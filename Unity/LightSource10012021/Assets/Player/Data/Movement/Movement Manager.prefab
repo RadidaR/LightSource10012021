@@ -24,7 +24,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871964759347412568}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -100,8 +100,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1871964760057686125}
   - component: {fileID: 1871964760057686034}
-  - component: {fileID: 1871964760057686035}
   - component: {fileID: 1871964760057686124}
+  - component: {fileID: 425276375}
   m_Layer: 0
   m_Name: Listener
   m_TagString: Untagged
@@ -136,22 +136,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 030520acb9fb9804b99f441a762e63d7, type: 2}
+  Event: {fileID: 11400000, guid: 13244d6c7f924e64090e8bc9a88a33f3, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1871964759347412574}
-        m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
-        m_MethodName: FaceLeft
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1871964759347412574}
         m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
         m_MethodName: Move
@@ -164,37 +152,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1871964760057686035
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1871964760057686126}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 4b3fc95742f761a4a88e61695869d0fd, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
       - m_Target: {fileID: 1871964759347412574}
         m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
-        m_MethodName: FaceRight
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1871964759347412574}
-        m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
-        m_MethodName: Move
+        m_MethodName: FacingDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -223,6 +183,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1871964759347412574}
         m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
         m_MethodName: Jump
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &425276375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1871964760057686126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bc94500241a30b458d3a3a5f4253de5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: e2ab9ba3b93bfdc40b7a4ba9cb4a7b52, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1871964759347412574}
+        m_TargetAssemblyTypeName: PlayerMovementScript, Assembly-CSharp
+        m_MethodName: FacingDirection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

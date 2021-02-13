@@ -44,7 +44,7 @@ public class WeaponThrowScript : MonoBehaviour
     void Start()
     {
         player = GetComponentInParent<OfInterest>().gameObject;
-        lineRenderer = GetComponentInChildren<LineRenderer>();
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     void Update()

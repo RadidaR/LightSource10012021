@@ -16,10 +16,19 @@ public class NPCStatsScript : MonoBehaviour
     [SerializeField] SpriteRenderer[] sprites;
     [SerializeField] [Range(0, 1)] float flashOpacity;
 
-    private void Start()
+    private void OnValidate()
     {
         currentHealth = npcStatsData.maxHealth;
         sprites = GetComponentsInChildren<SpriteRenderer>();
+
+        if (!npcStatsData.canFly)
+        {
+            GetComponent<NavMeshAgent2D>().enabled = false;
+        }
+        else
+        {
+            GetComponent<NavMeshAgent2D>().enabled = true;
+        }
     }
 
     private void Update()

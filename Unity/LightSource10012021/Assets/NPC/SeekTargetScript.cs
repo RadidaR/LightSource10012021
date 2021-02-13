@@ -16,11 +16,14 @@ public class SeekTargetScript : MonoBehaviour
     NavMeshAgent2D agent;
     public Vector2 lastKnownPosition;
 
-    void Awake()
+    void OnValidate()
     {
         npcStatsData = GetComponent<NPCStatsScript>().npcStatsData;
         visionRange = npcStatsData.visionRange;
-        agent = GetComponent<NavMeshAgent2D>();
+        if (npcStatsData.canFly)
+        {
+            agent = GetComponent<NavMeshAgent2D>();
+        }
     }
 
     void Update()
@@ -41,14 +44,19 @@ public class SeekTargetScript : MonoBehaviour
             if (lastKnownPosition != Vector2.zero)
             {
                 //IF THE DISTANCE TO LAST KNOWN POSITION IS LESS THAN STOPPING DISTANCE
-                if (Vector2.Distance(transform.position, lastKnownPosition) <= agent.stoppingDistance)
+                if (Vector2.Distance(transform.position, lastKnownPosition) <= npcStatsData.attackRange)
                 {
                     //ERASE LAST KNOWN POSITION AND RETURN
                     lastKnownPosition = Vector2.zero; ;
                     return;
                 }
-                //IF FURTHER AWAY THAT STOPPING DISTANCE - CONTINUE TOWARDS LAST KNOWN POSITION
-                agent.destination = lastKnownPosition;
+
+                if (npcStatsData.canFly)
+                {
+                    //IF FURTHER AWAY THAT STOPPING DISTANCE - CONTINUE TOWARDS LAST KNOWN POSITION
+                    agent.stoppingDistance = npcStatsData.attackRange;
+                    agent.destination = lastKnownPosition;
+                }
             }
             //LOSE TARGET
             LoseTarget();
@@ -57,8 +65,11 @@ public class SeekTargetScript : MonoBehaviour
         //IF THERE IS A CURRENT TARGET
         if (currentTarget != null)
         {
-            //ASSING NAV MESH AGENT'S DESTINATION TO TARGET'S POSITION
-            agent.destination = currentTarget.transform.position;
+            if (npcStatsData.canFly)
+            {
+                //ASSING NAV MESH AGENT'S DESTINATION TO TARGET'S POSITION
+                agent.destination = currentTarget.transform.position;
+            }
             //AND EXPAND VISION
             ExpandVision();
 

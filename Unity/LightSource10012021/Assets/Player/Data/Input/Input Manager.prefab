@@ -46,8 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerInputData: {fileID: 11400000, guid: 6e6776cf1085a5d4c90259e32d3903e1, type: 2}
-  eLeftPressed: {fileID: 11400000, guid: 030520acb9fb9804b99f441a762e63d7, type: 2}
-  eRightPressed: {fileID: 11400000, guid: 4b3fc95742f761a4a88e61695869d0fd, type: 2}
+  eMovePressed: {fileID: 11400000, guid: 13244d6c7f924e64090e8bc9a88a33f3, type: 2}
   eJumpPressed: {fileID: 11400000, guid: d0278df8d7ed6fc4899ce2efa0fce683, type: 2}
   eJumpReleased: {fileID: 11400000, guid: 6eaab12a0bd33bc44ae1081982069703, type: 2}
   eDashPressed: {fileID: 11400000, guid: ad743655b360ba443b71fda9566e2282, type: 2}
@@ -56,6 +55,7 @@ MonoBehaviour:
   eInteractionReleased: {fileID: 11400000, guid: 2868f299df573ae41b264eeea8a71d8e, type: 2}
   eThrowPressed: {fileID: 11400000, guid: f25f0519c22ec4342965f553bf37f32e, type: 2}
   eThrowReleased: {fileID: 11400000, guid: 6a28665917574814fb669bfa040bf749, type: 2}
+  eAttackPressed: {fileID: 11400000, guid: fab54ff6c28f10a40bcd37765acd2962, type: 2}
 --- !u!114 &1188177031
 MonoBehaviour:
   m_ObjectHideFlags: 0

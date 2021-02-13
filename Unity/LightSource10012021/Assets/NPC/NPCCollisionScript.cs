@@ -12,6 +12,7 @@ public class NPCCollisionScript : MonoBehaviour
 
     public WeaponData weaponCollisionData;
     public int weaponCollisionLayer;
+    public int playerWeaponLayer;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,7 @@ public class NPCCollisionScript : MonoBehaviour
         //    npcStatsScript.Damage();
         //}
 
-        if (collision.gameObject.layer == weaponCollisionLayer)
+        if (collision.gameObject.layer == weaponCollisionLayer || collision.gameObject.layer == playerWeaponLayer)
         {
             weaponCollisionData = collision.gameObject.GetComponentInParent<WeaponScript>().weaponData;
             npcStatsScript.healthLost = weaponCollisionData.damage;

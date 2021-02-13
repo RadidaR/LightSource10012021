@@ -9,10 +9,11 @@ public class PlayerInputScript : MonoBehaviour
     public PlayerInputData playerInputData;
 
     [Header("Events")]
-    public GameEvent eLeftPressed;
+    //public GameEvent eLeftPressed;
     //public GameEvent eLeftReleased;
-    public GameEvent eRightPressed;
+    //public GameEvent eRightPressed;
     //public GameEvent eRightReleased;
+    public GameEvent eMovePressed;
     public GameEvent eJumpPressed;
     public GameEvent eJumpReleased;
     public GameEvent eDashPressed;
@@ -21,6 +22,7 @@ public class PlayerInputScript : MonoBehaviour
     public GameEvent eInteractionReleased;
     public GameEvent eThrowPressed;
     public GameEvent eThrowReleased;
+    public GameEvent eAttackPressed;
 
     ActionMap actionMap;
 
@@ -44,6 +46,7 @@ public class PlayerInputScript : MonoBehaviour
         actionMap.Gameplay.Parry.canceled += ctx => playerInputData.buttonEast = 0;
 
         actionMap.Gameplay.Attack.performed += ctx => playerInputData.buttonWest = actionMap.Gameplay.Attack.ReadValue<float>();
+        actionMap.Gameplay.Attack.performed += ctx => RaiseAttackPressed();
         actionMap.Gameplay.Attack.canceled += ctx => playerInputData.buttonWest = 0;
 
         actionMap.Gameplay.Interact.performed += ctx => playerInputData.buttonNorth = actionMap.Gameplay.Interact.ReadValue<float>();
@@ -105,14 +108,7 @@ public class PlayerInputScript : MonoBehaviour
 
     private void RaiseMovePressed()
     {
-        if (playerInputData.leftStickValue < 0)
-        {
-            eLeftPressed.Raise();
-        }
-        if (playerInputData.leftStickValue > 0)
-        {
-            eRightPressed.Raise();
-        }
+        eMovePressed.Raise();
     }
 
     public void ResetLeftStick()
@@ -180,5 +176,10 @@ public class PlayerInputScript : MonoBehaviour
     public void ResetLeftTrigger()
     {
         playerInputData.leftTrigger = 0;
+    }
+
+    public void RaiseAttackPressed()
+    {
+        eAttackPressed.Raise();
     }
 }
