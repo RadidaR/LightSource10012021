@@ -10,36 +10,48 @@ public class AttachGameObjectsToParticles : MonoBehaviour
     private List<GameObject> m_Instances = new List<GameObject>();
     private ParticleSystem.Particle[] m_Particles;
 
+    //private ParticleSystem.EmissionModule m_EmmisionModule;
+
     // Start is called before the first frame update
     void Start()
     {
         m_ParticleSystem = GetComponent<ParticleSystem>();
         m_Particles = new ParticleSystem.Particle[m_ParticleSystem.main.maxParticles];
+        //m_EmmisionModule = m_ParticleSystem.emission;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        int count = m_ParticleSystem.GetParticles(m_Particles);
+            int count = m_ParticleSystem.GetParticles(m_Particles);
 
-        while (m_Instances.Count < count)
-            m_Instances.Add(Instantiate(m_Prefab, m_ParticleSystem.transform));
+            while (m_Instances.Count < count)
+                m_Instances.Add(Instantiate(m_Prefab, m_ParticleSystem.transform));
 
-        bool worldSpace = (m_ParticleSystem.main.simulationSpace == ParticleSystemSimulationSpace.World);
-        for (int i = 0; i < m_Instances.Count; i++)
-        {
-            if (i < count)
+            bool worldSpace = (m_ParticleSystem.main.simulationSpace == ParticleSystemSimulationSpace.World);
+            for (int i = 0; i < m_Instances.Count; i++)
             {
-                if (worldSpace)
-                    m_Instances[i].transform.position = m_Particles[i].position;
+                if (i < count)
+                {
+                    if (worldSpace)
+                        m_Instances[i].transform.position = m_Particles[i].position;
+                    else
+                        m_Instances[i].transform.localPosition = m_Particles[i].position;
+                    m_Instances[i].SetActive(true);
+                }
                 else
-                    m_Instances[i].transform.localPosition = m_Particles[i].position;
-                m_Instances[i].SetActive(true);
+                {
+                    m_Instances[i].SetActive(false);
+                }
             }
-            else
-            {
-                m_Instances[i].SetActive(false);
-            }
-        }
+
+        //if (!m_ParticleSystem.gameObject.activeInHierarchy)
+        //{
+        //    Debug.Log("Turned Off");
+        //    for (int i = 0; i < m_Instances.Count; i++)
+        //    {
+        //        Destroy(m_Instances[i], 0.2f);
+        //    }
+        //}
     }
 }

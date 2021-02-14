@@ -1,0 +1,10 @@
+Walking - loop
+Running - loop
+Jump - lift off from the ground
+Airborne - loop - player is in the air - should start in the same pose 'Jump' endds
+Floating - loop - the lantern should be active - best to split into 'Float Vertically' and 'Float Horizontally'
+Dashing 
+Idle_Tired / Idle_Out_of_Breath - loop
+Pick Up Item from the Ground - should be very quick
+Grab Item in the Air - should be very quick
+

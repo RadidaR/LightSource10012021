@@ -19,5 +19,5 @@ MonoBehaviour:
   collisionDamage: 10
   attackRange: 2
   attackDamage: 0
-  visionRange: 20
-  visionExpansion: 15
+  visionRange: 25
+  visionExpansion: 20
