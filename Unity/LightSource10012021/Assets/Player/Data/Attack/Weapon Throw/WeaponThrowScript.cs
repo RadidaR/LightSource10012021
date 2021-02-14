@@ -56,6 +56,14 @@ public class WeaponThrowScript : MonoBehaviour
             chargeTime = 0;
         }
 
+        if (weapon != null)
+        {
+            if (weapon.GetComponent<WeaponScript>().durability < 1)
+            {
+                RemoveWeapon();
+            }
+        }
+
     }
 
     public void ChargeThrow()
@@ -120,7 +128,7 @@ public class WeaponThrowScript : MonoBehaviour
     public void ThrowWeapon()
     {
         //IF PLAYER IS PREPARING TO THROW WEAPON
-        if (playerStatesData.isThrowing)
+        if (playerStatesData.isThrowing && weapon != null)
         {
             //RAISE WEAPON THROWN
             eWeaponThrown.Raise();
@@ -159,6 +167,7 @@ public class WeaponThrowScript : MonoBehaviour
     //UNASSIGNS WEAPON AND WEAPON DATA
     public void RemoveWeapon()
     {
+        ResetLine();
         playerWeaponData = null;
         weapon = null;
     }
@@ -244,6 +253,7 @@ public class WeaponThrowScript : MonoBehaviour
 
     public void ResetLine()
     {
+        Debug.Log("Reset");
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
     }

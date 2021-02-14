@@ -32,6 +32,18 @@ public class PlayerInteractionScript : MonoBehaviour
         weaponPosition = player.GetComponentInChildren<MainHandScript>().gameObject.transform;
     }
 
+    private void Update()
+    {
+        if (currentWeapon != null)
+        {
+            if (currentWeapon.GetComponent<WeaponScript>().durability < 1)
+            {
+                currentWeapon = null;
+                eDropWeapon.Raise();
+            }
+        }
+    }
+
     public void Interact()
     {
         //IF PLAYER IS PREPARING TO THROW WEAPON

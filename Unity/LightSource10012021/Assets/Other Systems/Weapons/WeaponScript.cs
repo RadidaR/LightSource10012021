@@ -117,7 +117,7 @@ public class WeaponScript : MonoBehaviour
 
     public void Break()
     {
-        Destroy(gameObject);
+        Destroy(gameObject, 0.075f);
     }
 
 

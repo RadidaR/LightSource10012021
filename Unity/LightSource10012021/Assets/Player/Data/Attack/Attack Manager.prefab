@@ -512,6 +512,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStatesData: {fileID: 11400000, guid: 7aefe94fa33914c44b3f45ff6805ab6b, type: 2}
+  eAttack: {fileID: 11400000, guid: 5b1d0933a15577543b04893d95bc9937, type: 2}
 --- !u!1 &7713600451618677763
 GameObject:
   m_ObjectHideFlags: 0

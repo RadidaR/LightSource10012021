@@ -59,6 +59,16 @@ public class PlayerMovementScript : MonoBehaviour
         {
             eVelocityZero.Raise();
         }
+        //RAISES WALKING
+        else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) <= playerMovementData.moveSpeed)
+        {
+            eWalking.Raise();
+        }
+        //RAISES RUNNING
+        else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed)
+        {
+            eRunning.Raise();
+        }
 
         //RESETS JUMP DURATION
         if (jumpDuration < playerMovementData.jumpDuration && !playerStatesData.isJumping)
@@ -113,13 +123,23 @@ public class PlayerMovementScript : MonoBehaviour
         }
     }
 
+    public void FreezePosition()
+    {
+        rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+    }
+
+    public void UnfreezePosition()
+    {
+        rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+    }
+
 
 
 
     //FLIPS PLAYER LEFT
     public void FacingDirection()
     {
-        if (!playerStatesData.isThrowing && playerInputData.rightStickValue == Vector2.zero)
+        if (!playerStatesData.isThrowing)
         {
             if (playerInputData.leftStickValue < 0)
             {
@@ -130,15 +150,29 @@ public class PlayerMovementScript : MonoBehaviour
                 FaceRight();
             }
         }
-        else
+        else 
         {
-            if (playerInputData.rightStickValue.x < 0)
+            if (playerInputData.rightStickValue == Vector2.zero)
             {
-                FaceLeft();
+                if (playerInputData.leftStickValue < 0)
+                {
+                    FaceLeft();
+                }
+                else if (playerInputData.leftStickValue > 0)
+                {
+                    FaceRight();
+                }
             }
-            else if (playerInputData.rightStickValue.x > 0)
+            else
             {
-                FaceRight();
+                if (playerInputData.rightStickValue.x < 0)
+                {
+                    FaceLeft();
+                }
+                else if (playerInputData.rightStickValue.x > 0)
+                {
+                    FaceRight();
+                }
             }
         }
     }
@@ -248,17 +282,6 @@ public class PlayerMovementScript : MonoBehaviour
             {
                 eFloatMove.Raise();
             }
-        }
-
-        //RAISES WALKING
-        if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) <= playerMovementData.moveSpeed)
-        {
-            eWalking.Raise();
-        }
-        //RAISES RUNNING
-        else if (playerStatesData.isGrounded && Mathf.Abs(rigidBody.velocity.x) > playerMovementData.moveSpeed)
-        {
-            eRunning.Raise();
         }
     }
 

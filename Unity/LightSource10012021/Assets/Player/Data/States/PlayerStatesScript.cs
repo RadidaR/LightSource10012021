@@ -152,4 +152,13 @@ public class PlayerStatesScript : MonoBehaviour
         playerStatesData.isThrowing = false;
     }
 
+    public void Attacking()
+    {
+        playerStatesData.isAttacking = true;
+    }
+
+    public void NotAttacking()
+    {
+        playerStatesData.isAttacking = false;
+    }
 }
