@@ -10,7 +10,11 @@ public class LightColliderScript : MonoBehaviour
     [SerializeField] ParticleSystem particleSys;
     [SerializeField] ParticleSystem.EmissionModule emmisionMod;
 
-    [SerializeField] Light2D[] particleLights;
+    [SerializeField] int npcCollisionLayer;
+    [SerializeField] int weaponDamageLayer;
+    [SerializeField] int playerWeaponLayer;
+
+    //[SerializeField] Light2D[] particleLights;
 
     private void Start()
     {
@@ -23,14 +27,27 @@ public class LightColliderScript : MonoBehaviour
     private void Update()
     {
 
-        particleLights = particleSys.gameObject.GetComponentsInChildren<Light2D>();
+        //particleLights = particleSys.gameObject.GetComponentsInChildren<Light2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == 6)
+        if (collision.gameObject.layer == weaponDamageLayer)
         {
-            Debug.Log("collided");
+            lightSource.enabled = false;
+            lightRange.enabled = false;
+            //particleSys.gameObject.SetActive(false);
+            emmisionMod.rateOverTime = 0;
+
+
+            //for (int i = 1; i < particleLights.Length; i++)
+            //{
+            //    Destroy(particleLights[i].gameObject, 2f);
+            //}
+
+        }
+        else if (collision.gameObject.layer == playerWeaponLayer)
+        {
             lightSource.enabled = false;
             lightRange.enabled = false;
             //particleSys.gameObject.SetActive(false);

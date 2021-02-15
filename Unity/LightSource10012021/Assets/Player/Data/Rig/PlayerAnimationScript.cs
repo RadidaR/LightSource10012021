@@ -10,13 +10,18 @@ public class PlayerAnimationScript : MonoBehaviour
     public GameObject player;
     public Animator animator;
 
+    public string PLAYER_IDLE;
+    public string PLAYER_BORED;
+
+    public float boredomCounter;
+
+
     public string currentState;
 
     public string swordAttack1Animation;
     public GameEvent eAttackDone;
     public GameEvent eIsAttacking;
 
-    public string idleAnimation;
 
     public string moveLegs;
     public string moveArms;
@@ -29,10 +34,29 @@ public class PlayerAnimationScript : MonoBehaviour
 
     private void Update()
     {
-        if (playerStatesData.isStill && currentState != swordAttack1Animation)
+        if (playerStatesData.isStill && currentState != swordAttack1Animation && currentState != PLAYER_IDLE && currentState != PLAYER_BORED)
         {
-            ChangeAnimationState(idleAnimation);
+            ChangeAnimationState(PLAYER_IDLE);
+            boredomCounter = Random.Range(3, 10);
         }
+
+        if (boredomCounter < 0)
+        {
+            boredomCounter = 0;
+        }
+
+        if (currentState == PLAYER_IDLE && boredomCounter == 0)
+        {
+            PLAYER_BORED = PLAYER_IDLE + " " + Random.Range(1, 4).ToString();
+            ChangeAnimationState(PLAYER_BORED);
+        }
+
+        if (boredomCounter > 0)
+        {
+            boredomCounter -= Time.deltaTime;
+        }
+
+
     }
 
     public void PlaySwordAttack1()
@@ -43,14 +67,16 @@ public class PlayerAnimationScript : MonoBehaviour
 
     public void PlayMoveAnimation()
     {
-        RaiseAttackDone();
+        boredomCounter = 0;
+        //RaiseAttackDone();
         ChangeAnimationState(moveLegs);
     }
 
-    //public void PlayIdleAnimation()
-    //{
-    //        ChangeAnimationState(idleAnimation);
-    //}
+    public void PlayIdleAnimation()
+    {
+        boredomCounter = Random.Range(3, 10);
+        ChangeAnimationState(PLAYER_IDLE);
+    }
 
     public void ChangeAnimationState(string newState)
     {
@@ -58,10 +84,9 @@ public class PlayerAnimationScript : MonoBehaviour
         {
             return;
         }
+        currentState = newState;
 
         animator.Play(newState);
-
-        currentState = newState;
     }
 
     public void RaiseIsAttacking()
@@ -71,11 +96,12 @@ public class PlayerAnimationScript : MonoBehaviour
 
     public void RaiseAttackDone()
     {
+        Debug.Log("Attack Done");
         eAttackDone.Raise();
-        if (playerStatesData.isStill)
-        {
-            ChangeAnimationState(idleAnimation);
-        }
+        //if (playerStatesData.isStill)
+        //{
+        //    ChangeAnimationState(PLAYER_IDLE);
+        //}
     }
 
 

@@ -4939,7 +4939,9 @@ MonoBehaviour:
   lightSource: {fileID: 0}
   lightRange: {fileID: 0}
   particleSys: {fileID: 0}
-  particleLights: []
+  npcCollisionLayer: 6
+  weaponDamageLayer: 9
+  playerWeaponLayer: 10
 --- !u!212 &970486107407950802
 SpriteRenderer:
   m_ObjectHideFlags: 0

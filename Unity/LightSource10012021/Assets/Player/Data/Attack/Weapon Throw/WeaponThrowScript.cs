@@ -253,7 +253,6 @@ public class WeaponThrowScript : MonoBehaviour
 
     public void ResetLine()
     {
-        Debug.Log("Reset");
         lineRenderer.positionCount = 0;
         lineRenderer.enabled = false;
     }
