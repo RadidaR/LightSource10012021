@@ -255,7 +255,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   currentTarget: {fileID: 0}
-  visionRange: 20
+  visionRange: 25
   visionExpanded: 0
   lastKnownPosition: {x: 0, y: 0}
 --- !u!114 &2730755417245762420
@@ -290,7 +290,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 2.12
+  m_Radius: 2.15
 --- !u!50 &2730755417245762422
 Rigidbody2D:
   serializedVersion: 4
@@ -329,9 +329,9 @@ MonoBehaviour:
   _acceleration: 6
   _stoppingDistance: 5
   _autoBraking: 1
-  _radius: 3.75
-  _quality: 4
-  _priority: 2
+  _radius: 2
+  _quality: 1
+  _priority: 1
   _autoRepath: 1
 --- !u!114 &4009294628814088893
 MonoBehaviour:

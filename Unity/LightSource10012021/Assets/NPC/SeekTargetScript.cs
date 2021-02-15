@@ -67,8 +67,15 @@ public class SeekTargetScript : MonoBehaviour
         {
             if (npcStatsData.canFly)
             {
-                //ASSING NAV MESH AGENT'S DESTINATION TO TARGET'S POSITION
-                agent.destination = currentTarget.transform.position;
+                if (GetComponent<NPCStatsScript>().isHurt)
+                {
+                    agent.destination = transform.position;
+                }
+                else
+                {
+                    //ASSING NAV MESH AGENT'S DESTINATION TO TARGET'S POSITION
+                    agent.destination = currentTarget.transform.position;
+                }
             }
             //AND EXPAND VISION
             ExpandVision();

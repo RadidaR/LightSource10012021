@@ -32,32 +32,22 @@ public class LightColliderScript : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.layer == weaponDamageLayer)
+        if (collision.gameObject.layer == weaponDamageLayer || collision.gameObject.layer == playerWeaponLayer)
         {
             lightSource.enabled = false;
             lightRange.enabled = false;
             //particleSys.gameObject.SetActive(false);
             emmisionMod.rateOverTime = 0;
 
-
-            //for (int i = 1; i < particleLights.Length; i++)
-            //{
-            //    Destroy(particleLights[i].gameObject, 2f);
-            //}
 
         }
-        else if (collision.gameObject.layer == playerWeaponLayer)
+        else if (collision.gameObject.layer == npcCollisionLayer)
         {
             lightSource.enabled = false;
             lightRange.enabled = false;
             //particleSys.gameObject.SetActive(false);
             emmisionMod.rateOverTime = 0;
 
-
-            //for (int i = 1; i < particleLights.Length; i++)
-            //{
-            //    Destroy(particleLights[i].gameObject, 2f);
-            //}
 
         }
     }
