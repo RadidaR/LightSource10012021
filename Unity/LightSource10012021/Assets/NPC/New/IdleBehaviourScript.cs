@@ -11,6 +11,8 @@ public class IdleBehaviourScript : MonoBehaviour
 
     public NPCStatesScript states;
 
+    public NPCMovementScript movement;
+
     public Rigidbody2D rigidBody;
 
     public float stayTime1;
@@ -36,6 +38,8 @@ public class IdleBehaviourScript : MonoBehaviour
 
             data = states.data;
             abilities = states.abilities;
+
+            movement = npc.GetComponentInChildren<NPCMovementScript>();
 
             //seekTarget = npc.GetComponentInChildren<SeekTargetScript2>();
             //attacks = npc.GetComponentInChildren<NPCAttackScript>();
@@ -89,7 +93,8 @@ public class IdleBehaviourScript : MonoBehaviour
             if (stayTimer > 0)
             {
                 stayTimer -= Time.fixedDeltaTime;
-                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+                //rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+                movement.StopMoving();
                 return;
             }
             else
@@ -122,7 +127,8 @@ public class IdleBehaviourScript : MonoBehaviour
             if (walkTimer > 0)
             {
                 walkTimer -= Time.fixedDeltaTime;
-                rigidBody.velocity = new Vector2(data.moveSpeed * states.facingDirection, rigidBody.velocity.y);
+                //rigidBody.velocity = new Vector2(data.moveSpeed * states.facingDirection, rigidBody.velocity.y);
+                movement.Walk();
             }
             else
             {

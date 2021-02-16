@@ -15,6 +15,8 @@ public class ChaseTargetScript2 : MonoBehaviour
 
     public NPCAttackScript attacks;
 
+    public NPCMovementScript movement;
+
     public NavMeshAgent2D navAgent;
 
     public Vector2 chasePosition;
@@ -40,6 +42,7 @@ public class ChaseTargetScript2 : MonoBehaviour
 
             seekTarget = npc.GetComponentInChildren<SeekTargetScript2>();
             attacks = npc.GetComponentInChildren<NPCAttackScript>();
+            movement = npc.GetComponentInChildren<NPCMovementScript>();
             rigidBody = npc.GetComponent<Rigidbody2D>();
 
             if (abilities.canFly)
@@ -150,9 +153,15 @@ public class ChaseTargetScript2 : MonoBehaviour
             if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
             {
                 states.isChasing = true;
-                Vector2 velocity = rigidBody.velocity;
-                velocity.x = data.runSpeed * directionToTarget;
-                rigidBody.velocity = velocity;
+                movement.Run();
+                //Vector2 velocity = rigidBody.velocity;
+                //velocity.x = data.runSpeed * directionToTarget;
+                //rigidBody.velocity = velocity;
+                
+            }
+            else
+            {
+                movement.StopMoving();
             }
             //else - attack            
         }
@@ -202,9 +211,14 @@ public class ChaseTargetScript2 : MonoBehaviour
             if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
             {
                 states.isChasing = true;
-                Vector2 velocity = rigidBody.velocity;
-                velocity.x = data.moveSpeed * directionToTarget;
-                rigidBody.velocity = velocity;
+                movement.Walk();
+                //Vector2 velocity = rigidBody.velocity;
+                //velocity.x = data.moveSpeed * directionToTarget;
+                //rigidBody.velocity = velocity;
+            }
+            else
+            {
+                movement.StopMoving();
             }
         }
     }

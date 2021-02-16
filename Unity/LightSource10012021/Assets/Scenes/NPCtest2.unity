@@ -772,6 +772,7 @@ MonoBehaviour:
   states: {fileID: 388285257}
   seekTarget: {fileID: 1083630986}
   attacks: {fileID: 0}
+  movement: {fileID: 0}
   navAgent: {fileID: 388285260}
   chasePosition: {x: 0, y: 0}
   rigidBody: {fileID: 388285262}
@@ -1037,6 +1038,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1142847255}
+  - component: {fileID: 1142847256}
   m_Layer: 0
   m_Name: Movement
   m_TagString: Untagged
@@ -1058,6 +1060,24 @@ Transform:
   m_Father: {fileID: 2053947633}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1142847256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142847254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d54397cfd4f6b64c819549fa576d08c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npc: {fileID: 2053947629}
+  data: {fileID: 11400000, guid: 8174aaa1ccdcf5f42ba146cbb0dd89c3, type: 2}
+  abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
+  states: {fileID: 2053947631}
+  rigidBody: {fileID: 2053947630}
+  velocity: {x: 0, y: 0}
 --- !u!1 &1337741667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,12 +1125,13 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 8174aaa1ccdcf5f42ba146cbb0dd89c3, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   states: {fileID: 2053947631}
+  movement: {fileID: 1142847256}
   rigidBody: {fileID: 2053947630}
-  stayTime1: 3
-  stayTime2: 15
+  stayTime1: 1
+  stayTime2: 2
   stayTimer: 0
-  walkTime1: 5
-  walkTime2: 10
+  walkTime1: 1
+  walkTime2: 2
   walkTimer: 0
   idleRunning: 0
 --- !u!1 &1728181812
@@ -1271,6 +1292,7 @@ MonoBehaviour:
   states: {fileID: 2053947631}
   seekTarget: {fileID: 299387196}
   attacks: {fileID: 1998571127}
+  movement: {fileID: 1142847256}
   navAgent: {fileID: 0}
   chasePosition: {x: 0, y: 0}
   rigidBody: {fileID: 2053947630}
