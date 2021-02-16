@@ -53,60 +53,12 @@ public class IdleBehaviourScript : MonoBehaviour
     {
         if (states.isIdle)
         {
-            if (!idleRunning)
-            {
-                idleRunning = true;
-
-                Vector2 velocity = rigidBody.velocity;
-                velocity.x = 0;
-                rigidBody.velocity = velocity;
-                stayTimer = Random.Range(stayTime1, stayTime2);
-            }
-            else
-            {
-                if (stayTimer > 0)
-                {
-                    stayTimer -= Time.fixedDeltaTime;
-                    rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-                    return;
-                }
-                else
-                {
-                    stayTimer = 0;
-                    if (walkTimer == 0)
-                    {
-                        walkTimer = Random.Range(walkTime1, walkTime2);
-
-                        int direction = Random.Range(-1, 1);
-                        if (direction == -1)
-                        {
-                            states.facingDirection = -1;
-                        }
-                        else if (direction == 0)
-                        {
-                            states.facingDirection = 1;
-                        }
-
-                        FlipNPC();
-                    }
-                }
-
-                if (walkTimer > 0)
-                {
-                    walkTimer -= Time.fixedDeltaTime;
-                    rigidBody.velocity = new Vector2(data.moveSpeed * states.facingDirection, 0);
-                }
-                else
-                {
-                    walkTimer = 0;
-                    idleRunning = false;
-                }
-
-
-            }
+            IdleBehaviour();
         }
         else
         {
+            stayTimer = 0;
+            walkTimer = 0;
             idleRunning = false;
         }
 
@@ -121,61 +73,62 @@ public class IdleBehaviourScript : MonoBehaviour
         npc.transform.localScale = npcScale;
     }
 
-    // Update is called once per frame
-    //void FixedUpdate()
-    //{
-    //    if (states.isIdle)
-    //    {
-    //        if (!idleRunning)
-    //        {
-    //            StartCoroutine(IdleBehaviour());
-    //        }
-    //    }
+    public void IdleBehaviour()
+    {
+        if (!idleRunning)
+        {
+            idleRunning = true;
 
-    //    if (actionTimer <= 0)
-    //    {
-    //        actionTimer = 0;
-    //    }
+            Vector2 velocity = rigidBody.velocity;
+            velocity.x = 0;
+            rigidBody.velocity = velocity;
+            stayTimer = Random.Range(stayTime1, stayTime2);
+        }
+        else
+        {
+            if (stayTimer > 0)
+            {
+                stayTimer -= Time.fixedDeltaTime;
+                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+                return;
+            }
+            else
+            {
+                stayTimer = 0;
+                if (walkTimer == 0)
+                {
 
-    //    //if (actionTimer > 0)
-    //    //{
-    //    //    actionTimer -= Time.fixedDeltaTime;
-    //    //}
-    //}
+                    int direction = Random.Range(-1, 2);
+                    if (direction == -1)
+                    {
+                        states.facingDirection = -1;
+                    }
+                    else if (direction == 1)
+                    {
+                        states.facingDirection = 1;
+                    }
+                    else if (direction == 0)
+                    {
+                        idleRunning = false;
+                        return;
+                    }
 
-    //IEnumerator IdleBehaviour()
-    //{
-    //    idleRunning = true;
-    //    Vector2 velocity = rigidBody.velocity;
-    //    velocity.x = 0;
-    //    rigidBody.velocity = velocity;
+                    walkTimer = Random.Range(walkTime1, walkTime2);
 
-    //    float randomTime = Random.Range(5, 10);
-    //    yield return new WaitForSecondsRealtime(randomTime);
+                    FlipNPC();
+                }
+            }
 
-    //    int randomDirection = Random.Range(-1, 2);
-    //    if (randomDirection == -1)
-    //    {
-    //        states.facingDirection = randomDirection;
-    //    }
-    //    else if (randomDirection == 1)
-    //    {
-    //        states.facingDirection = randomDirection;
-    //    }
-
-    //    float randomWalkTime = Random.Range(3, 8);
-    //    actionTimer = randomWalkTime;
-
-    //    while (actionTimer > 0)
-    //    {
-    //        actionTimer -= Time.deltaTime;
-    //        velocity.x = data.moveSpeed * states.facingDirection;
-    //        rigidBody.velocity = velocity;
-    //        if (actionTimer < 0.05f)
-    //        {
-    //            break;
-    //        }
-    //    }
-    //    idleRunning = false;
-    //}
+            if (walkTimer > 0)
+            {
+                walkTimer -= Time.fixedDeltaTime;
+                rigidBody.velocity = new Vector2(data.moveSpeed * states.facingDirection, rigidBody.velocity.y);
+            }
+            else
+            {
+                walkTimer = 0;
+                idleRunning = false;
+            }
+        }
+    }
 }

@@ -85,6 +85,7 @@ public class ChaseTargetScript2 : MonoBehaviour
 
         if (seekTarget.currentTarget == null && seekTarget.lastKnownPosition == Vector2.zero)
         {
+            chasePosition = Vector2.zero;
             states.isChasing = false;
         }
 
@@ -127,6 +128,8 @@ public class ChaseTargetScript2 : MonoBehaviour
             {
                 directionToTarget = -1;
             }
+
+            //Debug.Log("FlipNPC");
 
             FlipNPC();
         }

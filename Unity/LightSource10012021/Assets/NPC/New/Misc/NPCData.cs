@@ -15,6 +15,9 @@ public class NPCData : ScriptableObject
     public int maxHealth;
     public float hurtDuration;
 
+    [Header("Idle Behaviour")]
+    public string idleBehaviour;
+
     [Header("Movement")]
     public float moveSpeed;
     public float runSpeed;

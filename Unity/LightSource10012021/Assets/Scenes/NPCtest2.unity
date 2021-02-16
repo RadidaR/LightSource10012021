@@ -258,7 +258,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 255195088}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.2, y: 11.2, z: 0}
+  m_LocalPosition: {x: -14.2, y: 11.5, z: 0}
   m_LocalScale: {x: 25, y: 3.4856248, z: 1}
   m_Children: []
   m_Father: {fileID: 501967635}
@@ -442,7 +442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3813631139720353674, guid: 0750654412956f74aba6c0bf7500b6b6, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4030692457251574651, guid: 0750654412956f74aba6c0bf7500b6b6, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1028,6 +1028,36 @@ Transform:
   m_Father: {fileID: 388285259}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1142847254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1142847255}
+  m_Layer: 0
+  m_Name: Movement
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1142847255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1142847254}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2053947633}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1337741667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1076,11 +1106,11 @@ MonoBehaviour:
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   states: {fileID: 2053947631}
   rigidBody: {fileID: 2053947630}
-  stayTime1: 1
-  stayTime2: 5
+  stayTime1: 3
+  stayTime2: 15
   stayTimer: 0
-  walkTime1: 2
-  walkTime2: 5
+  walkTime1: 5
+  walkTime2: 10
   walkTimer: 0
   idleRunning: 0
 --- !u!1 &1728181812
@@ -1473,6 +1503,7 @@ Transform:
   - {fileID: 1914275903}
   - {fileID: 1998571126}
   - {fileID: 1337741668}
+  - {fileID: 1142847255}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

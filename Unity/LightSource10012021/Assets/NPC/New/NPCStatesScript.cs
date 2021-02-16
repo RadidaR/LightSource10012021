@@ -51,7 +51,6 @@ public class NPCStatesScript : MonoBehaviour
         }
     }
 
-
     void Start()
     {
         currentHealth = data.maxHealth;
