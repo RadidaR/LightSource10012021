@@ -65,7 +65,7 @@ public class ChaseTargetScript : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         if (attackRange == 0)
         {

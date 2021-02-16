@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f859db68cc7fcbf42a0264a297801213, type: 3}
+  m_Name: NPC2Data
+  m_EditorClassIdentifier: 
+  name: NPC2
+  zombie: 1
+  human: 0
+  maxHealth: 25
+  hurtDuration: 0.2
+  moveSpeed: 0
+  runSpeed: 0
+  flySpeed: 10
+  climbSpeed: 0
+  jumpForce: 0
+  collisionDamage: 0
+  standardAttackRange: 2
+  standardAttackSpeed: 0
+  standardAttackTelegraph: 0
+  standardAttackDuration: 0
+  standardFullAttackDuration: 0
+  standardAttackDamage: 0
+  weaponAttackRange: 0
+  weaponAttackSpeed: 0
+  weaponAttackTelegraph: 0
+  weaponAttackDuration: 0
+  weapontFullAttackDuration: 0
+  rangedAttackRange: 0
+  rangedAttackSpeed: 0
+  rangedAttackTelegraph: 0
+  rangedAttackDuration: 0
+  rangedFullAttackDuration: 0
+  rangedAttackDamage: 0
+  chargeAttackRange: 0
+  chargeAttackSpeed: 0
+  chargeAttackTelegraph: 0
+  chargeAttackDuration: 0
+  chargeFullAttackDuration: 0
+  chargeAttackDamage: 0
+  jumpAttackRange: 0
+  jumpAttackSpeed: 0
+  jumpAttackTelegraph: 0
+  jumpAttackDuration: 0
+  jumpFullAttackDuration: 0
+  jumpAttackDamage: 0
+  burrowAttackRange: 0
+  burrowAttackSpeed: 0
+  burrowAttackTelegraph: 0
+  burrowAttackDuration: 0
+  burrowFullAttackDuration: 0
+  visionRange: 5
+  visionExpansion: 5

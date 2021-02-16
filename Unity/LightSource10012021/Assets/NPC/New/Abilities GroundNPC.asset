@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d22871fe24d01f4ab8edba14e2c319b, type: 3}
+  m_Name: Abilities GroundNPC
+  m_EditorClassIdentifier: 
+  type: NPC1
+  canMove: 1
+  canRun: 1
+  canJump: 0
+  canClimb: 0
+  avoidsLedges: 0
+  canFly: 0
+  canAttack: 1
+  hasCombo: 0
+  usesWeapons: 0
+  standardAttack: 1
+  weaponAttack: 0
+  rangedAttack: 0
+  chargeAttack: 0
+  jumpAttack: 0
+  burrowAttack: 0

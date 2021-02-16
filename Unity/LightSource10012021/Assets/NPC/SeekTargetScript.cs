@@ -91,7 +91,7 @@ public class SeekTargetScript : MonoBehaviour
 
     }
 
-    void OnDrawGizmos()
+    void OnDrawGizmosSelected()
     {
         if (visionRange == 0)
         {
