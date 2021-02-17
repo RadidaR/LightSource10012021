@@ -23,6 +23,8 @@ public class SeekTargetScript2 : MonoBehaviour
     //NavMeshAgent2D agent;
     public Vector2 lastKnownPosition;
 
+    public float stopChaseTimer;
+
     void OnValidate()
     {
         if (gameObject.activeInHierarchy)
@@ -57,19 +59,27 @@ public class SeekTargetScript2 : MonoBehaviour
         //IF NO TARGETS IN SIGHT
         if (targetsInSight.Length == 0)
         {
-            //IF THERE IS A LAST KNOWN POSITION
-            if (lastKnownPosition != Vector2.zero)
-            {
-                //IF THE DISTANCE TO LAST KNOWN POSITION IS LESS THAN STOPPING DISTANCE
-                if (Mathf.Abs(transform.position.x - lastKnownPosition.x) < 10)
-                {
-                    //ERASE LAST KNOWN POSITION AND RETURN
-                    lastKnownPosition = Vector2.zero; ;
-                    return;
-                }
-            }
-            //LOSE TARGET
+
             LoseTarget();
+            //IF THERE IS A LAST KNOWN POSITION
+            //if (lastKnownPosition != Vector2.zero)
+            //{
+            //    LoseTarget();
+                //    if (states.isChasing && states.isStill)
+                //    {
+                //        lastKnownPosition = Vector2.zero; ;
+                //        return;
+                //    }
+                //IF THE DISTANCE TO LAST KNOWN POSITION IS LESS THAN STOPPING DISTANCE
+                //if (Mathf.Abs(transform.position.x - lastKnownPosition.x) < 10)
+                //{
+                //    //ERASE LAST KNOWN POSITION AND RETURN
+                //    lastKnownPosition = Vector2.zero; ;
+                //    return;
+                //}
+            //}
+        ////LOSE TARGET
+        //LoseTarget();
         }
 
         //IF THERE IS A CURRENT TARGET
@@ -124,6 +134,7 @@ public class SeekTargetScript2 : MonoBehaviour
                 //IF THERE IS NO TARGET AT THE MOMENT
                 if (currentTarget == null)
                 {
+                    stopChaseTimer = 0;
                     //IF CHECKED TARGET HAS TAG OF PLAYER
                     if (checkTarget.tag == "Player")
                     {
@@ -225,7 +236,39 @@ public class SeekTargetScript2 : MonoBehaviour
             }
             //AND LOSE TARGET
             currentTarget = null;
+            return;
         }
+
+        if (lastKnownPosition != Vector2.zero)
+        {
+            if (Vector2.Distance(transform.position, lastKnownPosition) < 3)
+            {
+                lastKnownPosition = Vector2.zero;
+            }
+            else if (states.isChasing && states.isStill)
+            {
+                if (stopChaseTimer == 0)
+                {
+                    stopChaseTimer = data.stopChaseAfter;
+                }
+
+                if (stopChaseTimer > 0)
+                {
+                    stopChaseTimer -= Time.deltaTime;
+                    return;
+                }
+                else if (stopChaseTimer < 0)
+                {
+                    stopChaseTimer = 0;
+                    lastKnownPosition = Vector2.zero;
+                }
+            }
+        }
+        else
+        {
+            stopChaseTimer = 0;
+        }
+
         //RESET VISION RANGE
         visionExpanded = false;
         visionRange = data.visionRange;

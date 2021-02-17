@@ -19,7 +19,7 @@ public class ChaseTargetScript2 : MonoBehaviour
 
     public NavMeshAgent2D navAgent;
 
-    public Vector2 chasePosition;
+    //public Vector2 chasePosition;
 
 
     //[SerializeField] NPCStatsData npcStatsData;
@@ -54,10 +54,10 @@ public class ChaseTargetScript2 : MonoBehaviour
 
     private void Start()
     {
-        if (navAgent != null)
-        {
-            navAgent.speed = data.flySpeed;
-        }
+        //if (navAgent != null)
+        //{
+        //    navAgent.speed = data.flySpeed;
+        //}
     }
 
     // Update is called once per frame
@@ -69,26 +69,26 @@ public class ChaseTargetScript2 : MonoBehaviour
     {
         if (seekTarget.currentTarget != null)
         {
-            chasePosition = seekTarget.currentTarget.transform.position;
+            //chasePosition = seekTarget.currentTarget.transform.position;
 
             if (abilities.canMove)
             {
-                ChaseTarget();
+                ChaseTarget(seekTarget.currentTarget.transform.position);
             }
         }
         else if (seekTarget.lastKnownPosition != Vector2.zero)
         {
-            chasePosition = seekTarget.lastKnownPosition;
+            //chasePosition = seekTarget.lastKnownPosition;
 
             if (abilities.canMove)
             {
-                GoToLastPosition();
+                ChaseTarget(seekTarget.lastKnownPosition);
             }
         }
 
         if (seekTarget.currentTarget == null && seekTarget.lastKnownPosition == Vector2.zero)
         {
-            chasePosition = Vector2.zero;
+            //chasePosition = Vector2.zero;
             states.isChasing = false;
         }
 
@@ -121,50 +121,86 @@ public class ChaseTargetScript2 : MonoBehaviour
         //    }
         //}
 
-        if (chasePosition != Vector2.zero)
-        {
-            if (gameObject.transform.position.x - chasePosition.x < 0)
-            {
-                directionToTarget = 1;
-            }
-            if (gameObject.transform.position.x - chasePosition.x > 0)
-            {
-                directionToTarget = -1;
-            }
+        //if (chasePosition != Vector2.zero)
+        //{
+        //    if (gameObject.transform.position.x - chasePosition.x < 0)
+        //    {
+        //        directionToTarget = 1;
+        //    }
+        //    if (gameObject.transform.position.x - chasePosition.x > 0)
+        //    {
+        //        directionToTarget = -1;
+        //    }
 
-            //Debug.Log("FlipNPC");
+        //    //Debug.Log("FlipNPC");
 
-            FlipNPC();
-        }
+        //    movement.FlipNPC(directionToTarget);
+        //}
     }
 
-    public void FlipNPC()
-    {
-        Vector2 npcScale = npc.transform.localScale;
-        npcScale.x = directionToTarget;
-        npc.transform.localScale = npcScale;
-    }
+    //public void FlipNPC()
+    //{
+    //    Vector2 npcScale = npc.transform.localScale;
+    //    npcScale.x = directionToTarget;
+    //    npc.transform.localScale = npcScale;
+    //}
 
-    void ChaseTarget()
+    void ChaseTarget(Vector2 position)
     {
-        if (!abilities.canFly)
+        if (abilities.canAttack)
         {
-            //if not attacking
-            if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
+            if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
             {
                 states.isChasing = true;
-                movement.Move(data.runSpeed);
-                //Vector2 velocity = rigidBody.velocity;
-                //velocity.x = data.runSpeed * directionToTarget;
-                //rigidBody.velocity = velocity;
-                
+
+                if (!abilities.canFly)
+                {
+                    movement.Move(data.runSpeed, position);
+                }
+                else
+                {
+                    //navAgent.destination = chasePosition;
+                    movement.Move(data.flySpeed, position);
+                }
             }
             else
             {
                 movement.StopMoving();
             }
-            //else - attack            
         }
+
+        if (gameObject.transform.position.x - position.x < 0)
+        {
+            directionToTarget = 1;
+        }
+        if (gameObject.transform.position.x - position.x > 0)
+        {
+            directionToTarget = -1;
+        }
+
+        movement.FlipNPC(directionToTarget);
+
+        //Debug.Log("FlipNPC");
+
+
+        //if (!abilities.canFly)
+        //{
+        //    //if not attacking
+        //    if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
+        //    {
+        //        states.isChasing = true;
+        //        movement.Move(data.runSpeed, chasePosition);
+        //        //Vector2 velocity = rigidBody.velocity;
+        //        //velocity.x = data.runSpeed * directionToTarget;
+        //        //rigidBody.velocity = velocity;
+
+        //    }
+        //    else
+        //    {
+        //        movement.StopMoving();
+        //    }
+        //    //else - attack            
+        //}
 
         //if (!abilities.canFly)
         //{
@@ -204,24 +240,24 @@ public class ChaseTargetScript2 : MonoBehaviour
         //}
     }
 
-    public void GoToLastPosition()
-    {
-        if (!abilities.canFly)
-        {
-            if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
-            {
-                states.isChasing = true;
-                movement.Move(data.moveSpeed);
-                //Vector2 velocity = rigidBody.velocity;
-                //velocity.x = data.moveSpeed * directionToTarget;
-                //rigidBody.velocity = velocity;
-            }
-            else
-            {
-                movement.StopMoving();
-            }
-        }
-    }
+    //public void GoToLastPosition()
+    //{
+    //    if (!abilities.canFly)
+    //    {
+    //        if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
+    //        {
+    //            states.isChasing = true;
+    //            movement.Move(data.moveSpeed, chasePosition);
+    //            //Vector2 velocity = rigidBody.velocity;
+    //            //velocity.x = data.moveSpeed * directionToTarget;
+    //            //rigidBody.velocity = velocity;
+    //        }
+    //        else
+    //        {
+    //            movement.StopMoving();
+    //        }
+    //    }
+    //}
 
 
 }

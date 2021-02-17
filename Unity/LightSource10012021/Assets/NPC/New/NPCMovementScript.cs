@@ -15,14 +15,23 @@ public class NPCMovementScript : MonoBehaviour
 
     public Vector2 velocity;
 
+    public Transform groundCheck;
+    public float groundCheckRadius;
+
     public Transform ledgeCheck;
     public float ledgeCheckRadius;
-    public bool ledgeAhead;
+
+    //public bool ledgeAhead;
 
     public Transform wallCheck;
     public float wallCheckRadius;
-    public bool wallAhead;
 
+    public LayerMask groundLayer;
+    //public bool wallAhead;
+
+    public NavMeshAgent2D navAgent;
+
+    public float lostChaseTimer;
 
     public void OnValidate()
     {
@@ -36,31 +45,74 @@ public class NPCMovementScript : MonoBehaviour
             abilities = states.abilities;
 
             rigidBody = npc.GetComponent<Rigidbody2D>();
+
+            if (abilities.canFly)
+            {
+                navAgent = npc.GetComponent<NavMeshAgent2D>();
+            }
         }
     }
 
-    public void Update()
+    private void Start()
     {
-        ledgeAhead = !Physics2D.OverlapCircle(ledgeCheck.position, ledgeCheckRadius);
-        wallAhead = Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius);
-
-        if (abilities.avoidsLedges)
+        if (navAgent != null)
         {
-            if (ledgeAhead)
+            //ASSIGNS FLY SPEED AND ACCELERATION
+            navAgent.speed = data.flySpeed;
+            navAgent.acceleration = data.flyAcceleration;
+        }
+    }
+
+
+    public void FixedUpdate()
+    {
+        //HANDLES NEXT TO WALL BOOLEAN
+        states.nextToWall = Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius, groundLayer);
+
+        //FOR GROUND UNITS
+        if (!abilities.canFly)
+        {
+            //HANDLES GROUNDED AND ON LEDGE BOOLEANS
+            states.isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
+            states.onLedge = !Physics2D.OverlapCircle(ledgeCheck.position, ledgeCheckRadius, groundLayer);
+
+            if (Mathf.Abs(rigidBody.velocity.x) < 0.25f && Mathf.Abs(rigidBody.velocity.y) < 0.25f)
             {
-                rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX;
+                states.isStill = true;
+                states.isWalking = false;
+                states.isRunning = false;
             }
-            else
+            if (Mathf.Abs(rigidBody.velocity.x) > 0.25f && Mathf.Abs(rigidBody.velocity.x) <= data.moveSpeed)
             {
-                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                states.isRunning = false;
+                states.isWalking = true;
+            }
+            else if (Mathf.Abs(rigidBody.velocity.x) > data.moveSpeed)
+            {
+                states.isWalking = false;
+                states.isRunning = true;
+            }
+
+            if (abilities.avoidsLedges)
+            {
+                if (states.onLedge)
+                {
+                    StopMoving();
+                }
+            }
+
+            if (abilities.canClimb)
+            {
+                if (!states.nextToWall)
+                {
+                    states.isClimbing = false;
+                }
             }
         }
 
-
-        if (wallAhead)
+        if (states.isClimbing || states.isWalking || states.isRunning || states.isFlying)
         {
-            //rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-            //rigidBody.AddForce(new Vector2(0, 8), ForceMode2D.Force);
+            states.isStill = false;
         }
     }
 
@@ -68,9 +120,15 @@ public class NPCMovementScript : MonoBehaviour
     {
         if (!abilities.canFly)
         {
-            velocity = rigidBody.velocity;
-            velocity.x = 0;
-            rigidBody.velocity = velocity;
+            //velocity = rigidBody.velocity;
+            //velocity.x = 0;
+            //rigidBody.velocity = velocity;
+            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+            //states.isStill = true;
+        }
+        else
+        {
+            navAgent.destination = npc.transform.position;
         }
     }
 
@@ -88,29 +146,133 @@ public class NPCMovementScript : MonoBehaviour
     //    rigidBody.velocity = velocity;
     //}
 
-    public void Move(float speed)
+    public void Move(float speed, Vector2 position)
     {
         //velocity = rigidBody.velocity;
         //velocity.x = speed * states.facingDirection;
-        rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
+        if (!abilities.canFly)
+        {
+            if (states.isGrounded || states.isClimbing)
+            {
+                if (!states.isChasing)
+                {
+                    if (abilities.avoidsLedges)
+                    {
+                        if (states.onLedge)
+                        {
+                            FlipNPC(states.facingDirection * -1);
+                        }
+                    }
+
+                    if (states.nextToWall)
+                    {
+                        if (abilities.canClimb)
+                        {
+                            Climb(data.climbSpeed);
+                        }
+                        else
+                        {
+                            FlipNPC(states.facingDirection * -1);
+                        }
+                    }
+
+                    rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
+                }
+                else
+                {
+                    if (abilities.avoidsLedges)
+                    {
+                        if (states.onLedge)
+                        {
+                            //if (lostChaseTimer > 0)
+                            //{
+                            //    lostChaseTimer -= Time.fixedDeltaTime;
+                            //}
+                            //else if (lostChaseTimer < 0)
+                            //{
+                            //    lostChaseTimer = 0;
+                            //    states.isChasing = false;
+                            //    StopMoving();
+                            //    return;
+                            //}
+                            //else if (lostChaseTimer == 0)
+                            //{
+                            //    lostChaseTimer = 3;
+                            //}
+                            StopMoving();
+                            return;
+                        }
+                    }
+
+                    if (states.nextToWall)
+                    {
+                        if (abilities.canClimb)
+                        {
+                            Climb(data.climbSpeed);
+                        }
+                        else
+                        {
+                            StopMoving();
+                        }
+                    }
+
+                    rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
+                }
+                //states.isStill = false;
+                //if (Mathf.Abs(rigidBody.velocity.x) > 0.25f && Mathf.Abs(rigidBody.velocity.x) <= data.moveSpeed)
+                //{
+                //    states.isRunning = false;
+                //    states.isWalking = true;
+                //}
+                //else if (Mathf.Abs(rigidBody.velocity.x) > data.moveSpeed)
+                //{
+                //    states.isWalking = false;
+                //    states.isRunning = true;
+                //}
+            }
+        }
+        else
+        {
+            if (!states.isHurt)
+            {
+                //states.isFlying = true;
+                navAgent.destination = position;
+            }
+        }
+    }
+
+    public void Climb(float speed)
+    {
+        //states.isStill = false;
+        states.isClimbing = true;
+        rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
+    }
+
+    public void FlipNPC(int direction)
+    {
+        Vector2 npcScale = npc.transform.localScale;
+        npcScale.x = direction;
+        npc.transform.localScale = npcScale;
     }
 
     private void OnDrawGizmosSelected()
     {
-        if (ledgeCheckRadius == 0)
+        if (groundCheckRadius > 0)
         {
-            return;
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
         }
 
-        Gizmos.color = Color.gray;
-        Gizmos.DrawWireSphere(ledgeCheck.position, ledgeCheckRadius);
-
-        if (wallCheckRadius == 0)
+        if (ledgeCheckRadius > 0)
         {
-            return;
+            Gizmos.color = Color.gray;
+            Gizmos.DrawWireSphere(ledgeCheck.position, ledgeCheckRadius);
         }
 
-        Gizmos.color = Color.white;
-        Gizmos.DrawWireSphere(wallCheck.position, wallCheckRadius);
+        if (wallCheckRadius > 0)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(wallCheck.position, wallCheckRadius);
+        }
     }
 }

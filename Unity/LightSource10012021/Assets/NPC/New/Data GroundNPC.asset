@@ -17,10 +17,13 @@ MonoBehaviour:
   human: 0
   maxHealth: 50
   hurtDuration: 0.2
+  idleBehaviour: 
+  stopChaseAfter: 5
   moveSpeed: 10
   runSpeed: 20
   flySpeed: 30
-  climbSpeed: 0
+  flyAcceleration: 0
+  climbSpeed: 10
   jumpForce: 0
   collisionDamage: 0
   standardAttackRange: 5

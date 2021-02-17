@@ -33,6 +33,8 @@ public class NPCStatesScript : MonoBehaviour
     [SerializeField] public bool isJumping;
     [SerializeField] public bool isClimbing;
     [SerializeField] public bool isFlying;
+    [SerializeField] public bool onLedge;
+    [SerializeField] public bool nextToWall;
 
     [Header("State Durations")]
     [SerializeField] float hurtDuration;
@@ -76,7 +78,7 @@ public class NPCStatesScript : MonoBehaviour
             facingDirection = -1;
         }
 
-        if (!isChasing && !isTelegraphing && !isAttacking && !isHurt)
+        if (!isChasing && !isTelegraphing && !isAttacking && !isHurt/* && !isClimbing && !onLedge*/)
         {
             isIdle = true;
         }

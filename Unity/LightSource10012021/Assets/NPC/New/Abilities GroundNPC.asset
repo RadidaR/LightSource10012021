@@ -16,8 +16,8 @@ MonoBehaviour:
   canMove: 1
   canRun: 1
   canJump: 0
-  canClimb: 0
-  avoidsLedges: 1
+  canClimb: 1
+  avoidsLedges: 0
   canFly: 0
   canAttack: 1
   hasCombo: 0

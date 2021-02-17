@@ -57,7 +57,10 @@ public class IdleBehaviourScript : MonoBehaviour
     {
         if (states.isIdle)
         {
-            IdleBehaviour();
+            if (!abilities.canFly)
+            {
+                IdleBehaviour();
+            }
         }
         else
         {
@@ -70,12 +73,12 @@ public class IdleBehaviourScript : MonoBehaviour
 
     }
 
-    public void FlipNPC()
-    {
-        Vector2 npcScale = npc.transform.localScale;
-        npcScale.x = states.facingDirection;
-        npc.transform.localScale = npcScale;
-    }
+    //public void FlipNPC()
+    //{
+    //    Vector2 npcScale = npc.transform.localScale;
+    //    npcScale.x = states.facingDirection;
+    //    npc.transform.localScale = npcScale;
+    //}
 
     public void IdleBehaviour()
     {
@@ -100,30 +103,33 @@ public class IdleBehaviourScript : MonoBehaviour
                 {
 
                     int direction = Random.Range(-1, 2);
-                    if (direction == -1)
+                    if (direction != 0)
                     {
-                        states.facingDirection = -1;
+                        movement.FlipNPC(direction);
                     }
-                    else if (direction == 1)
-                    {
-                        states.facingDirection = 1;
-                    }
-                    else if (direction == 0)
-                    {
+                    else
+                    { 
                         idleRunning = false;
-                        return;
                     }
+
+                    if (abilities.avoidsLedges)
+                    {
+                        if (states.onLedge)
+                        {
+                            movement.FlipNPC(direction * -1);
+                        }
+                    }
+                    //FlipNPC();
 
                     walkTimer = Random.Range(walkTime1, walkTime2);
 
-                    FlipNPC();
                 }
             }
 
             if (walkTimer > 0)
             {
                 walkTimer -= Time.fixedDeltaTime;
-                movement.Move(data.moveSpeed);
+                movement.Move(data.moveSpeed, Vector2.zero);
             }
             else
             {

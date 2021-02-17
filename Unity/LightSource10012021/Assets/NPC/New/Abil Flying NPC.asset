@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d22871fe24d01f4ab8edba14e2c319b, type: 3}
-  m_Name: NPC2Abilities
+  m_Name: Abil Flying NPC
   m_EditorClassIdentifier: 
   type: 
   canMove: 1
@@ -19,10 +19,10 @@ MonoBehaviour:
   canClimb: 0
   avoidsLedges: 0
   canFly: 1
-  canAttack: 0
+  canAttack: 1
   hasCombo: 0
   usesWeapons: 0
-  standardAttack: 0
+  standardAttack: 1
   weaponAttack: 0
   rangedAttack: 0
   chargeAttack: 0
