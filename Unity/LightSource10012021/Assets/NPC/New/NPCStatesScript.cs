@@ -25,6 +25,15 @@ public class NPCStatesScript : MonoBehaviour
     [SerializeField] public bool isHurt;
     [SerializeField] public bool isArmed;
 
+    [Header("Movement")]
+    [SerializeField] public bool isGrounded;
+    [SerializeField] public bool isStill;
+    [SerializeField] public bool isWalking;
+    [SerializeField] public bool isRunning;
+    [SerializeField] public bool isJumping;
+    [SerializeField] public bool isClimbing;
+    [SerializeField] public bool isFlying;
+
     [Header("State Durations")]
     [SerializeField] float hurtDuration;
 

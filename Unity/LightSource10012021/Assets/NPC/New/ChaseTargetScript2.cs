@@ -153,7 +153,7 @@ public class ChaseTargetScript2 : MonoBehaviour
             if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
             {
                 states.isChasing = true;
-                movement.Run();
+                movement.Move(data.runSpeed);
                 //Vector2 velocity = rigidBody.velocity;
                 //velocity.x = data.runSpeed * directionToTarget;
                 //rigidBody.velocity = velocity;
@@ -211,7 +211,7 @@ public class ChaseTargetScript2 : MonoBehaviour
             if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
             {
                 states.isChasing = true;
-                movement.Walk();
+                movement.Move(data.moveSpeed);
                 //Vector2 velocity = rigidBody.velocity;
                 //velocity.x = data.moveSpeed * directionToTarget;
                 //rigidBody.velocity = velocity;

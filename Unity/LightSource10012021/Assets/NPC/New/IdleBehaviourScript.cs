@@ -82,10 +82,7 @@ public class IdleBehaviourScript : MonoBehaviour
         if (!idleRunning)
         {
             idleRunning = true;
-
-            Vector2 velocity = rigidBody.velocity;
-            velocity.x = 0;
-            rigidBody.velocity = velocity;
+            movement.StopMoving();
             stayTimer = Random.Range(stayTime1, stayTime2);
         }
         else
@@ -93,7 +90,6 @@ public class IdleBehaviourScript : MonoBehaviour
             if (stayTimer > 0)
             {
                 stayTimer -= Time.fixedDeltaTime;
-                //rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
                 movement.StopMoving();
                 return;
             }
@@ -127,8 +123,7 @@ public class IdleBehaviourScript : MonoBehaviour
             if (walkTimer > 0)
             {
                 walkTimer -= Time.fixedDeltaTime;
-                //rigidBody.velocity = new Vector2(data.moveSpeed * states.facingDirection, rigidBody.velocity.y);
-                movement.Walk();
+                movement.Move(data.moveSpeed);
             }
             else
             {
