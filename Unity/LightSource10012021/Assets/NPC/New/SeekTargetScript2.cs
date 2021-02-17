@@ -11,7 +11,7 @@ public class SeekTargetScript2 : MonoBehaviour
     public NPCData data;
     public NPCAbilities abilities;
 
-    //public NPCAttackScript attacks;
+    public NPCAttackScript attacks;
 
     public LayerMask targetLayers;
 
@@ -35,14 +35,10 @@ public class SeekTargetScript2 : MonoBehaviour
             data = states.data;
             abilities = states.abilities;
 
-            //attacks = npc.GetComponentInChildren<NPCAttackScript>();
+            attacks = npc.GetComponentInChildren<NPCAttackScript>();
 
             visionRange = data.visionRange;
         }
-        //if (abilities.canFly)
-        //{
-        //    agent = GetComponent<NavMeshAgent2D>();
-        //}
     }
 
     void Update()
@@ -59,44 +55,13 @@ public class SeekTargetScript2 : MonoBehaviour
         //IF NO TARGETS IN SIGHT
         if (targetsInSight.Length == 0)
         {
-
             LoseTarget();
-            //IF THERE IS A LAST KNOWN POSITION
-            //if (lastKnownPosition != Vector2.zero)
-            //{
-            //    LoseTarget();
-                //    if (states.isChasing && states.isStill)
-                //    {
-                //        lastKnownPosition = Vector2.zero; ;
-                //        return;
-                //    }
-                //IF THE DISTANCE TO LAST KNOWN POSITION IS LESS THAN STOPPING DISTANCE
-                //if (Mathf.Abs(transform.position.x - lastKnownPosition.x) < 10)
-                //{
-                //    //ERASE LAST KNOWN POSITION AND RETURN
-                //    lastKnownPosition = Vector2.zero; ;
-                //    return;
-                //}
-            //}
-        ////LOSE TARGET
-        //LoseTarget();
         }
 
         //IF THERE IS A CURRENT TARGET
         if (currentTarget != null)
         {
-            //if (abilities.canFly)
-            //{
-            //    if (GetComponent<NPCStatsScript>().isHurt)
-            //    {
-            //        agent.destination = transform.position;
-            //    }
-            //    else
-            //    {
-            //        //ASSING NAV MESH AGENT'S DESTINATION TO TARGET'S POSITION
-            //        agent.destination = currentTarget.transform.position;
-            //    }
-            //}
+            
             //AND EXPAND VISION
             ExpandVision();
 
@@ -195,11 +160,6 @@ public class SeekTargetScript2 : MonoBehaviour
                                         LoseTarget();
                                         return;
                                     }
-                                    //else if (!currentTarget.GetComponentInChildren<CircleCollider2D>().enabled)
-                                    //{
-                                    //    LoseTarget();
-                                    //    return;
-                                    //}
                                 }
                             }
                         }
@@ -241,7 +201,7 @@ public class SeekTargetScript2 : MonoBehaviour
 
         if (lastKnownPosition != Vector2.zero)
         {
-            if (Vector2.Distance(transform.position, lastKnownPosition) < 3)
+            if (Vector2.Distance(transform.position, lastKnownPosition) < attacks.currentAttackRange)
             {
                 lastKnownPosition = Vector2.zero;
             }

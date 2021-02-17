@@ -17,7 +17,11 @@ MonoBehaviour:
   human: 0
   maxHealth: 50
   hurtDuration: 0.2
-  idleBehaviour: 
+  idleBehaviour: Random
+  idleStay1: 1
+  idleStay2: 3
+  idleMove1: 2
+  idleMove2: 3
   stopChaseAfter: 5
   moveSpeed: 10
   runSpeed: 20

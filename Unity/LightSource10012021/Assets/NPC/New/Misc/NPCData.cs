@@ -17,6 +17,10 @@ public class NPCData : ScriptableObject
 
     [Header("Idle Behaviour")]
     public string idleBehaviour;
+    public float idleStay1;
+    public float idleStay2;
+    public float idleMove1;
+    public float idleMove2;
 
     [Header("Chase Behaviour")]
     public float stopChaseAfter;

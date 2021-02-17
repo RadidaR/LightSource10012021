@@ -15,13 +15,15 @@ public class IdleBehaviourScript : MonoBehaviour
 
     public Rigidbody2D rigidBody;
 
-    public float stayTime1;
-    public float stayTime2;
+    public NavMeshAgent2D navAgent;
+
+    //public float stayTime1;
+    //public float stayTime2;
     
     public float stayTimer;
 
-    public float walkTime1;
-    public float walkTime2;
+    //public float walkTime1;
+    //public float walkTime2;
 
     public float walkTimer;
 
@@ -41,100 +43,120 @@ public class IdleBehaviourScript : MonoBehaviour
 
             movement = npc.GetComponentInChildren<NPCMovementScript>();
 
-            //seekTarget = npc.GetComponentInChildren<SeekTargetScript2>();
-            //attacks = npc.GetComponentInChildren<NPCAttackScript>();
             rigidBody = npc.GetComponent<Rigidbody2D>();
 
-            //if (abilities.canFly)
-            //{
-            //    navAgent = npc.GetComponent<NavMeshAgent2D>();
-            //}
+            if (abilities.canFly)
+            {
+                navAgent = npc.GetComponent<NavMeshAgent2D>();
+            }
         }
     }
 
 
     private void FixedUpdate()
     {
+        //IF IDLE
         if (states.isIdle)
         {
-            if (!abilities.canFly)
-            {
-                IdleBehaviour();
-            }
+            //START IDLE BEHAVIOUR
+            IdleBehaviour();
         }
+        //IF NOT
         else
         {
-            stayTimer = 0;
-            walkTimer = 0;
+            //RESET IDLE VALUES
             idleRunning = false;
+            if (data.idleBehaviour == "Random")
+            {
+                stayTimer = 0;
+                walkTimer = 0;
+            }
         }
-
-
 
     }
 
-    //public void FlipNPC()
-    //{
-    //    Vector2 npcScale = npc.transform.localScale;
-    //    npcScale.x = states.facingDirection;
-    //    npc.transform.localScale = npcScale;
-    //}
-
     public void IdleBehaviour()
     {
-        if (!idleRunning)
+        //FOR MOBILE UNITS
+        if (abilities.canMove)
         {
-            idleRunning = true;
-            movement.StopMoving();
-            stayTimer = Random.Range(stayTime1, stayTime2);
-        }
-        else
-        {
-            if (stayTimer > 0)
+            //RANDOM IDLE BEHAVIOUR
+            if (data.idleBehaviour == "Random")
             {
-                stayTimer -= Time.fixedDeltaTime;
-                movement.StopMoving();
-                return;
-            }
-            else
-            {
-                stayTimer = 0;
-                if (walkTimer == 0)
+                //FOR GROUND UNITS
+                if (!abilities.canFly)
                 {
-
-                    int direction = Random.Range(-1, 2);
-                    if (direction != 0)
+                    //IF NOT IDLE ALREADY
+                    if (!idleRunning)
                     {
-                        movement.FlipNPC(direction);
+                        //TURN IDLE_RUNNING ON
+                        idleRunning = true;
+                        //AND ASSIGN RANDOM STAY TIME
+                        stayTimer = Random.Range(data.idleStay1, data.idleStay2);
                     }
+                    //IF IDLE
                     else
-                    { 
-                        idleRunning = false;
-                    }
-
-                    if (abilities.avoidsLedges)
                     {
-                        if (states.onLedge)
+                        //IF THERE IS REMAINING STAY TIME
+                        if (stayTimer > 0)
                         {
-                            movement.FlipNPC(direction * -1);
+                            //TICK AWAY AT IT
+                            stayTimer -= Time.fixedDeltaTime;
+                            //KEEP STILL
+                            movement.StopMoving();
+                            //AND GO BACK TO TOP
+                            return;
+                        }
+                        //IF STAY TIME HAS RUN OUT
+                        else
+                        {
+                            //MAKE STAY TIMER 0
+                            stayTimer = 0;
+                            //CHECK IF WALK TIMER IS 0
+                            if (walkTimer == 0)
+                            {
+                                //ASSIGN RANDOM DIRECTION
+                                int direction = Random.Range(-1, 2);
+                                //IF DIRECTION IS -1 OR 1
+                                if (direction != 0)
+                                {
+                                    if (!states.isClimbing)
+                                    {
+                                        //FLIP NPC IN THAT DIRECTION
+                                        movement.FlipNPC(direction);
+                                    }
+                                }
+                                //IF DIRECTION IS 0
+                                else
+                                {
+                                    //RESET STAY TIMER
+                                    stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+                                    //AND GO BACK TO TOP
+                                    return;
+                                }
+
+                                //AND ASSIGN RANDOM WALK TIME
+                                walkTimer = Random.Range(data.idleMove1, data.idleMove2);
+                            }
+                        }
+                        //IF THERE IS REMAINING WALK TIME
+                        if (walkTimer > 0)
+                        {
+                            //TICK AWAY AT IT
+                            walkTimer -= Time.fixedDeltaTime;
+                            //AND MOVE
+                            movement.Move(data.moveSpeed, Vector2.zero);
+                        }
+                        //IF WALK TIME HAS RUN OUT
+                        else
+                        {
+                            //MAKE WALK TIMER 0
+                            walkTimer = 0;
+                            //AND TURN IDLE_RUNNING OFF
+                            idleRunning = false;
                         }
                     }
-                    //FlipNPC();
-
-                    walkTimer = Random.Range(walkTime1, walkTime2);
-
                 }
-            }
-
-            if (walkTimer > 0)
-            {
-                walkTimer -= Time.fixedDeltaTime;
-                movement.Move(data.moveSpeed, Vector2.zero);
-            }
-            else
-            {
-                walkTimer = 0;
-                idleRunning = false;
             }
         }
     }

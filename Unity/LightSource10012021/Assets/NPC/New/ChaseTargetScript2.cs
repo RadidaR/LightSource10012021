@@ -19,17 +19,10 @@ public class ChaseTargetScript2 : MonoBehaviour
 
     public NavMeshAgent2D navAgent;
 
-    //public Vector2 chasePosition;
-
-
-    //[SerializeField] NPCStatsData npcStatsData;
-    //[SerializeField] SeekTargetScript seekTarget;
     [SerializeField] Rigidbody2D rigidBody;
     [SerializeField] int directionToTarget;
 
 
-    //public float attackRange;
-    // Start is called before the first frame update
     private void OnValidate()
     {
         if (gameObject.activeInHierarchy)
@@ -52,123 +45,70 @@ public class ChaseTargetScript2 : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        //if (navAgent != null)
-        //{
-        //    navAgent.speed = data.flySpeed;
-        //}
-    }
-
-    // Update is called once per frame
-    void Update()
-    {     
-    }
-
     private void FixedUpdate()
     {
+        //IF THERE IS A TARGET
         if (seekTarget.currentTarget != null)
         {
-            //chasePosition = seekTarget.currentTarget.transform.position;
-
+            //FOR MOBILE UNITS
             if (abilities.canMove)
             {
+                //CHASE TARGETS POSITION
                 ChaseTarget(seekTarget.currentTarget.transform.position);
             }
         }
+        //IF NO TARGET, BUT LAST KNOWN POSITION ISN'T EMPTY
         else if (seekTarget.lastKnownPosition != Vector2.zero)
         {
-            //chasePosition = seekTarget.lastKnownPosition;
-
+            //FOR MOBILE UNITS
             if (abilities.canMove)
             {
+                //CHASE LAST KNOWN POSITION
                 ChaseTarget(seekTarget.lastKnownPosition);
             }
-        }
-
-        if (seekTarget.currentTarget == null && seekTarget.lastKnownPosition == Vector2.zero)
+        }    
+        //IF NO TARGET AND NO LAST KNOWN POSITION
+        else if (seekTarget.currentTarget == null && seekTarget.lastKnownPosition == Vector2.zero)
         {
-            //chasePosition = Vector2.zero;
+            //STOP CHASING
             states.isChasing = false;
         }
-
-
-        //if (seekTarget.currentTarget != null)
-        //{
-        //    states.isChasing = true;
-
-        //    chasePosition = seekTarget.currentTarget.transform.position;
-
-        //    if (abilities.canMove)
-        //    {
-        //        ChaseTarget();
-        //    }
-        //}
-        //else
-        //{
-        //    if (seekTarget.lastKnownPosition != Vector2.zero)
-        //    {
-        //        chasePosition = seekTarget.lastKnownPosition;
-
-        //        if (abilities.canMove)
-        //        {
-        //            ChaseTarget();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        states.isChasing = false;
-        //    }
-        //}
-
-        //if (chasePosition != Vector2.zero)
-        //{
-        //    if (gameObject.transform.position.x - chasePosition.x < 0)
-        //    {
-        //        directionToTarget = 1;
-        //    }
-        //    if (gameObject.transform.position.x - chasePosition.x > 0)
-        //    {
-        //        directionToTarget = -1;
-        //    }
-
-        //    //Debug.Log("FlipNPC");
-
-        //    movement.FlipNPC(directionToTarget);
-        //}
     }
-
-    //public void FlipNPC()
-    //{
-    //    Vector2 npcScale = npc.transform.localScale;
-    //    npcScale.x = directionToTarget;
-    //    npc.transform.localScale = npcScale;
-    //}
 
     void ChaseTarget(Vector2 position)
     {
+        //FOR HOSTILE UNITS
         if (abilities.canAttack)
         {
+            //IF TARGET IS OUT OF CURRENT ATTACK RANGE
             if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
             {
+                //START CHASING
                 states.isChasing = true;
 
+                //FOR GROUND UNITS
                 if (!abilities.canFly)
                 {
+                    //RUN
                     movement.Move(data.runSpeed, position);
                 }
+                //FOR FLYING UNITS
                 else
                 {
-                    //navAgent.destination = chasePosition;
+                    //FLY
                     movement.Move(data.flySpeed, position);
                 }
             }
+            //IF TARGET IS WITHIN ATTACK RANGE
             else
             {
+                //STOP MOVING
                 movement.StopMoving();
+                //ATTACKS TO BE ADDED
             }
         }
 
+        //TRACK DIRECTION TO TARGET
         if (gameObject.transform.position.x - position.x < 0)
         {
             directionToTarget = 1;
@@ -177,87 +117,7 @@ public class ChaseTargetScript2 : MonoBehaviour
         {
             directionToTarget = -1;
         }
-
+        //FLIP NPC TO FACE IT
         movement.FlipNPC(directionToTarget);
-
-        //Debug.Log("FlipNPC");
-
-
-        //if (!abilities.canFly)
-        //{
-        //    //if not attacking
-        //    if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
-        //    {
-        //        states.isChasing = true;
-        //        movement.Move(data.runSpeed, chasePosition);
-        //        //Vector2 velocity = rigidBody.velocity;
-        //        //velocity.x = data.runSpeed * directionToTarget;
-        //        //rigidBody.velocity = velocity;
-
-        //    }
-        //    else
-        //    {
-        //        movement.StopMoving();
-        //    }
-        //    //else - attack            
-        //}
-
-        //if (!abilities.canFly)
-        //{
-        //    if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
-        //    {
-        //        Vector2 velocity = rigidBody.velocity;
-        //        velocity.x = data.moveSpeed * directionToTarget;
-        //        rigidBody.velocity = velocity;
-        //    }
-        //    else
-        //    {
-        //        chasePosition = Vector2.zero;
-        //    }
-        //}
-        //else if (abilities.canFly)
-        //{
-        //    if (Vector2.Distance(npc.transform.position, chasePosition) > attacks.currentAttackRange)
-        //    {
-        //        if (!states.isHurt)
-        //        {
-        //            if (seekTarget.currentTarget != null && seekTarget.currentTarget.gameObject.tag == "Player")
-        //            {
-        //                Vector2 targetPosition = chasePosition;
-        //                targetPosition.y += 4f;
-        //                navAgent.destination = targetPosition;
-        //            }
-        //            else
-        //            {
-        //                navAgent.destination = chasePosition;
-        //            }
-        //        }
-        //        else
-        //        {
-        //            navAgent.destination = npc.transform.position;
-        //        }
-        //    }
-        //}
     }
-
-    //public void GoToLastPosition()
-    //{
-    //    if (!abilities.canFly)
-    //    {
-    //        if (Mathf.Abs(npc.transform.position.x - chasePosition.x) > attacks.currentAttackRange)
-    //        {
-    //            states.isChasing = true;
-    //            movement.Move(data.moveSpeed, chasePosition);
-    //            //Vector2 velocity = rigidBody.velocity;
-    //            //velocity.x = data.moveSpeed * directionToTarget;
-    //            //rigidBody.velocity = velocity;
-    //        }
-    //        else
-    //        {
-    //            movement.StopMoving();
-    //        }
-    //    }
-    //}
-
-
 }

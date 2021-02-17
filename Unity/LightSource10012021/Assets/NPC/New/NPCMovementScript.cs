@@ -76,6 +76,7 @@ public class NPCMovementScript : MonoBehaviour
             states.isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
             states.onLedge = !Physics2D.OverlapCircle(ledgeCheck.position, ledgeCheckRadius, groundLayer);
 
+            //HANDLES STILL, WALKING, AND RUNNING BOOLEANS
             if (Mathf.Abs(rigidBody.velocity.x) < 0.25f && Mathf.Abs(rigidBody.velocity.y) < 0.25f)
             {
                 states.isStill = true;
@@ -93,6 +94,7 @@ public class NPCMovementScript : MonoBehaviour
                 states.isRunning = true;
             }
 
+            //HANDLES LEDGES
             if (abilities.avoidsLedges)
             {
                 if (states.onLedge)
@@ -101,6 +103,7 @@ public class NPCMovementScript : MonoBehaviour
                 }
             }
 
+            //HANDLES CLIMBING
             if (abilities.canClimb)
             {
                 if (!states.nextToWall)
@@ -110,6 +113,7 @@ public class NPCMovementScript : MonoBehaviour
             }
         }
 
+        //TURNS STILL BOOLEAN OFF
         if (states.isClimbing || states.isWalking || states.isRunning || states.isFlying)
         {
             states.isStill = false;
@@ -118,44 +122,39 @@ public class NPCMovementScript : MonoBehaviour
 
     public void StopMoving()
     {
+        //GROUND UNITS
         if (!abilities.canFly)
         {
-            //velocity = rigidBody.velocity;
-            //velocity.x = 0;
-            //rigidBody.velocity = velocity;
-            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-            //states.isStill = true;
+            if (states.isClimbing)
+            {
+                rigidBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                //rigidBody.velocity = new Vector2(0, 0);
+            }
+            else
+            {
+                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+            }
         }
+        //FLYING UNITS
         else
         {
             navAgent.destination = npc.transform.position;
         }
     }
 
-    //public void Walk()
-    //{
-    //    velocity = rigidBody.velocity;
-    //    velocity.x = data.moveSpeed * states.facingDirection;
-    //    rigidBody.velocity = velocity;
-    //}
-
-    //public void Run()
-    //{
-    //    velocity = rigidBody.velocity;
-    //    velocity.x = data.runSpeed * states.facingDirection;
-    //    rigidBody.velocity = velocity;
-    //}
-
     public void Move(float speed, Vector2 position)
     {
-        //velocity = rigidBody.velocity;
-        //velocity.x = speed * states.facingDirection;
+        rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+        //GROUND UNITS
         if (!abilities.canFly)
         {
+            //IF CONNECTED TO A SURFACE                                     //WILL PROBS ADD 'IF CAN MOVE' AND 'IF NOT HURT' OR SOMETHING OF THIS NATURE
             if (states.isGrounded || states.isClimbing)
             {
+                //IF NOT CHASING ANYTHING
                 if (!states.isChasing)
                 {
+                    //HANDLES LEDGES
                     if (abilities.avoidsLedges)
                     {
                         if (states.onLedge)
@@ -164,6 +163,7 @@ public class NPCMovementScript : MonoBehaviour
                         }
                     }
 
+                    //HANDLES WALLS
                     if (states.nextToWall)
                     {
                         if (abilities.canClimb)
@@ -176,34 +176,23 @@ public class NPCMovementScript : MonoBehaviour
                         }
                     }
 
+                    //ASSIGN VELOCITY
                     rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
                 }
+                //IF CHASING SOMETHING
                 else
                 {
+                    //HANDLES LEDGES
                     if (abilities.avoidsLedges)
                     {
                         if (states.onLedge)
                         {
-                            //if (lostChaseTimer > 0)
-                            //{
-                            //    lostChaseTimer -= Time.fixedDeltaTime;
-                            //}
-                            //else if (lostChaseTimer < 0)
-                            //{
-                            //    lostChaseTimer = 0;
-                            //    states.isChasing = false;
-                            //    StopMoving();
-                            //    return;
-                            //}
-                            //else if (lostChaseTimer == 0)
-                            //{
-                            //    lostChaseTimer = 3;
-                            //}
                             StopMoving();
                             return;
                         }
                     }
 
+                    //HANDLES WALLKS
                     if (states.nextToWall)
                     {
                         if (abilities.canClimb)
@@ -216,26 +205,17 @@ public class NPCMovementScript : MonoBehaviour
                         }
                     }
 
+                    //ASIGN VELOCITY
                     rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
                 }
-                //states.isStill = false;
-                //if (Mathf.Abs(rigidBody.velocity.x) > 0.25f && Mathf.Abs(rigidBody.velocity.x) <= data.moveSpeed)
-                //{
-                //    states.isRunning = false;
-                //    states.isWalking = true;
-                //}
-                //else if (Mathf.Abs(rigidBody.velocity.x) > data.moveSpeed)
-                //{
-                //    states.isWalking = false;
-                //    states.isRunning = true;
-                //}
             }
         }
+        //FLYING UNITS
         else
         {
+            //IF NOT HURT 
             if (!states.isHurt)
             {
-                //states.isFlying = true;
                 navAgent.destination = position;
             }
         }
@@ -243,7 +223,6 @@ public class NPCMovementScript : MonoBehaviour
 
     public void Climb(float speed)
     {
-        //states.isStill = false;
         states.isClimbing = true;
         rigidBody.velocity = new Vector2(rigidBody.velocity.x, speed);
     }
