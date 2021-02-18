@@ -32,6 +32,7 @@ public class NPCData : ScriptableObject
     public float flyAcceleration;
     public float climbSpeed;
     public float jumpForce;
+    public float jumpDelay;
 
     [Header("Collision")]
     public int collisionDamage;

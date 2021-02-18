@@ -17,18 +17,19 @@ MonoBehaviour:
   human: 0
   maxHealth: 50
   hurtDuration: 0.2
-  idleBehaviour: Random
-  idleStay1: 1
+  idleBehaviour: Patrol
+  idleStay1: 2
   idleStay2: 3
-  idleMove1: 2
-  idleMove2: 3
+  idleMove1: 1
+  idleMove2: 2
   stopChaseAfter: 5
   moveSpeed: 10
   runSpeed: 20
   flySpeed: 30
   flyAcceleration: 0
   climbSpeed: 10
-  jumpForce: 0
+  jumpForce: 25
+  jumpDelay: 0.5
   collisionDamage: 0
   standardAttackRange: 5
   standardAttackSpeed: 0

@@ -30,6 +30,15 @@ public class IdleBehaviourScript : MonoBehaviour
     public bool idleRunning;
 
 
+    public int directionToDestination;
+    public Vector2 patrolDestination;
+
+    public Transform patrolSpot1;
+    public Transform patrolSpot2;
+    public Transform patrolSpot3;
+    public Transform patrolSpot4;
+
+
 
     private void OnValidate()
     {
@@ -72,7 +81,6 @@ public class IdleBehaviourScript : MonoBehaviour
                 walkTimer = 0;
             }
         }
-
     }
 
     public void IdleBehaviour()
@@ -154,6 +162,94 @@ public class IdleBehaviourScript : MonoBehaviour
                             walkTimer = 0;
                             //AND TURN IDLE_RUNNING OFF
                             idleRunning = false;
+                        }
+                    }
+                }
+            }
+            if (data.idleBehaviour == "Patrol")
+            {
+                if (!abilities.canFly)
+                {
+                    float distanceToSpot1 = Vector2.Distance(npc.transform.position, patrolSpot1.position);
+                    float distanceToSpot2 = Vector2.Distance(npc.transform.position, patrolSpot2.position);
+
+                    if (!idleRunning)
+                    {
+                        idleRunning = true;
+
+                        stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+
+                        if (distanceToSpot1 < distanceToSpot2)
+                        {
+                            patrolDestination = patrolSpot1.localPosition;
+                        }
+                        else
+                        {
+                            patrolDestination = patrolSpot2.localPosition;
+                        }
+
+                        if (npc.transform.localPosition.x - patrolDestination.x < 0)
+                        {
+                            directionToDestination = 1;
+                        }
+                        if (npc.transform.localPosition.x - patrolDestination.x > 0)
+                        {
+                            directionToDestination = -1;
+                        }
+                        //FLIP NPC TO FACE IT
+                        movement.FlipNPC(directionToDestination);
+                    }
+                    else
+                    {
+                        if (stayTimer > 0)
+                        {
+                            stayTimer -= Time.fixedDeltaTime;
+                            movement.StopMoving();
+                            return;
+                        }
+                        //else
+                        //{
+                        //    stayTimer = 0;
+                        //}
+
+                        if (Mathf.Abs(npc.transform.localPosition.x - patrolDestination.x) > data.visionRange)
+                        {
+                            movement.Move(data.moveSpeed, patrolDestination);
+                        }
+                        else
+                        {
+                            if (stayTimer == 0)
+                            {
+                                stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+                            }
+                            else if (stayTimer > 0)
+                            {
+                                stayTimer -= Time.fixedDeltaTime;
+                                movement.StopMoving();
+                            }
+                            else if (stayTimer < 0)
+                            {
+                                if (distanceToSpot1 < distanceToSpot2)
+                                {
+                                    patrolDestination = patrolSpot2.localPosition;
+                                }
+                                else
+                                {
+                                    patrolDestination = patrolSpot1.localPosition;
+                                }
+
+                                if (npc.transform.localPosition.x - patrolDestination.x < 0)
+                                {
+                                    directionToDestination = 1;
+                                }
+                                if (npc.transform.localPosition.x - patrolDestination.x > 0)
+                                {
+                                    directionToDestination = -1;
+                                }
+
+                                movement.FlipNPC(directionToDestination);
+                                stayTimer = 0;
+                            }                            
                         }
                     }
                 }

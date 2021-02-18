@@ -27,14 +27,16 @@ public class NPCStatesScript : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] public bool isGrounded;
+    [SerializeField] public bool isAirborne;
     [SerializeField] public bool isStill;
     [SerializeField] public bool isWalking;
     [SerializeField] public bool isRunning;
     [SerializeField] public bool isJumping;
     [SerializeField] public bool isClimbing;
     [SerializeField] public bool isFlying;
-    [SerializeField] public bool onLedge;
-    [SerializeField] public bool nextToWall;
+    [SerializeField] public bool ledgeAhead;
+    [SerializeField] public bool wallAhead;
+    [SerializeField] public bool stepAhead;
 
     [Header("State Durations")]
     [SerializeField] float hurtDuration;

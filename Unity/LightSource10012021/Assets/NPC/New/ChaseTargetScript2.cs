@@ -81,7 +81,8 @@ public class ChaseTargetScript2 : MonoBehaviour
         if (abilities.canAttack)
         {
             //IF TARGET IS OUT OF CURRENT ATTACK RANGE
-            if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
+            //if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange || Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
+            if (Vector2.Distance(npc.transform.position, position) > attacks.currentAttackRange)
             {
                 //START CHASING
                 states.isChasing = true;
@@ -89,8 +90,29 @@ public class ChaseTargetScript2 : MonoBehaviour
                 //FOR GROUND UNITS
                 if (!abilities.canFly)
                 {
-                    //RUN
-                    movement.Move(data.runSpeed, position);
+                    if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
+                    {
+                        //RUN
+                        movement.Move(data.runSpeed, position);
+                    }
+                    else if (Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
+                    {
+                        if (states.stepAhead)
+                        {
+                            if (abilities.canClimb || abilities.canJump)
+                            {
+                                movement.Move(data.runSpeed, position);
+                            }
+                            else
+                            {
+                                movement.StopMoving();
+                            }
+                        }
+                        else
+                        {
+                            movement.StopMoving();
+                        }
+                    }
                 }
                 //FOR FLYING UNITS
                 else
@@ -109,11 +131,11 @@ public class ChaseTargetScript2 : MonoBehaviour
         }
 
         //TRACK DIRECTION TO TARGET
-        if (gameObject.transform.position.x - position.x < 0)
+        if (npc.transform.position.x - position.x < 0)
         {
             directionToTarget = 1;
         }
-        if (gameObject.transform.position.x - position.x > 0)
+        if (npc.transform.position.x - position.x > 0)
         {
             directionToTarget = -1;
         }
