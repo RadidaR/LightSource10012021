@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f859db68cc7fcbf42a0264a297801213, type: 3}
-  m_Name: Data GroundNPC
+  m_Name: d Ground AL
   m_EditorClassIdentifier: 
-  name: Ground NPC
+  name: Ground AL
   zombie: 1
   human: 0
   maxHealth: 50
