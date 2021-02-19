@@ -61,7 +61,16 @@ public class NPCStatesScript : MonoBehaviour
             {
                 type = "Human";
             }
-        }
+
+            if (abilities.canFly)
+            {
+                GetComponent<NavMeshAgent2D>().enabled = true;
+            }
+            //else
+            //{
+            //    GetComponent<NavMeshAgent2D>().enabled = false;
+            //}
+        }               
     }
 
     void Start()

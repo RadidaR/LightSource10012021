@@ -56,19 +56,20 @@ public class NPCMovementScript : MonoBehaviour
                 navAgent = npc.GetComponent<NavMeshAgent2D>();
             }
 
-
-
             wallCheckSize = wallCheck.gameObject.GetComponent<CapsuleCollider2D>().size;
         }
     }
 
     private void Start()
     {
+        
+
         if (navAgent != null)
         {
             //ASSIGNS FLY SPEED AND ACCELERATION
             navAgent.speed = data.flySpeed;
             navAgent.acceleration = data.flyAcceleration;
+            rigidBody.gravityScale = 0;
         }
     }
 
@@ -201,9 +202,52 @@ public class NPCMovementScript : MonoBehaviour
         //FLYING UNITS
         else
         {
-            navAgent.destination = npc.transform.position;
+            if (navAgent != null)
+            {
+                //Debug.Log("Stopping");
+                if (!states.isChasing)
+                {
+                    Vector2 direction = new Vector2(navAgent.destination.x - npc.transform.position.x, navAgent.destination.y - npc.transform.position.y).normalized;
+                    navAgent.speed = data.flySpeed / 5;
+                    navAgent.acceleration = data.flyAcceleration / 5;
+                    if (Vector2.Distance(npc.transform.position, navAgent.destination) > data.visionRange + data.visionExpansion)
+                    {
+                        //direction.x += data.visionRange;
+                        //direction.y += data.visionRange;
+                        navAgent.destination = new Vector2(npc.transform.position.x + (direction.x * data.visionRange), npc.transform.position.y + (direction.y * data.visionRange));
+                    }
+
+                    //if (Vector2.Distance(npc.transform.position, navAgent.destination) < data.visionRange)
+                    //{
+                    //    navAgent.speed = data.flySpeed / 5;
+                    //    navAgent.acceleration = data.flyAcceleration / 5;
+                    //    //navAgent.destination = npc.transform.position;
+                    //}
+
+                    if (Vector2.Distance(npc.transform.position, navAgent.destination) < data.visionRange / 2)
+                    {
+                        navAgent.speed = data.flySpeed / 10;
+                        navAgent.acceleration = data.flyAcceleration / 10;
+                        //navAgent.destination = npc.transform.position;
+                    }
+
+                    if (Vector2.Distance(npc.transform.position, navAgent.destination) < data.visionRange / 5)
+                    {
+                        //navAgent.speed = data.flySpeed / 10;
+                        //navAgent.acceleration = data.flyAcceleration / 10;
+                        navAgent.destination = npc.transform.position;
+                    }
+                }
+                else
+                {
+                    navAgent.destination = npc.transform.position;
+                }
+
+                //navAgent.destination = npc.transform.position;
+            }
         }
     }
+
 
     public void Move(float speed, Vector2 position)
     {
@@ -336,6 +380,8 @@ public class NPCMovementScript : MonoBehaviour
         //FLYING UNITS
         else
         {
+            navAgent.speed = data.flySpeed;
+            navAgent.acceleration = data.flyAcceleration;
             //IF NOT HURT 
             if (!states.isHurt)
             {
@@ -456,7 +502,7 @@ public class NPCMovementScript : MonoBehaviour
                     break;
                 }
                 unStuckCounter++;
-                Debug.Log(unStuckCounter.ToString());
+                //Debug.Log(unStuckCounter.ToString());
                 if (unStuckCounter > 25)
                 {
                     delaying = false;
@@ -513,6 +559,15 @@ public class NPCMovementScript : MonoBehaviour
         {
             Gizmos.color = Color.gray;
             Gizmos.DrawWireSphere(stepCheck.position, stepCheckRadius);
+        }
+
+        if (navAgent != null)
+        {
+            if (states.isIdle || states.isChasing)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawWireSphere(navAgent.destination, 5);
+            }
         }
     }
 }

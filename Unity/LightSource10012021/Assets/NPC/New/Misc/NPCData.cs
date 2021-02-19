@@ -22,6 +22,11 @@ public class NPCData : ScriptableObject
     public float idleMove1;
     public float idleMove2;
 
+    [Range(0, 99999)] public float idleBoundaryPosX;
+    [Range(-99999, 0)] public float idleBoundaryNegX;
+    [Range(0, 99999)] public float idleBoundaryPosY;
+    [Range(-99999, 0)] public float idleBoundaryNegY;
+
     [Header("Chase Behaviour")]
     public float stopChaseAfter;
 

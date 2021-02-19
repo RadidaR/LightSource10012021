@@ -17,15 +17,11 @@ public class IdleBehaviourScript : MonoBehaviour
 
     public NavMeshAgent2D navAgent;
 
-    //public float stayTime1;
-    //public float stayTime2;
     
     public float stayTimer;
 
-    //public float walkTime1;
-    //public float walkTime2;
 
-    public float walkTimer;
+    public float moveTimer;
 
     public bool idleRunning;
 
@@ -33,11 +29,12 @@ public class IdleBehaviourScript : MonoBehaviour
     public int directionToDestination;
     public Vector2 patrolDestination;
 
-    public Transform patrolSpot1;
-    public Transform patrolSpot2;
-    public Transform patrolSpot3;
-    public Transform patrolSpot4;
 
+    public List<Transform> patrolSpots;
+    public GameObject npcObject;
+
+    public int lastVisited;
+    public int goingTo;
 
 
     private void OnValidate()
@@ -58,9 +55,25 @@ public class IdleBehaviourScript : MonoBehaviour
             {
                 navAgent = npc.GetComponent<NavMeshAgent2D>();
             }
+
+            npcObject = npc.transform.parent.gameObject;
+
         }
     }
 
+    public void Awake()
+    {
+        Transform[] allTransforms = npcObject.GetComponentsInChildren<Transform>();
+        for (int i = 0; i < allTransforms.Length; i++)
+        {
+            //Debug.Log(i.ToString());
+            if (allTransforms[i].gameObject.tag == "Spot")
+            {
+                patrolSpots.Add(allTransforms[i]);
+            }
+        }
+
+    }
 
     private void FixedUpdate()
     {
@@ -72,14 +85,11 @@ public class IdleBehaviourScript : MonoBehaviour
         }
         //IF NOT
         else
-        {
+        { 
             //RESET IDLE VALUES
             idleRunning = false;
-            if (data.idleBehaviour == "Random")
-            {
-                stayTimer = 0;
-                walkTimer = 0;
-            }
+            stayTimer = 0;
+            moveTimer = 0;
         }
     }
 
@@ -121,7 +131,7 @@ public class IdleBehaviourScript : MonoBehaviour
                             //MAKE STAY TIMER 0
                             stayTimer = 0;
                             //CHECK IF WALK TIMER IS 0
-                            if (walkTimer == 0)
+                            if (moveTimer == 0)
                             {
                                 //ASSIGN RANDOM DIRECTION
                                 int direction = Random.Range(-1, 2);
@@ -144,14 +154,14 @@ public class IdleBehaviourScript : MonoBehaviour
                                 }
 
                                 //AND ASSIGN RANDOM WALK TIME
-                                walkTimer = Random.Range(data.idleMove1, data.idleMove2);
+                                moveTimer = Random.Range(data.idleMove1, data.idleMove2);
                             }
                         }
                         //IF THERE IS REMAINING WALK TIME
-                        if (walkTimer > 0)
+                        if (moveTimer > 0)
                         {
                             //TICK AWAY AT IT
-                            walkTimer -= Time.fixedDeltaTime;
+                            moveTimer -= Time.fixedDeltaTime;
                             //AND MOVE
                             movement.Move(data.moveSpeed, Vector2.zero);
                         }
@@ -159,35 +169,138 @@ public class IdleBehaviourScript : MonoBehaviour
                         else
                         {
                             //MAKE WALK TIMER 0
-                            walkTimer = 0;
+                            moveTimer = 0;
                             //AND TURN IDLE_RUNNING OFF
                             idleRunning = false;
                         }
                     }
                 }
-            }
-            if (data.idleBehaviour == "Patrol")
-            {
-                if (!abilities.canFly)
+                //FOR FLYING UNITS
+                else
                 {
-                    float distanceToSpot1 = Vector2.Distance(npc.transform.position, patrolSpot1.position);
-                    float distanceToSpot2 = Vector2.Distance(npc.transform.position, patrolSpot2.position);
-
+                    //IF NOT IDLE ALREADY
                     if (!idleRunning)
                     {
+                        //TURN IDLE ON
+                        idleRunning = true;
+                        //ASSIGN RANDOM STAY TIMER
+                        stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+                    }
+                    //IF ALREADY IDLE
+                    else
+                    {
+                        //IF STAY TIMER HASN'T COUNTED DOWN
+                        if (stayTimer > 0)
+                        {
+                            //TICK AWAY AT IT
+                            stayTimer -= Time.fixedDeltaTime;
+                            //STOP MOTION
+                            movement.StopMoving();
+                            //AND GO BACK TO TOP
+                            return;
+                        }
+                        //IF STAY TIMER HAS RUN OUT
+                        else
+                        {
+                            //RESET STAY TIMER TO 0
+                            stayTimer = 0;
+                            //CHECK MOVE TIMER
+                            if (moveTimer == 0)
+                            {
+                                //ASSIGN RANDOM POSITIONS TO ALL PATROL SPOTS
+                                for (int i = 0; i < patrolSpots.Count; i++)
+                                {
+                                    Vector2 randomPosition = new Vector2(Random.Range(data.idleBoundaryNegX, data.idleBoundaryPosX), Random.Range(data.idleBoundaryNegY, data.idleBoundaryPosY));
+                                    patrolSpots[i].position = randomPosition;
+                                }
+                                //ASSIGN RANDOM MOVE TIMER
+                                moveTimer = Random.Range(data.idleMove1, data.idleMove2);
+
+                                //SET RANDOM PATROL SPOT AS PATROL DESTINATION
+                                int randomNumber = Random.Range(0, patrolSpots.Count);
+                                patrolDestination = patrolSpots[randomNumber].position;
+                            }
+                            //IF MOVE TIMER HASN'T COUNTED DOWN
+                            else if (moveTimer > 0)
+                            {
+                                //TICK AWAY AT IT
+                                moveTimer -= Time.fixedDeltaTime;
+                                //AND CHECK IF THE PATROL DESTINATION IS OUT OF VISION RANGE
+                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange)
+                                {
+                                    //CHECK DIRECTION TO DESTINATION
+                                    if (npc.transform.localPosition.x - patrolDestination.x < 0)
+                                    {
+                                        directionToDestination = 1;
+                                    }
+                                    if (npc.transform.localPosition.x - patrolDestination.x > 0)
+                                    {
+                                        directionToDestination = -1;
+                                    }
+                                    //FLIP NPC TO FACE IT
+                                    movement.FlipNPC(directionToDestination);
+                                    //AND MOVE TOWARDS IT
+                                    movement.Move(data.flySpeed, patrolDestination);
+                                }
+                                //IF IT IS WITHIN VISION RANGE
+                                else
+                                {
+                                    //RESET MOVE TIMER
+                                    moveTimer = 0;
+                                    //STOP MOVING
+                                    movement.StopMoving();
+                                    //AND RESET IDLE
+                                    idleRunning = false;
+                                }
+                            }
+                            //IF MOVE TIMER HAS COUNTED DOWN
+                            else
+                            {
+                                //RESET IT
+                                moveTimer = 0;
+                                //AND RESET IDLE
+                                idleRunning = false;
+                            }
+                        }
+                    }
+                }
+            }
+            //PATROLLING IDLE BEHAVIOUR
+            else if (data.idleBehaviour == "Patrol")
+            {
+                //ARRAY TO HOLD DISTANCES TO PATROL SPOTS
+                float[] distances = new float[patrolSpots.Count];
+
+                //GATHER ALL DISTANCES
+                for (int i = 0; i < patrolSpots.Count; i++)
+                {
+                    distances[i] = Vector2.Distance(npc.transform.position, patrolSpots[i].position);
+                }
+
+                //FOR GROUND UNITS
+                if (!abilities.canFly)
+                {
+                    //IF NOT IDLE ALREADY
+                    if (!idleRunning)
+                    {
+                        //TURN IDLE ON
                         idleRunning = true;
 
+                        //ASSIGN POSSIBLY RANDOM STAY TIMER
                         stayTimer = Random.Range(data.idleStay1, data.idleStay2);
 
-                        if (distanceToSpot1 < distanceToSpot2)
+                        //CHECK WHICH PATROL POINT IS CLOSER
+                        if (distances[0] < distances[1])
                         {
-                            patrolDestination = patrolSpot1.localPosition;
+                            //ASSIGN IT AS A PATROL DESTINATION
+                            patrolDestination = patrolSpots[0].localPosition;
                         }
                         else
                         {
-                            patrolDestination = patrolSpot2.localPosition;
+                            patrolDestination = patrolSpots[1].localPosition;
                         }
 
+                        //CHECK DIRECTION TO PATROL DESTINATION
                         if (npc.transform.localPosition.x - patrolDestination.x < 0)
                         {
                             directionToDestination = 1;
@@ -199,45 +312,58 @@ public class IdleBehaviourScript : MonoBehaviour
                         //FLIP NPC TO FACE IT
                         movement.FlipNPC(directionToDestination);
                     }
+                    //IF ALREADY IDLE
                     else
                     {
+                        //IF STAY TIMER HASN'T COUNTED DOWN
                         if (stayTimer > 0)
                         {
+                            //TICK AWAY AT IT
                             stayTimer -= Time.fixedDeltaTime;
+                            //STOP MOVING
                             movement.StopMoving();
+                            //AND GO BACK TO TOP
                             return;
                         }
-                        //else
-                        //{
-                        //    stayTimer = 0;
-                        //}
 
+                        //IF PATROL DESTINATION IS OUT OF SIGHT ON X AXIS
                         if (Mathf.Abs(npc.transform.localPosition.x - patrolDestination.x) > data.visionRange)
                         {
+                            //MOVE TOWARDS IT
                             movement.Move(data.moveSpeed, patrolDestination);
                         }
+                        //IF IN SIGHT
                         else
                         {
+                            //IF STAY TIMER HAS COUNTED DOWN
                             if (stayTimer == 0)
                             {
+                                //IF SO - ASSIGN POSSIBLY RANDOM STAY TIMER
                                 stayTimer = Random.Range(data.idleStay1, data.idleStay2);
                             }
+                            //ELSE IF NOT
                             else if (stayTimer > 0)
                             {
+                                //TICK AWAY AT IT
                                 stayTimer -= Time.fixedDeltaTime;
+                                //AND STOP MOVING
                                 movement.StopMoving();
                             }
+                            //IF STAY TIMER BELOW 0
                             else if (stayTimer < 0)
                             {
-                                if (distanceToSpot1 < distanceToSpot2)
+                                //CHECK TO SEE WHICH PATROL SPOT IS FURTHER
+                                if (distances[0] < distances[1])
                                 {
-                                    patrolDestination = patrolSpot2.localPosition;
+                                    //AND ASSIGN IT
+                                    patrolDestination = patrolSpots[1].localPosition;
                                 }
                                 else
                                 {
-                                    patrolDestination = patrolSpot1.localPosition;
+                                    patrolDestination = patrolSpots[0].localPosition;
                                 }
 
+                                //CHECK DIRECTION TO PATROL DESTINATION
                                 if (npc.transform.localPosition.x - patrolDestination.x < 0)
                                 {
                                     directionToDestination = 1;
@@ -247,11 +373,146 @@ public class IdleBehaviourScript : MonoBehaviour
                                     directionToDestination = -1;
                                 }
 
+                                //FLIP NPC TO FACE IT
                                 movement.FlipNPC(directionToDestination);
+                                //RESET STAY TIMER
                                 stayTimer = 0;
                             }                            
                         }
                     }
+                }
+                //FOR FLYING UNITS
+                else
+                {
+                    //IF NOT IDLE ALREADY
+                    if (!idleRunning)
+                    {
+                        //SET LAST VISITED TO -1
+                        lastVisited = -1;
+                        //TURN IDLE ON
+                        idleRunning = true;
+                        for (int i = 0; i < patrolSpots.Count; i++)
+                        {
+                            //CHECK NEAREST PATROL SPOT
+                            if (Vector2.Distance(npc.transform.position, patrolSpots[i].position) == Mathf.Min(distances))
+                            {
+                                //ASSIGN IT'S INDEX AS GOING TO
+                                goingTo = i;
+                                //AND ITS POSITION AS PATROL DESTINATION
+                                patrolDestination = patrolSpots[i].position;
+                            }
+                        }
+                        //AND ASSIGN POSSIBLY RANDOM STAY TIMER
+                        stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+                    }
+                    //IF ALREADY IDLE
+                    else
+                    {
+                        //IF STAY TIMER HASN'T COUNTED DOWN
+                        if (stayTimer > 0)
+                        {                            
+                            //TICK AWAY AT IT
+                            stayTimer -= Time.fixedDeltaTime;
+                            //STOP MOVING
+                            movement.StopMoving();
+                            //AND GO BACK TO TOP
+                            return;
+                        }
+                        //IF STAY TIMER HAS COUNTED DOWN
+                        else
+                        {
+                            //CHECK IF LAST VISITED -1 (WHICH ISN'T A PATROL SPOT) // WOULD BE IF NPC JUST TURNED IDLE
+                            if (lastVisited == -1)
+                            {
+                                //IF PATROL DESTINATION IS OUT OF SIGHT
+                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange / 3)
+                                {
+                                    //FLY TOWARDS IT
+                                    movement.Move(data.flySpeed, patrolDestination);
+                                }
+                                //IF WITHIN SIGHT
+                                else
+                                {                     
+                                    //IF NPC WAS NOT GOING TO THE LAST PATROL SPOT
+                                    if (goingTo < patrolSpots.Count - 1)
+                                    {
+                                        //MAKE LAST VISITED BE THE SAME AS GOING TO
+                                        lastVisited = goingTo;
+                                        //AND INCREMENT 'GOING TO'
+                                        goingTo++;
+                                    }
+                                    //ELSE IF NPC WAS GOING TO THE LAST PATROL SPOT
+                                    else if (goingTo == patrolSpots.Count - 1)
+                                    {
+                                        //MAKE IT LAST VISITED
+                                        lastVisited = goingTo;
+                                        //AND DECREMENT 'GOING TO'
+                                        goingTo--;
+                                    }
+                                    //ASSIGN POSSIBLY RANDOM STAY TIMER
+                                    stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+                                    //AND GO BACK TO TOP
+                                    return;
+                                }
+                            }
+                            //IF LAST VISITED IS ONE OF THE PATROL SPOTS
+                            else
+                            {
+                                //SET PATROL DESTINATION TO 'GOING TO'
+                                patrolDestination = patrolSpots[goingTo].position;
+
+                                //IF PATROL DESTINATION IS OUT OF SIGHT
+                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange / 3)
+                                {
+                                    //FLY TOWARDS IT
+                                    movement.Move(data.flySpeed, patrolDestination);
+                                }
+                                //IF NOT
+                                else
+                                {
+                                    //CHECK
+                                    //IF GOING TO SHOULD BE INCREMENTED OR DECREMENTED BASED ON IT'S AND LAST VISITED'S VALUES
+                                    if (goingTo < patrolSpots.Count - 1 && lastVisited < goingTo)
+                                    {
+                                        lastVisited = goingTo;
+                                        goingTo++;
+                                    }
+                                    else if (goingTo < patrolSpots.Count - 1 && goingTo != 0 && lastVisited > goingTo)
+                                    {
+                                        lastVisited = goingTo;
+                                        goingTo--;
+                                    }
+                                    else if (goingTo == patrolSpots.Count - 1 && lastVisited < goingTo)
+                                    {
+                                        lastVisited = goingTo;
+                                        goingTo--;
+                                    }
+                                    else if (goingTo == 0 && lastVisited > goingTo)
+                                    {
+                                        lastVisited = goingTo;
+                                        goingTo++;
+                                    }
+
+                                    //ASSIGN A POSSIBLY RANDOM STAY TIMER
+                                    stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+                                    //AND GO BACK TO TOP
+                                    return;
+                                }
+                            }
+                            //CHECK DIRECTION TO PATROL DESTINATION
+                            if (npc.transform.localPosition.x - patrolDestination.x < 0)
+                            {
+                                directionToDestination = 1;
+                            }
+                            if (npc.transform.localPosition.x - patrolDestination.x > 0)
+                            {
+                                directionToDestination = -1;
+                            }
+
+                            //FLIP NPC TO FACE IT
+                            movement.FlipNPC(directionToDestination);
+                        }
+                    }                    
                 }
             }
         }

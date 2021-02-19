@@ -17,16 +17,25 @@ MonoBehaviour:
   human: 0
   maxHealth: 25
   hurtDuration: 0.2
-  idleBehaviour: 
-  stopChaseAfter: 10
+  idleBehaviour: Patrol
+  idleStay1: 3
+  idleStay2: 3
+  idleMove1: 5
+  idleMove2: 25
+  idleBoundaryPosX: 250
+  idleBoundaryNegX: -250
+  idleBoundaryPosY: 75
+  idleBoundaryNegY: -25
+  stopChaseAfter: 15
   moveSpeed: 0
   runSpeed: 0
   flySpeed: 10
   flyAcceleration: 8
   climbSpeed: 0
   jumpForce: 0
+  jumpDelay: 0
   collisionDamage: 0
-  standardAttackRange: 3
+  standardAttackRange: 5
   standardAttackSpeed: 0
   standardAttackTelegraph: 0
   standardAttackDuration: 0
@@ -61,4 +70,4 @@ MonoBehaviour:
   burrowAttackDuration: 0
   burrowFullAttackDuration: 0
   visionRange: 5
-  visionExpansion: 5
+  visionExpansion: 35

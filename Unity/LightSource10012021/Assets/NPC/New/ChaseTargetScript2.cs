@@ -118,7 +118,14 @@ public class ChaseTargetScript2 : MonoBehaviour
                 else
                 {
                     //FLY
-                    movement.Move(data.flySpeed, position);
+                    if (seekTarget.currentTarget != null && seekTarget.currentTarget.gameObject.tag == "Player")
+                    {
+                        movement.Move(data.flySpeed, new Vector2(position.x, position.y + 4));
+                    }
+                    else
+                    {
+                        movement.Move(data.flySpeed, position);
+                    }
                 }
             }
             //IF TARGET IS WITHIN ATTACK RANGE
