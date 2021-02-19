@@ -211,7 +211,7 @@ public class IdleBehaviourScript : MonoBehaviour
                                 for (int i = 0; i < patrolSpots.Count; i++)
                                 {
                                     Vector2 randomPosition = new Vector2(Random.Range(data.idleBoundaryNegX, data.idleBoundaryPosX), Random.Range(data.idleBoundaryNegY, data.idleBoundaryPosY));
-                                    patrolSpots[i].position = randomPosition;
+                                    patrolSpots[i].localPosition = randomPosition;
                                 }
                                 //ASSIGN RANDOM MOVE TIMER
                                 moveTimer = Random.Range(data.idleMove1, data.idleMove2);

@@ -18,14 +18,14 @@ MonoBehaviour:
   maxHealth: 25
   hurtDuration: 0.2
   idleBehaviour: Random
-  idleStay1: 3
-  idleStay2: 3
-  idleMove1: 5
-  idleMove2: 25
+  idleStay1: 1
+  idleStay2: 1
+  idleMove1: 1
+  idleMove2: 1
   idleBoundaryPosX: 150
-  idleBoundaryNegX: -250
-  idleBoundaryPosY: 75
-  idleBoundaryNegY: -25
+  idleBoundaryNegX: 0
+  idleBoundaryPosY: 30
+  idleBoundaryNegY: 0
   stopChaseAfter: 15
   moveSpeed: 0
   runSpeed: 0
