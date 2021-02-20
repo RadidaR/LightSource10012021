@@ -36,6 +36,8 @@ public class IdleBehaviourScript : MonoBehaviour
     public int lastVisited;
     public int goingTo;
 
+    public LayerMask groundLayer;
+
 
     private void OnValidate()
     {
@@ -71,12 +73,27 @@ public class IdleBehaviourScript : MonoBehaviour
             {
                 patrolSpots.Add(allTransforms[i]);
             }
-        }
-
+        }     
     }
+    private void Update()
+    {
+        if (data.idleBehaviour == "Patrol")
+        {
+            for (int i = 0; i < patrolSpots.Count; i++)
+            {
+                if (Physics2D.OverlapCircle(patrolSpots[i].position, 0.1f, groundLayer))
+                {
+                    patrolSpots[i].position = new Vector2(patrolSpots[i].position.x, patrolSpots[i].position.y + Time.deltaTime * 10);
+                }
+            }
+        }
+    }
+
 
     private void FixedUpdate()
     {
+        
+
         //IF IDLE
         if (states.isIdle)
         {
@@ -408,6 +425,12 @@ public class IdleBehaviourScript : MonoBehaviour
                     //IF ALREADY IDLE
                     else
                     {
+                        //if (Physics2D.OverlapCircle(patrolSpots[goingTo].localPosition, 2f, groundLayer))
+                        //{
+                        //    //Debug.Log(patrolSpots[goingTo].ToString() + " overlaps with ground");
+                        //    patrolSpots[goingTo].localPosition = new Vector2(patrolSpots[goingTo].localPosition.x, patrolSpots[goingTo].localPosition.y + Time.fixedDeltaTime * 3);
+                        //}
+
                         //IF STAY TIMER HASN'T COUNTED DOWN
                         if (stayTimer > 0)
                         {                            
@@ -421,11 +444,12 @@ public class IdleBehaviourScript : MonoBehaviour
                         //IF STAY TIMER HAS COUNTED DOWN
                         else
                         {
+
                             //CHECK IF LAST VISITED -1 (WHICH ISN'T A PATROL SPOT) // WOULD BE IF NPC JUST TURNED IDLE
                             if (lastVisited == -1)
                             {
                                 //IF PATROL DESTINATION IS OUT OF SIGHT
-                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange / 3)
+                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange / 2)
                                 {
                                     //FLY TOWARDS IT
                                     movement.Move(data.flySpeed, patrolDestination);
@@ -462,7 +486,7 @@ public class IdleBehaviourScript : MonoBehaviour
                                 patrolDestination = patrolSpots[goingTo].position;
 
                                 //IF PATROL DESTINATION IS OUT OF SIGHT
-                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange / 3)
+                                if (Vector2.Distance(npc.transform.position, patrolDestination) > data.visionRange / 2)
                                 {
                                     //FLY TOWARDS IT
                                     movement.Move(data.flySpeed, patrolDestination);

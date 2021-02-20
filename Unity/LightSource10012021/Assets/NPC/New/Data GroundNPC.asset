@@ -19,7 +19,7 @@ MonoBehaviour:
   hurtDuration: 0.2
   idleBehaviour: Patrol
   idleStay1: 2
-  idleStay2: 3
+  idleStay2: 5
   idleMove1: 1
   idleMove2: 2
   idleBoundaryPosX: 0
