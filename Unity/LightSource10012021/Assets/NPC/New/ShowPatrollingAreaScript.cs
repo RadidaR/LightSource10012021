@@ -16,7 +16,7 @@ public class ShowPatrollingAreaScript : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (data.idleBoundaryNegX < 0 || data.idleBoundaryPosX > 0 && data.idleBoundaryNegY < 0 || data.idleBoundaryPosY > 0)
+        if ((data.idleBoundaryNegX != 0 || data.idleBoundaryPosX != 0) && (data.idleBoundaryNegY != 0 || data.idleBoundaryPosY != 0))
         {
             Vector2 centerpoint = gameObject.transform.position;
             Gizmos.color = Color.black;
@@ -40,7 +40,7 @@ public class ShowPatrollingAreaScript : MonoBehaviour
             }
 
             Gizmos.DrawWireCube(centerpoint, new Vector3(data.idleBoundaryPosX + Mathf.Abs(data.idleBoundaryNegX), data.idleBoundaryPosY + Mathf.Abs(data.idleBoundaryNegY), 0));
-            //Gizmos.(gameObject.transform.position, new Vector2(data.idleBoundaryPosX + Mathf.Abs(data.idleBoundaryNegX), data.idleBoundaryPosY + Mathf.Abs(data.idleBoundaryNegY)));
         }
+        //Gizmos.(gameObject.transform.position, new Vector2(data.idleBoundaryPosX + Mathf.Abs(data.idleBoundaryNegX), data.idleBoundaryPosY + Mathf.Abs(data.idleBoundaryNegY)));
     }
 }

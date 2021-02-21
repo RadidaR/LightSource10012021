@@ -18,7 +18,7 @@ MonoBehaviour:
   maxHealth: 50
   hurtDuration: 0.2
   idleBehaviour: Patrol
-  idleStay1: 2
+  idleStay1: 1
   idleStay2: 5
   idleMove1: 1
   idleMove2: 2
@@ -27,13 +27,13 @@ MonoBehaviour:
   idleBoundaryPosY: 0
   idleBoundaryNegY: 0
   stopChaseAfter: 5
-  moveSpeed: 10
+  moveSpeed: 15
   runSpeed: 20
   flySpeed: 30
   flyAcceleration: 0
-  climbSpeed: 10
+  climbSpeed: 15
   jumpForce: 25
-  jumpDelay: 0.5
+  jumpDelay: 0.1
   collisionDamage: 0
   standardAttackRange: 5
   standardAttackSpeed: 0
@@ -69,5 +69,5 @@ MonoBehaviour:
   burrowAttackTelegraph: 0
   burrowAttackDuration: 0
   burrowFullAttackDuration: 0
-  visionRange: 10
+  visionRange: 25
   visionExpansion: 5

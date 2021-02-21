@@ -38,6 +38,8 @@ public class IdleBehaviourScript : MonoBehaviour
 
     public LayerMask groundLayer;
 
+    //public ShowCurveScript curve;
+
 
     private void OnValidate()
     {
@@ -60,7 +62,13 @@ public class IdleBehaviourScript : MonoBehaviour
 
             npcObject = npc.transform.parent.gameObject;
 
+            
         }
+    }
+
+    private void Start()
+    {
+        //curve = npc.GetComponentInChildren<ShowCurveScript>();
     }
 
     public void Awake()
@@ -344,10 +352,11 @@ public class IdleBehaviourScript : MonoBehaviour
                         }
 
                         //IF PATROL DESTINATION IS OUT OF SIGHT ON X AXIS
-                        if (Mathf.Abs(npc.transform.localPosition.x - patrolDestination.x) > data.visionRange)
+                        if (Mathf.Abs(npc.transform.localPosition.x - patrolDestination.x) > data.visionRange / 3)
                         {
                             //MOVE TOWARDS IT
                             movement.Move(data.moveSpeed, patrolDestination);
+                            stayTimer = 0;
                         }
                         //IF IN SIGHT
                         else
@@ -539,6 +548,148 @@ public class IdleBehaviourScript : MonoBehaviour
                     }                    
                 }
             }
+            //TEST
+            //else if (data.idleBehaviour == "Jump")
+            //{
+            //    float[] distances = new float[patrolSpots.Count];
+
+            //    for (int i = 0; i < patrolSpots.Count; i++)
+            //    {
+            //        distances[i] = Vector2.Distance(npc.transform.position, patrolSpots[i].position);
+            //    }
+
+            //    if (!idleRunning)
+            //    {
+            //        idleRunning = true;
+            //        stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+
+            //        if (distances[0] < distances[1])
+            //        {
+            //            //ASSIGN IT AS A PATROL DESTINATION
+            //            patrolDestination = patrolSpots[0].localPosition;
+            //        }
+            //        else
+            //        {
+            //            patrolDestination = patrolSpots[1].localPosition;
+            //        }
+
+            //        //CHECK DIRECTION TO PATROL DESTINATION
+            //        if (npc.transform.localPosition.x - patrolDestination.x < 0)
+            //        {
+            //            directionToDestination = 1;
+            //        }
+            //        if (npc.transform.localPosition.x - patrolDestination.x > 0)
+            //        {
+            //            directionToDestination = -1;
+            //        }
+            //        //FLIP NPC TO FACE IT
+            //        movement.FlipNPC(directionToDestination);
+            //    }
+            //    //IF ALREADY IDLE
+            //    else
+            //    {
+            //        //IF STAY TIMER HASN'T COUNTED DOWN
+            //        if (stayTimer > 0)
+            //        {
+            //            //TICK AWAY AT IT
+            //            stayTimer -= Time.fixedDeltaTime;
+            //            //STOP MOVING
+            //            movement.StopMoving();
+
+            //            //Debug.Log("In range");
+            //            curve.controlPoints[0].position = npc.transform.position;
+            //            curve.controlPoints[3].position = patrolDestination;
+
+            //            float distanceToTarget = Mathf.Abs(curve.controlPoints[0].position.x - curve.controlPoints[3].position.x);
+
+            //            curve.controlPoints[1].position = new Vector2(curve.controlPoints[0].position.x + (distanceToTarget * 0.25f * directionToDestination), curve.controlPoints[0].position.y + (distanceToTarget / 2) + 
+            //                Vector2.Distance(curve.controlPoints[0].position, curve.controlPoints[3].position) / 3);
+            //            curve.controlPoints[2].position = new Vector2(curve.controlPoints[3].position.x - (distanceToTarget * 0.25f * directionToDestination), curve.controlPoints[3].position.y + (distanceToTarget / 2) +
+            //                Vector2.Distance(curve.controlPoints[0].position, curve.controlPoints[3].position) / 3);
+            //            curve.DrawCurve();
+            //            //AND GO BACK TO TOP
+            //            return;
+            //        }
+
+            //        //IF PATROL DESTINATION IS OUT OF SIGHT ON X AXIS
+            //        if (Mathf.Abs(npc.transform.localPosition.x - patrolDestination.x) > data.visionRange)
+            //        {
+            //            //MOVE TOWARDS IT
+            //            movement.Move(data.moveSpeed, patrolDestination);
+
+            //            curve.controlPoints[0].position = npc.transform.position;
+            //            curve.controlPoints[3].position = patrolDestination;
+                        
+            //            float distanceToTarget = Mathf.Abs(curve.controlPoints[0].position.x - curve.controlPoints[3].position.x);
+
+            //            curve.controlPoints[1].position = new Vector2(curve.controlPoints[0].position.x + (distanceToTarget * 0.25f * directionToDestination), curve.controlPoints[0].position.y + (distanceToTarget / 2)/* +
+            //                Vector2.Distance(curve.controlPoints[0].position, curve.controlPoints[3].position) / 3*/);
+            //            curve.controlPoints[2].position = new Vector2(curve.controlPoints[3].position.x - (distanceToTarget * 0.25f * directionToDestination), curve.controlPoints[3].position.y + (distanceToTarget / 2)/* +
+            //                Vector2.Distance(curve.controlPoints[0].position, curve.controlPoints[3].position) / 3*/);
+            //            curve.DrawCurve();
+            //        }
+            //        //IF IN SIGHT
+            //        else
+            //        {
+            //            //IF STAY TIMER HAS COUNTED DOWN
+            //            if (stayTimer == 0)
+            //            {
+            //                //IF SO - ASSIGN POSSIBLY RANDOM STAY TIMER
+            //                stayTimer = Random.Range(data.idleStay1, data.idleStay2);
+            //            }
+            //            //ELSE IF NOT
+            //            else if (stayTimer > 0)
+            //            {
+            //                //TICK AWAY AT IT
+            //                stayTimer -= Time.fixedDeltaTime;
+            //                //AND STOP MOVING
+            //                movement.StopMoving();
+
+
+            //            }
+            //            //IF STAY TIMER BELOW 0
+            //            else if (stayTimer < 0)
+            //            {
+            //                //CHECK TO SEE WHICH PATROL SPOT IS FURTHER
+            //                if (distances[0] < distances[1])
+            //                {
+            //                    //AND ASSIGN IT
+            //                    patrolDestination = patrolSpots[1].localPosition;
+            //                }
+            //                else
+            //                {
+            //                    patrolDestination = patrolSpots[0].localPosition;
+            //                }
+
+            //                //CHECK DIRECTION TO PATROL DESTINATION
+            //                if (npc.transform.localPosition.x - patrolDestination.x < 0)
+            //                {
+            //                    directionToDestination = 1;
+            //                }
+            //                if (npc.transform.localPosition.x - patrolDestination.x > 0)
+            //                {
+            //                    directionToDestination = -1;
+            //                }
+
+            //                //FLIP NPC TO FACE IT
+            //                movement.FlipNPC(directionToDestination);
+            //                //RESET STAY TIMER
+            //                stayTimer = 0;
+            //            }
+            //        }
+            //    }
+
+
+            //}
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (patrolDestination != Vector2.zero)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(patrolDestination, 1f);
         }
     }
 }

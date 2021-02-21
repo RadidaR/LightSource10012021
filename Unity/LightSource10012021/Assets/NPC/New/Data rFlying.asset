@@ -19,13 +19,13 @@ MonoBehaviour:
   hurtDuration: 0.2
   idleBehaviour: Random
   idleStay1: 1
-  idleStay2: 3
-  idleMove1: 3
-  idleMove2: 15
+  idleStay2: 5
+  idleMove1: 5
+  idleMove2: 25
   idleBoundaryPosX: 50
   idleBoundaryNegX: -50
   idleBoundaryPosY: 50
-  idleBoundaryNegY: -25
+  idleBoundaryNegY: -50
   stopChaseAfter: 15
   moveSpeed: 0
   runSpeed: 0

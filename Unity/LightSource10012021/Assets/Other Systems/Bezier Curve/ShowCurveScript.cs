@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShowCurveScript : MonoBehaviour
 {
-    [SerializeField] Transform[] controlPoints;
+    [SerializeField] public Transform[] controlPoints;
     private Vector2 gizmosPosition1;
     private Vector2 gizmosPosition2;
 
@@ -55,7 +55,7 @@ public class ShowCurveScript : MonoBehaviour
             DrawCurve();
     }
 
-    private void DrawCurve()
+    public void DrawCurve()
     {
         for (int i = 1; i < numPoints + 1; i++)
         {

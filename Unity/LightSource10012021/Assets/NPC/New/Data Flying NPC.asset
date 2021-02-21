@@ -22,10 +22,10 @@ MonoBehaviour:
   idleStay2: 2
   idleMove1: 5
   idleMove2: 5
-  idleBoundaryPosX: 0
-  idleBoundaryNegX: 0
-  idleBoundaryPosY: 0
-  idleBoundaryNegY: 0
+  idleBoundaryPosX: 25
+  idleBoundaryNegX: -25
+  idleBoundaryPosY: 25
+  idleBoundaryNegY: -25
   stopChaseAfter: 15
   moveSpeed: 0
   runSpeed: 0
