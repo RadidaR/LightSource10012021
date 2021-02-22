@@ -561,13 +561,13 @@ public class NPCMovementScript : MonoBehaviour
             Gizmos.DrawWireSphere(stepCheck.position, stepCheckRadius);
         }
 
-        if (navAgent != null)
-        {
-            if (states.isIdle || states.isChasing)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawWireSphere(navAgent.destination, 5);
-            }
-        }
+        //if (navAgent != null)
+        //{
+        //    if (states.isIdle || states.isChasing)
+        //    {
+        //        Gizmos.color = Color.red;
+        //        Gizmos.DrawWireSphere(navAgent.destination, 5);
+        //    }
+        //}
     }
 }

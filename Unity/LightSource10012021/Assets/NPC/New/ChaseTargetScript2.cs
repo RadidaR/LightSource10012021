@@ -78,7 +78,7 @@ public class ChaseTargetScript2 : MonoBehaviour
     void ChaseTarget(Vector2 position)
     {
         //FOR HOSTILE UNITS
-        if (abilities.canAttack)
+        if (abilities.canAttack && !states.isTelegraphing && !states.isAttacking)
         {
             //IF TARGET IS OUT OF CURRENT ATTACK RANGE
             //if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange || Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
@@ -90,13 +90,13 @@ public class ChaseTargetScript2 : MonoBehaviour
                 //FOR GROUND UNITS
                 if (!abilities.canFly)
                 {
-                    if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
-                    {
-                        //RUN
-                        movement.Move(data.runSpeed, position);
-                    }
-                    else if (Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
-                    {
+                        if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
+                        {
+                            //RUN
+                            movement.Move(data.runSpeed, position);
+                        }
+                        else if (Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
+                        {
                         if (states.stepAhead)
                         {
                             if (abilities.canClimb || abilities.canJump)
@@ -134,6 +134,7 @@ public class ChaseTargetScript2 : MonoBehaviour
                 //STOP MOVING
                 movement.StopMoving();
                 //ATTACKS TO BE ADDED
+                attacks.LaunchAttack();
             }
         }
 

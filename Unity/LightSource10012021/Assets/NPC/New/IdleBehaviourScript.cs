@@ -91,7 +91,14 @@ public class IdleBehaviourScript : MonoBehaviour
             {
                 if (Physics2D.OverlapCircle(patrolSpots[i].position, 0.1f, groundLayer))
                 {
-                    patrolSpots[i].position = new Vector2(patrolSpots[i].position.x, patrolSpots[i].position.y + Time.deltaTime * 10);
+                    if (patrolSpots[i].localPosition.y < 0)
+                    {
+                        patrolSpots[i].position = new Vector2(patrolSpots[i].position.x, patrolSpots[i].position.y + Time.deltaTime * 10);
+                    }
+                    else
+                    {
+                        patrolSpots[i].position = new Vector2(patrolSpots[i].position.x, patrolSpots[i].position.y - Time.deltaTime * 10);
+                    }
                 }
             }
         }
@@ -684,12 +691,12 @@ public class IdleBehaviourScript : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmos()
-    {
-        if (patrolDestination != Vector2.zero)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(patrolDestination, 1f);
-        }
-    }
+    //private void OnDrawGizmos()
+    //{
+    //    if (patrolDestination != Vector2.zero)
+    //    {
+    //        Gizmos.color = Color.red;
+    //        Gizmos.DrawWireSphere(patrolDestination, 1f);
+    //    }
+    //}
 }

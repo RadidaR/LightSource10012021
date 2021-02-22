@@ -37,10 +37,10 @@ MonoBehaviour:
   collisionDamage: 0
   standardAttackRange: 5
   standardAttackSpeed: 0
-  standardAttackTelegraph: 0
-  standardAttackDuration: 0
+  standardAttackTelegraph: 0.5
+  standardAttackDuration: 0.5
   standardFullAttackDuration: 0
-  standardAttackDamage: 0
+  standardAttackDamage: 10
   weaponAttackRange: 0
   weaponAttackSpeed: 0
   weaponAttackTelegraph: 0
@@ -58,12 +58,12 @@ MonoBehaviour:
   chargeAttackDuration: 0
   chargeFullAttackDuration: 0
   chargeAttackDamage: 0
-  jumpAttackRange: 0
+  jumpAttackRange: 50
   jumpAttackSpeed: 0
-  jumpAttackTelegraph: 0
-  jumpAttackDuration: 0
+  jumpAttackTelegraph: 1
+  jumpAttackDuration: 1
   jumpFullAttackDuration: 0
-  jumpAttackDamage: 0
+  jumpAttackDamage: 15
   burrowAttackRange: 0
   burrowAttackSpeed: 0
   burrowAttackTelegraph: 0
