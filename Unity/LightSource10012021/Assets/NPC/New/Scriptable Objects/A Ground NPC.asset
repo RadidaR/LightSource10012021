@@ -22,7 +22,7 @@ MonoBehaviour:
   canAttack: 1
   hasCombo: 0
   usesWeapons: 0
-  standardAttack: 1
+  standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
   chargeAttack: 0

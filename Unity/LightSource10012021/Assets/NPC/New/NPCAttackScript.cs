@@ -21,12 +21,12 @@ public class NPCAttackScript : MonoBehaviour
 
     //public int attackOrder;
 
-    public int standardAttack;
-    public int weaponAttack;
-    public int rangedAttack;
-    public int chargeAttack;
-    public int jumpAttack;
-    public int burrowAttack;
+    public int standardAttack = 0;
+    public int weaponAttack = 0;
+    public int rangedAttack = 0;
+    public int chargeAttack = 0;
+    public int jumpAttack = 0;
+    public int burrowAttack = 0;
 
 
     public List<int> attackPattern;
@@ -60,7 +60,17 @@ public class NPCAttackScript : MonoBehaviour
 
             //curve = GetComponentInChildren<ShowCurveScript>();
 
-            if (abilities.canAttack)
+            if (!this.enabled)
+            {
+                standardAttack = 0;
+                weaponAttack = 0;
+                rangedAttack = 0;
+                chargeAttack = 0;
+                jumpAttack = 0;
+                burrowAttack = 0;
+            }
+
+            if (abilities.canAttack && this.enabled)
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -97,6 +107,7 @@ public class NPCAttackScript : MonoBehaviour
             }
         }
     }
+
 
     private void Update()
     {
