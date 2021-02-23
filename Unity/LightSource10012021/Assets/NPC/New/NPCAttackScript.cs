@@ -13,7 +13,9 @@ public class NPCAttackScript : MonoBehaviour
     public NPCData data;
     public NPCAbilities abilities;
 
-    public ShowCurveScript curve;
+    public JumpAttackScript jumpAttackData;
+
+    //public ShowCurveScript curve;
 
 
 
@@ -32,12 +34,16 @@ public class NPCAttackScript : MonoBehaviour
     public bool attackRunning;
 
     public int nextAttack;
-    public float currentAttackRange;
-    public int currentDamage;
-    public float telegraphDuration;
-    public float attackDuration;
+    public AttackData nextAttackData;
+
+    //public float attackRange;
+    //public int attackDamage;
+    //public float telegraphDuration;
+    //public float attackLength;
+    //public float attackCooldown;
 
     public Vector2 targetPosition;
+    public float cooldown;
 
     private void OnValidate()
     {
@@ -52,7 +58,7 @@ public class NPCAttackScript : MonoBehaviour
             data = npc.GetComponent<NPCStatesScript>().data;
             abilities = npc.GetComponent<NPCStatesScript>().abilities;
 
-            curve = GetComponentInChildren<ShowCurveScript>();
+            //curve = GetComponentInChildren<ShowCurveScript>();
 
             if (abilities.canAttack)
             {
@@ -84,6 +90,11 @@ public class NPCAttackScript : MonoBehaviour
                     }
                 }
             }
+
+            if (abilities.jumpAttack)
+            {
+                jumpAttackData = GetComponentInChildren<JumpAttackScript>();
+            }
         }
     }
 
@@ -110,48 +121,49 @@ public class NPCAttackScript : MonoBehaviour
         if (nextAttack == standardAttack)
         {
             nextAttack = standardAttack;
-            currentAttackRange = data.standardAttackRange;
-            currentDamage = data.standardAttackDamage;
-            telegraphDuration = data.standardAttackTelegraph;
-            attackDuration = data.standardAttackDuration;
+            //attackRange = data.standardAttackRange;
+            //attackDamage = data.standardAttackDamage;
+            //telegraphDuration = data.standardAttackTelegraph;
+            //attackLength = data.standardAttackDuration;
         }
         else if (nextAttack == weaponAttack)
         {
             nextAttack = weaponAttack;
-            currentAttackRange = data.weaponAttackRange;
-            telegraphDuration = data.weaponAttackTelegraph;
-            attackDuration = data.weaponAttackDuration;
+            //attackRange = data.weaponAttackRange;
+            //telegraphDuration = data.weaponAttackTelegraph;
+            //attackLength = data.weaponAttackDuration;
         }
         else if (nextAttack == rangedAttack)
         {
             nextAttack = rangedAttack;
-            currentAttackRange = data.rangedAttackRange;
-            currentDamage = data.rangedAttackDamage;
-            telegraphDuration = data.rangedAttackTelegraph;
-            attackDuration = data.rangedAttackDuration;
+            //attackRange = data.rangedAttackRange;
+            //attackDamage = data.rangedAttackDamage;
+            //telegraphDuration = data.rangedAttackTelegraph;
+            //attackLength = data.rangedAttackDuration;
         }
         else if (nextAttack == chargeAttack)
         {
             nextAttack = chargeAttack;
-            currentAttackRange = data.chargeAttackRange;
-            currentDamage = data.chargeAttackDamage;
-            telegraphDuration = data.chargeAttackTelegraph;
-            attackDuration = data.chargeAttackDuration;
+            //attackRange = data.chargeAttackRange;
+            //attackDamage = data.chargeAttackDamage;
+            //telegraphDuration = data.chargeAttackTelegraph;
+            //attackLength = data.chargeAttackDuration;
         }
         else if (nextAttack == jumpAttack)
         {
             nextAttack = jumpAttack;
-            currentAttackRange = data.jumpAttackRange;
-            currentDamage = data.jumpAttackDamage;
-            telegraphDuration = data.jumpAttackTelegraph;
-            attackDuration = data.jumpAttackDuration;
+            nextAttackData = jumpAttackData.data;
+            //attackRange = data.jumpAttackRange;
+            //attackDamage = data.jumpAttackDamage;
+            //telegraphDuration = data.jumpAttackTelegraph;
+            //attackLength = data.jumpAttackDuration;
         }
         else if (nextAttack == burrowAttack)
         {
             nextAttack = burrowAttack;
-            currentAttackRange = data.burrowAttackRange;
-            telegraphDuration = data.burrowAttackTelegraph;
-            attackDuration = data.burrowAttackDuration;
+            //attackRange = data.burrowAttackRange;
+            //telegraphDuration = data.burrowAttackTelegraph;
+            //attackLength = data.burrowAttackDuration;
             //currentDamage = data.;
         }
     }
@@ -159,7 +171,7 @@ public class NPCAttackScript : MonoBehaviour
     public void LaunchAttack()
     {
         movement.StopMoving();
-        StartCoroutine(Attack(nextAttack, telegraphDuration, currentDamage, attackDuration));
+        StartCoroutine(Attack(nextAttack, nextAttackData.telegraph, nextAttackData.damage, nextAttackData.length));
     }
 
     public void UpdateAttackPattern()
@@ -171,52 +183,53 @@ public class NPCAttackScript : MonoBehaviour
         if (attackPattern[0] == standardAttack)
         {
             nextAttack = standardAttack;
-            currentAttackRange = data.standardAttackRange;
-            currentDamage = data.standardAttackDamage;
-            telegraphDuration = data.standardAttackTelegraph;
-            attackDuration = data.standardAttackDuration;
+            //attackRange = data.standardAttackRange;
+            //attackDamage = data.standardAttackDamage;
+            //telegraphDuration = data.standardAttackTelegraph;
+            //attackLength = data.standardAttackDuration;
         }
         else if (attackPattern[0] == weaponAttack)
         {
             nextAttack = weaponAttack;
-            currentAttackRange = data.weaponAttackRange;
-            telegraphDuration = data.weaponAttackTelegraph;
-            attackDuration = data.weaponAttackDuration;
+            //attackRange = data.weaponAttackRange;
+            //telegraphDuration = data.weaponAttackTelegraph;
+            //attackLength = data.weaponAttackDuration;
         }
         else if (attackPattern[0] == rangedAttack)
         {
             nextAttack = rangedAttack;
-            currentAttackRange = data.rangedAttackRange;
-            currentDamage = data.rangedAttackDamage;
-            telegraphDuration = data.rangedAttackTelegraph;
-            attackDuration = data.rangedAttackDuration;
+            //attackRange = data.rangedAttackRange;
+            //attackDamage = data.rangedAttackDamage;
+            //telegraphDuration = data.rangedAttackTelegraph;
+            //attackLength = data.rangedAttackDuration;
         }
         else if (attackPattern[0] == chargeAttack)
         {
             nextAttack = chargeAttack;
-            currentAttackRange = data.chargeAttackRange;
-            currentDamage = data.chargeAttackDamage;
-            telegraphDuration = data.chargeAttackTelegraph;
-            attackDuration = data.chargeAttackDuration;
+            //attackRange = data.chargeAttackRange;
+            //attackDamage = data.chargeAttackDamage;
+            //telegraphDuration = data.chargeAttackTelegraph;
+            //attackLength = data.chargeAttackDuration;
         }
         else if (attackPattern[0] == jumpAttack)
         {
             nextAttack = jumpAttack;
-            currentAttackRange = data.jumpAttackRange;
-            currentDamage = data.jumpAttackDamage;
-            telegraphDuration = data.jumpAttackTelegraph;
-            attackDuration = data.jumpAttackDuration;
+            nextAttackData = jumpAttackData.data;
+            //attackRange = data.jumpAttackRange;
+            //attackDamage = data.jumpAttackDamage;
+            //telegraphDuration = data.jumpAttackTelegraph;
+            //attackLength = data.jumpAttackDuration;
         }
         else if (attackPattern[0] == burrowAttack)
         {
             nextAttack = burrowAttack;
-            currentAttackRange = data.burrowAttackRange;
-            telegraphDuration = data.burrowAttackTelegraph;
-            attackDuration = data.burrowAttackDuration;
+            //attackRange = data.burrowAttackRange;
+            //telegraphDuration = data.burrowAttackTelegraph;
+            //attackLength = data.burrowAttackDuration;
             //currentDamage = data.;
         }
     }
-    public IEnumerator Attack(int attack, float telegraph, int damage, float duration)
+    public IEnumerator Attack(int attack, float telegraph, int damage, float length)
     {
         if (!attackRunning)
         {
@@ -239,7 +252,7 @@ public class NPCAttackScript : MonoBehaviour
                     Vector3 jumpEnd = targetPosition;
                     if (states.isTelegraphing)
                     {
-                        curve.lineRenderer.enabled = true;
+                        jumpAttackData.lineRenderer.enabled = true;
                         while (telegraph > 0)
                         {
                             movement.StopMoving();
@@ -269,10 +282,10 @@ public class NPCAttackScript : MonoBehaviour
                                     curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
                                 }
 
-                                curve.PositionPoints(curveStart, curveStartControl, curveEndControl, curveEnd);
+                                //curve.PositionPoints(curveStart, curveStartControl, curveEndControl, curveEnd);
 
 
-                                curve.DrawCurve(curveStart, curveStartControl, curveEndControl, curveEnd);
+                                jumpAttackData.DrawCurve(curveStart, curveStartControl, curveEndControl, curveEnd);
 
                             telegraph -= Time.fixedDeltaTime;
                             yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
@@ -282,10 +295,10 @@ public class NPCAttackScript : MonoBehaviour
                                 jumpStart = curveStart;
                                 jumpStartControl = curveStartControl;
                                 jumpEndControl = curveEndControl;
-                                jumpEnd = curveEndControl;
+                                jumpEnd = curveEnd;
                                 states.isTelegraphing = false;
                                 states.isAttacking = true;
-                                curve.ResetCurve();
+                                jumpAttackData.ResetCurve();
                                 break;
                             }
 
@@ -296,14 +309,38 @@ public class NPCAttackScript : MonoBehaviour
                     if (states.isAttacking)
                     {
                         float tParam = 0;
+                        int currentFacingDirection = states.facingDirection;
 
                         while (tParam < 1)
                         {
-                            tParam += Time.fixedDeltaTime * 1 / duration;
+                            rigidBody.isKinematic = true;
+                            tParam += Time.fixedDeltaTime * 1 / length;
+                            Vector2 jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2 (jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
+                            //Debug.Log(tParam.ToString());
+                            rigidBody.MovePosition(jumpTarget);
+                            //npc.transform.position = jumpTarget;
+                            //if (Physics2D.OverlapCircle(new Vector2 (npc.transform.position.x, npc.transform.position.y + 2f), 0.05f, 3))
+                            //{
+                            //    rigidBody.isKinematic = false;
+                            //    break;
+                            //}
+                            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+                            //rigidBody.isKinematic = false;
+
+                            //tParam += 0.05f;
+                            //Vector2 jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
+                            //rigidBody.MovePosition(jumpTarget);
+                            //yield return new WaitForSecondsRealtime(0.05f);
+
+
+
                             //Debug.Log(jumpStart.ToString() + " " + jumpStartControl.ToString() + " " + jumpEndControl.ToString() + " " + jumpEnd.ToString());
 
-                            targetPosition = curve.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
-                            rigidBody.MovePosition(targetPosition);
+
+                            //rigidBody.AddForce(targetPosition.normalized * 5 * -states.facingDirection, ForceMode2D.Impulse);
+
+
+
                             //npc.transform.position = targetPosition;
 
                             //objectPosition = showCurve.CalculateCurve(tParam, startPoint, startControl, endControl, endPoint);
@@ -311,14 +348,16 @@ public class NPCAttackScript : MonoBehaviour
                             //transform.position = objectPosition;
 
                             //gameObject.GetComponent<Rigidbody2D>().MovePosition(objectPosition);
-                            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
-                            if (tParam >= 1)
-                            {
-                                states.isAttacking = false;
-                                //attackRunning = false;
-                                break;
-                            }
+                            //if (tParam >= 1)
+                            //{
+                            //    states.isAttacking = false;
+
+                            //    //rigidBody.velocity = new Vector2(20 * states.facingDirection, rigidBody.velocity.y);
+                            //    //attackRunning = false;
+                            //    break;
+                            //}
                         }
+
 
                         //tParam = 0f;
 
@@ -336,26 +375,50 @@ public class NPCAttackScript : MonoBehaviour
                         //    }
                         //}
                     }
+                    //rigidBody.isKinematic = false;
                 }
             }
         }
+        rigidBody.isKinematic = false;
+        cooldown = nextAttackData.cooldown;
+        //AttackDone();
+        UpdateAttackPattern();
+        attackRunning = false;
 
-            UpdateAttackPattern();
-            attackRunning = false;
-
+        states.isAttacking = false;
     }
+
+    //void AttackDone()
+    //{
+    //    if (cooldown > 0)
+    //    {
+    //        cooldown -= Time.deltaTime;
+    //        rigidBody.AddForce(new Vector2(states.facingDirection * data.runSpeed, rigidBody.velocity.y), ForceMode2D.Impulse);
+    //        states.isAttacking = false;
+    //        //rigidBody.velocity = new Vector2(states.facingDirection * data.runSpeed * 2, rigidBody.velocity.y);
+    //        //AttackDone();
+    //    }
+    //    else
+    //    {
+    //        cooldown = 0;
+    //        states.isAttacking = false;
+    //    }
+    //}
 
 
 
     void OnDrawGizmosSelected()
     {
-        if (currentAttackRange == 0)
+        if (nextAttackData != null)
         {
-            return;
-        }
+            if (nextAttackData.range == 0)
+            {
+                return;
+            }
 
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, currentAttackRange);
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, nextAttackData.range);
+        }
     }
 
 

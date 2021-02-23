@@ -82,7 +82,7 @@ public class ChaseTargetScript2 : MonoBehaviour
         {
             //IF TARGET IS OUT OF CURRENT ATTACK RANGE
             //if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange || Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
-            if (Vector2.Distance(npc.transform.position, position) > attacks.currentAttackRange)
+            if (Vector2.Distance(npc.transform.position, position) > attacks.nextAttackData.range)
             {
                 //START CHASING
                 states.isChasing = true;
@@ -90,12 +90,12 @@ public class ChaseTargetScript2 : MonoBehaviour
                 //FOR GROUND UNITS
                 if (!abilities.canFly)
                 {
-                        if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.currentAttackRange)
+                        if (Mathf.Abs(npc.transform.position.x - position.x) > attacks.nextAttackData.range)
                         {
                             //RUN
                             movement.Move(data.runSpeed, position);
                         }
-                        else if (Mathf.Abs(npc.transform.position.y - position.y) > attacks.currentAttackRange)
+                        else if (Mathf.Abs(npc.transform.position.y - position.y) > attacks.nextAttackData.range)
                         {
                         if (states.stepAhead)
                         {

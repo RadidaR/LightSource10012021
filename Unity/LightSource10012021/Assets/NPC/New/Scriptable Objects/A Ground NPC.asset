@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d22871fe24d01f4ab8edba14e2c319b, type: 3}
-  m_Name: Abil Flying NPC
+  m_Name: A Ground NPC
   m_EditorClassIdentifier: 
-  type: 
+  type: NPC1
   canMove: 1
-  canRun: 0
-  canJump: 0
-  canClimb: 0
+  canRun: 1
+  canJump: 1
+  canClimb: 1
   avoidsLedges: 0
-  canFly: 1
+  canFly: 0
   canAttack: 1
   hasCombo: 0
   usesWeapons: 0
@@ -26,5 +26,5 @@ MonoBehaviour:
   weaponAttack: 0
   rangedAttack: 0
   chargeAttack: 0
-  jumpAttack: 0
+  jumpAttack: 1
   burrowAttack: 0

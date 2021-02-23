@@ -10,26 +10,30 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f859db68cc7fcbf42a0264a297801213, type: 3}
-  m_Name: d Ground AL
+  m_Name: D Fly Patrol
   m_EditorClassIdentifier: 
-  name: Ground AL
+  name: Flying NPC
   zombie: 1
   human: 0
-  maxHealth: 50
+  maxHealth: 25
   hurtDuration: 0.2
-  idleBehaviour: Random
+  idleBehaviour: Patrol
   idleStay1: 2
-  idleStay2: 3
-  idleMove1: 1
-  idleMove2: 2
-  stopChaseAfter: 5
-  moveSpeed: 10
-  runSpeed: 20
-  flySpeed: 30
-  flyAcceleration: 0
-  climbSpeed: 10
-  jumpForce: 25
-  jumpDelay: 0.5
+  idleStay2: 2
+  idleMove1: 5
+  idleMove2: 5
+  idleBoundaryPosX: 25
+  idleBoundaryNegX: -25
+  idleBoundaryPosY: 25
+  idleBoundaryNegY: -25
+  stopChaseAfter: 15
+  moveSpeed: 0
+  runSpeed: 0
+  flySpeed: 10
+  flyAcceleration: 8
+  climbSpeed: 0
+  jumpForce: 0
+  jumpDelay: 0
   collisionDamage: 0
   standardAttackRange: 5
   standardAttackSpeed: 0
@@ -65,5 +69,5 @@ MonoBehaviour:
   burrowAttackTelegraph: 0
   burrowAttackDuration: 0
   burrowFullAttackDuration: 0
-  visionRange: 10
-  visionExpansion: 5
+  visionRange: 15
+  visionExpansion: 35

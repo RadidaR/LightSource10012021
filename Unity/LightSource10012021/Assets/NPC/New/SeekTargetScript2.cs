@@ -200,7 +200,7 @@ public class SeekTargetScript2 : MonoBehaviour
         }
         else if (lastKnownPosition != Vector2.zero)
         {
-            if (Vector2.Distance(transform.position, lastKnownPosition) < attacks.currentAttackRange)
+            if (Vector2.Distance(transform.position, lastKnownPosition) < attacks.nextAttackData.range)
             {
                 lastKnownPosition = Vector2.zero;
             }

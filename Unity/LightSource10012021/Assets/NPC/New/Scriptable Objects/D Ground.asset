@@ -10,37 +10,37 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f859db68cc7fcbf42a0264a297801213, type: 3}
-  m_Name: Data Flying NPC
+  m_Name: D Ground
   m_EditorClassIdentifier: 
-  name: Flying NPC
+  name: Ground NPC
   zombie: 1
   human: 0
-  maxHealth: 25
+  maxHealth: 50
   hurtDuration: 0.2
   idleBehaviour: Patrol
-  idleStay1: 2
-  idleStay2: 2
-  idleMove1: 5
-  idleMove2: 5
-  idleBoundaryPosX: 25
-  idleBoundaryNegX: -25
-  idleBoundaryPosY: 25
-  idleBoundaryNegY: -25
-  stopChaseAfter: 15
-  moveSpeed: 0
-  runSpeed: 0
-  flySpeed: 10
-  flyAcceleration: 8
-  climbSpeed: 0
-  jumpForce: 0
-  jumpDelay: 0
+  idleStay1: 1
+  idleStay2: 5
+  idleMove1: 1
+  idleMove2: 2
+  idleBoundaryPosX: 0
+  idleBoundaryNegX: 0
+  idleBoundaryPosY: 0
+  idleBoundaryNegY: 0
+  stopChaseAfter: 5
+  moveSpeed: 10
+  runSpeed: 15
+  flySpeed: 30
+  flyAcceleration: 0
+  climbSpeed: 12
+  jumpForce: 25
+  jumpDelay: 0.25
   collisionDamage: 0
   standardAttackRange: 5
   standardAttackSpeed: 0
-  standardAttackTelegraph: 0
-  standardAttackDuration: 0
+  standardAttackTelegraph: 0.5
+  standardAttackDuration: 0.5
   standardFullAttackDuration: 0
-  standardAttackDamage: 0
+  standardAttackDamage: 10
   weaponAttackRange: 0
   weaponAttackSpeed: 0
   weaponAttackTelegraph: 0
@@ -58,16 +58,16 @@ MonoBehaviour:
   chargeAttackDuration: 0
   chargeFullAttackDuration: 0
   chargeAttackDamage: 0
-  jumpAttackRange: 0
+  jumpAttackRange: 50
   jumpAttackSpeed: 0
-  jumpAttackTelegraph: 0
-  jumpAttackDuration: 0
+  jumpAttackTelegraph: 1
+  jumpAttackDuration: 1
   jumpFullAttackDuration: 0
-  jumpAttackDamage: 0
+  jumpAttackDamage: 15
   burrowAttackRange: 0
   burrowAttackSpeed: 0
   burrowAttackTelegraph: 0
   burrowAttackDuration: 0
   burrowFullAttackDuration: 0
-  visionRange: 15
-  visionExpansion: 35
+  visionRange: 25
+  visionExpansion: 5

@@ -320,60 +320,63 @@ public class NPCMovementScript : MonoBehaviour
                 //IF CHASING SOMETHING
                 else
                 {
-                    //HANDLES LEDGES
-                    if (abilities.avoidsLedges)
+                    if (!states.isTelegraphing && !states.isAttacking)
                     {
-                        if (states.ledgeAhead)
+                        //HANDLES LEDGES
+                        if (abilities.avoidsLedges)
                         {
-                            StopMoving();
-                            return;
-                        }
-                    }
-
-                    if (states.stepAhead)
-                    {
-                        if (!states.wallAhead)
-                        {
-                            if (!states.isClimbing)
+                            if (states.ledgeAhead)
                             {
-                                if (abilities.canJump)
+                                StopMoving();
+                                return;
+                            }
+                        }
+
+                        if (states.stepAhead)
+                        {
+                            if (!states.wallAhead)
+                            {
+                                if (!states.isClimbing)
                                 {
-                                    StartCoroutine(JumpCo(0, data.jumpForce));
+                                    if (abilities.canJump)
+                                    {
+                                        StartCoroutine(JumpCo(0, data.jumpForce));
+                                    }
+                                }
+                                else
+                                {
+                                    Climb(data.climbSpeed);
                                 }
                             }
                             else
                             {
-                                Climb(data.climbSpeed);
+                                if (abilities.canClimb)
+                                {
+                                    Climb(data.climbSpeed);
+                                }
+                                else
+                                {
+                                    StopMoving();
+                                }
                             }
                         }
-                        else
-                        {
-                            if (abilities.canClimb)
-                            {
-                                Climb(data.climbSpeed);
-                            }
-                            else
-                            {
-                                StopMoving();
-                            }
-                        }
+
+                        //HANDLES WALLS
+                        //if (states.wallAhead)
+                        //{
+                        //    if (abilities.canClimb)
+                        //    {                            
+                        //        Climb(data.climbSpeed);
+                        //    }
+                        //    else
+                        //    {
+                        //        StopMoving();
+                        //    }
+                        //}
+
+                        //ASIGN VELOCITY
+                        rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
                     }
-
-                    //HANDLES WALLS
-                    //if (states.wallAhead)
-                    //{
-                    //    if (abilities.canClimb)
-                    //    {                            
-                    //        Climb(data.climbSpeed);
-                    //    }
-                    //    else
-                    //    {
-                    //        StopMoving();
-                    //    }
-                    //}
-
-                    //ASIGN VELOCITY
-                    rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
                 }
             }
         }

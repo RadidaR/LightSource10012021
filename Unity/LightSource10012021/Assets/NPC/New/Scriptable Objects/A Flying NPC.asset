@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d22871fe24d01f4ab8edba14e2c319b, type: 3}
-  m_Name: a Ground CC
+  m_Name: A Flying NPC
   m_EditorClassIdentifier: 
-  type: Ground CC
+  type: 
   canMove: 1
-  canRun: 1
-  canJump: 1
-  canClimb: 1
+  canRun: 0
+  canJump: 0
+  canClimb: 0
   avoidsLedges: 0
-  canFly: 0
+  canFly: 1
   canAttack: 1
   hasCombo: 0
   usesWeapons: 0
