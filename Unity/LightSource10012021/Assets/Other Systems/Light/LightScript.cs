@@ -18,6 +18,15 @@ public class LightScript : MonoBehaviour
     void Update()
     {
         lightRange.radius = lightSource.pointLightOuterRadius;
+
+        if (!lightSource.enabled)
+        {
+            lightRange.enabled = false;
+        }
+        else
+        {
+            lightRange.enabled = true;
+        }
     }
 
 

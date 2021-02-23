@@ -320,8 +320,8 @@ public class NPCMovementScript : MonoBehaviour
                 //IF CHASING SOMETHING
                 else
                 {
-                    if (!states.isTelegraphing && !states.isAttacking)
-                    {
+                    //if (!states.isTelegraphing && !states.isAttacking)
+                    //{
                         //HANDLES LEDGES
                         if (abilities.avoidsLedges)
                         {
@@ -376,7 +376,7 @@ public class NPCMovementScript : MonoBehaviour
 
                         //ASIGN VELOCITY
                         rigidBody.velocity = new Vector2(speed * states.facingDirection, rigidBody.velocity.y);
-                    }
+                    //}
                 }
             }
         }

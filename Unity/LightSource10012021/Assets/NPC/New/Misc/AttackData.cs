@@ -12,4 +12,5 @@ public class AttackData : ScriptableObject
     public float length;
     public float cooldown;
     public int damage;
+    public float maxDistance;
 }

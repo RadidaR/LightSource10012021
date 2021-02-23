@@ -18,3 +18,4 @@ MonoBehaviour:
   length: 0.5
   cooldown: 2
   damage: 15
+  maxDistance: 40

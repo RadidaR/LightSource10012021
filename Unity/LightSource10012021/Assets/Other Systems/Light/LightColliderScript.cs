@@ -34,21 +34,31 @@ public class LightColliderScript : MonoBehaviour
     {
         if (collision.gameObject.layer == weaponDamageLayer || collision.gameObject.layer == playerWeaponLayer)
         {
-            lightSource.enabled = false;
-            lightRange.enabled = false;
-            //particleSys.gameObject.SetActive(false);
-            emmisionMod.rateOverTime = 0;
+            LightOff();
+            //lightSource.enabled = false;
+            //lightRange.enabled = false;
+            ////particleSys.gameObject.SetActive(false);
+            //emmisionMod.rateOverTime = 0;
 
 
         }
         else if (collision.gameObject.layer == npcCollisionLayer)
         {
-            lightSource.enabled = false;
-            lightRange.enabled = false;
-            //particleSys.gameObject.SetActive(false);
-            emmisionMod.rateOverTime = 0;
+            LightOff();
+            //lightSource.enabled = false;
+            //lightRange.enabled = false;
+            ////particleSys.gameObject.SetActive(false);
+            //emmisionMod.rateOverTime = 0;
 
 
         }
+    }
+
+    public void LightOff()
+    {
+        lightSource.enabled = false;
+        lightRange.enabled = false;
+        //particleSys.gameObject.SetActive(false);
+        emmisionMod.rateOverTime = 0;
     }
 }

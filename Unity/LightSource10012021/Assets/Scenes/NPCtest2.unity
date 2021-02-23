@@ -286,6 +286,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 6557ee59cf604e141846bbaa4c24e930, type: 2}
   abilities: {fileID: 11400000, guid: a27d6046357a5d147bdce796b71072c7, type: 2}
   jumpAttackData: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -297,6 +300,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &27786252
 GameObject:
@@ -720,6 +724,67 @@ Transform:
   m_Father: {fileID: 1090403631}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &95204112
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -80.081085
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.124397
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7614309
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.6482461
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562401, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -80.819
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562430, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_Name
+      value: Light 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8933510363219562430, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f2ec5f1e0d6b97143a45a938f22033ae, type: 3}
 --- !u!1 &111261060
 GameObject:
   m_ObjectHideFlags: 0
@@ -1066,6 +1131,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 233406610}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -1077,6 +1145,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &171935961
 GameObject:
@@ -2751,7 +2820,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3813631139720353673, guid: 0750654412956f74aba6c0bf7500b6b6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -211.4
+      value: -149.7
       objectReference: {fileID: 0}
     - target: {fileID: 3813631139720353673, guid: 0750654412956f74aba6c0bf7500b6b6, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3218,6 +3287,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 1722314036}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -3229,6 +3301,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &329828504
 GameObject:
@@ -3467,7 +3540,7 @@ Transform:
   - {fileID: 1073436454}
   - {fileID: 874212427}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &379486632
 GameObject:
@@ -3874,7 +3947,7 @@ Transform:
   - {fileID: 1096819154}
   - {fileID: 1139653198}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &466600030
 GameObject:
@@ -4010,6 +4083,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 1685311721}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -4021,6 +4097,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &477525324
 GameObject:
@@ -4104,7 +4181,7 @@ Transform:
   - {fileID: 2071080399}
   - {fileID: 257439208}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &523254195
 GameObject:
@@ -5167,6 +5244,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 446310959}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -5178,6 +5258,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &707742671
 GameObject:
@@ -5550,6 +5631,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 871896811}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -5561,6 +5645,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &806364041
 GameObject:
@@ -5704,7 +5789,7 @@ Transform:
   - {fileID: 2033170763}
   - {fileID: 1507132916}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &840048390
 GameObject:
@@ -6724,7 +6809,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1899395451548286252, guid: 6e2417dfa43de4441a6b851175089940, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -211.4
+      value: -149.7
       objectReference: {fileID: 0}
     - target: {fileID: 1899395451548286252, guid: 6e2417dfa43de4441a6b851175089940, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6744,7 +6829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1899395452431775774, guid: 6e2417dfa43de4441a6b851175089940, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -211.4
+      value: -149.7
       objectReference: {fileID: 0}
     - target: {fileID: 1899395452431775774, guid: 6e2417dfa43de4441a6b851175089940, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6792,7 +6877,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4345045436623733301, guid: 6e2417dfa43de4441a6b851175089940, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4345045436623733301, guid: 6e2417dfa43de4441a6b851175089940, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9092,7 +9177,7 @@ Transform:
   - {fileID: 659275909}
   - {fileID: 1126400212}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1336365986
 GameObject:
@@ -9491,6 +9576,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 1976207137}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -9502,6 +9590,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &1417525936
 GameObject:
@@ -11087,7 +11176,7 @@ Transform:
   - {fileID: 1657997497}
   - {fileID: 1259809251}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1673759814
 GameObject:
@@ -11529,6 +11618,9 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 5e5778ff8e18c6640ae995ae5e6de012, type: 2}
   abilities: {fileID: 11400000, guid: a27d6046357a5d147bdce796b71072c7, type: 2}
   jumpAttackData: {fileID: 0}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
@@ -11540,6 +11632,7 @@ MonoBehaviour:
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &1708024878
 GameObject:
@@ -12030,7 +12123,7 @@ Transform:
   - {fileID: 1536838614}
   - {fileID: 1989402708}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1736980220
 MonoBehaviour:
@@ -12149,7 +12242,7 @@ Transform:
   - {fileID: 1336980573}
   - {fileID: 153385331}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1764446486
 GameObject:
@@ -12895,7 +12988,7 @@ Transform:
   - {fileID: 1188388680}
   - {fileID: 1632664130}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1879103321
 GameObject:
@@ -13698,7 +13791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993489006}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -42.3, y: 25.6, z: 0}
+  m_LocalPosition: {x: -100, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2053947633}
@@ -13707,7 +13800,7 @@ Transform:
   - {fileID: 855784971}
   - {fileID: 2004803898}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1998571125
 GameObject:
@@ -13761,17 +13854,21 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: e04afa4f12b19c5428a829b39e679407, type: 2}
   abilities: {fileID: 11400000, guid: 8381175e75b0d7b46b555ada7b359f65, type: 2}
   jumpAttackData: {fileID: 6913105916763666551}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 8
   standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
   chargeAttack: 0
   jumpAttack: 1
   burrowAttack: 0
-  attackPattern: 010000000100000001000000
+  attackPattern: 01000000
   attackRunning: 0
   nextAttack: 0
   nextAttackData: {fileID: 0}
   targetPosition: {x: 0, y: 0}
+  targetType: 
   cooldown: 0
 --- !u!1 &1999474279
 GameObject:
@@ -14204,8 +14301,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2053947629}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -63.7, y: 0, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1076936089}

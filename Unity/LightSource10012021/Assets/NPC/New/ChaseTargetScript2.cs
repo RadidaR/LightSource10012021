@@ -132,9 +132,13 @@ public class ChaseTargetScript2 : MonoBehaviour
             else
             {
                 //STOP MOVING
-                movement.StopMoving();
+                //movement.StopMoving();
                 //ATTACKS TO BE ADDED
-                attacks.LaunchAttack();
+                if (seekTarget.currentTarget != null)
+                {
+                    attacks.LaunchAttack(seekTarget.currentTarget);
+                }
+                //return;
             }
         }
 
