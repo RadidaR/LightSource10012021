@@ -290,7 +290,7 @@ public class NPCAttackScript : MonoBehaviour
                     Vector3 jumpEnd = target.transform.position;
 
 
-                    RaycastHit2D obstaclesToTarget = Physics2D.Raycast(jumpStart, jumpEnd - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
+                    RaycastHit2D obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), jumpEnd - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
                     if (states.isTelegraphing)
                     {
                         while (telegraph > 0)
@@ -386,42 +386,42 @@ public class NPCAttackScript : MonoBehaviour
                         float tParam = 0;
                         int currentFacingDirection = states.facingDirection;
 
-                        while (tParam < 1)
+                    while (tParam < 1)
+                    {
+                        tParam += Time.fixedDeltaTime * 1 / length;
+                        //tParam += Time.fixedDeltaTime * 1 / length * 1 / Vector2.Distance(jumpStart, jumpEnd);
+                        //Vector2 jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2 (jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
+                        Vector2 jumpTarget;
+                        if (targetType == "Player")
                         {
-                            tParam += Time.fixedDeltaTime * 1 / length;
-                            //Vector2 jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2 (jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
-                            Vector2 jumpTarget;
-                            if (targetType == "Player")
-                            {
-                                jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
-                            }
-                            else
-                            {
-                                jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
-                            }
-                            //Debug.Log(tParam.ToString());
-
-                            //RaycastHit2D directSight = Physics2D.Raycast(jumpStart, jumpEnd - jumpStart, Vector2.Distance(jumpStart,jumpEnd), groundLayer);
-
-                            RaycastHit2D firstBit = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 2), jumpStartControl - jumpStart, Vector2.Distance(jumpStart, jumpStartControl), groundLayer);
-                            RaycastHit2D secondBit = Physics2D.Raycast(jumpStartControl, jumpEndControl - jumpStartControl, Vector2.Distance(jumpStartControl, jumpEndControl), groundLayer);
-                            if ((!firstBit && !secondBit) || !obstaclesToTarget)
-                            {
-                                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-                                rigidBody.isKinematic = true;
-                                rigidBody.MovePosition(jumpTarget);
-                            }
-                            else
-                            {
-                                //rigidBody.isKinematic = false;
-                                states.isAttacking = false;
-                                break;
-                                //movement.Move(data.runSpeed, jumpEnd);
-                                //rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-                            }
-                            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
-
+                            jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
                         }
+                        else
+                        {
+                            jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
+                        }
+                        //Debug.Log(tParam.ToString());
+
+                        //RaycastHit2D directSight = Physics2D.Raycast(jumpStart, jumpEnd - jumpStart, Vector2.Distance(jumpStart,jumpEnd), groundLayer);
+
+                        RaycastHit2D firstBit = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 2), jumpStartControl - jumpStart, Vector2.Distance(jumpStart, jumpStartControl), groundLayer);
+                        RaycastHit2D secondBit = Physics2D.Raycast(jumpStartControl, jumpEndControl - jumpStartControl, Vector2.Distance(jumpStartControl, jumpEndControl), groundLayer);
+                        if ((!firstBit && !secondBit) || !obstaclesToTarget)
+                        {
+                            rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                            rigidBody.isKinematic = true;
+                            rigidBody.MovePosition(jumpTarget);
+                        }
+                        else
+                        {
+                            //rigidBody.isKinematic = false;
+                            states.isAttacking = false;
+                            break;
+                            //movement.Move(data.runSpeed, jumpEnd);
+                            //rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                        }
+                        yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+                    }
 
 
 
@@ -445,10 +445,13 @@ public class NPCAttackScript : MonoBehaviour
 
                 if (obstaclesToTarget && !states.isTelegraphing && !states.isAttacking)
                 {
-                    float chaseTarget = 1.5f;
+                    float chaseTarget = 1f;
                     while (chaseTarget > 0)
                     {
-                        chaseTarget -= Time.fixedDeltaTime;
+                        if (!states.isClimbing)
+                        {
+                            chaseTarget -= Time.fixedDeltaTime;
+                        }
                         movement.Move(data.runSpeed, target.transform.position);
                         yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
                         if (chaseTarget <= 0)
