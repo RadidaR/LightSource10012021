@@ -176,28 +176,46 @@ public class NPCMovementScript : MonoBehaviour
         //GROUND UNITS
         if (!abilities.canFly)
         {
-            if (!states.isJumping)                      //JUMP STUFF
+            if (!states.isChasing)
+            {
+                if (!states.isJumping)                      //JUMP STUFF
+                {
+                    if (states.isClimbing)
+                    {
+                        rigidBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                        //rigidBody.velocity = new Vector2(0, 0);
+                    }
+                    else
+                    {
+                        if (Mathf.Abs(rigidBody.velocity.x) < 2.25f)
+                        {
+                            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+                            return;
+                        }
+                        else
+                        {
+                            float slowDown = rigidBody.velocity.x;
+                            slowDown += slowDown * Time.fixedDeltaTime * -1 * 5;
+                            rigidBody.velocity = new Vector2(slowDown, rigidBody.velocity.y);
+                        }
+                    }
+                }
+            }
+            else
             {
                 if (states.isClimbing)
                 {
-                    rigidBody.constraints = RigidbodyConstraints2D.FreezePositionY | RigidbodyConstraints2D.FreezeRotation;
+                    rigidBody.constraints = RigidbodyConstraints2D.FreezeAll;
+                    FlipNPC(states.facingDirection);
                     //rigidBody.velocity = new Vector2(0, 0);
                 }
                 else
                 {
-                    if (Mathf.Abs(rigidBody.velocity.x) < 2.25f)
-                    {
-                        rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-                        return;
-                    }
-                    else
-                    {
-                        float slowDown = rigidBody.velocity.x;
-                        slowDown += slowDown * Time.fixedDeltaTime * -1 * 5;
-                        rigidBody.velocity = new Vector2(slowDown, rigidBody.velocity.y);
-                    }
+                    rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+                    return;
                 }
             }
+
         }
         //FLYING UNITS
         else

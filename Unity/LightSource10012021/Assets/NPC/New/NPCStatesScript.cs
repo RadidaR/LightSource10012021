@@ -9,7 +9,7 @@ public class NPCStatesScript : MonoBehaviour
     public NPCAbilities abilities;
 
     [Header("NPC Type")]
-    [SerializeField] string name;
+    [SerializeField] string npcName;
     [SerializeField] string type;
 
     [Header("Health")]
@@ -52,15 +52,15 @@ public class NPCStatesScript : MonoBehaviour
         if (gameObject.activeInHierarchy)
         {
             sprites = GetComponentsInChildren<SpriteRenderer>();
-            name = data.name;
-            if (data.zombie)
-            {
-                type = "Zombie";
-            }
-            else if (data.human)
-            {
-                type = "Human";
-            }
+            //npcName = data.npcName;
+            //if (data.zombie)
+            //{
+            //    type = "Zombie";
+            //}
+            //else if (data.human)
+            //{
+            //    type = "Human";
+            //}
 
             if (abilities.canFly)
             {

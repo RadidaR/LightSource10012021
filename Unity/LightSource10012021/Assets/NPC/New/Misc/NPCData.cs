@@ -7,7 +7,7 @@ using UnityEngine;
 public class NPCData : ScriptableObject
 {
     [Header("NPC Type")]
-    public string name;
+    public string npcName;
     public bool zombie;
     public bool human;
 

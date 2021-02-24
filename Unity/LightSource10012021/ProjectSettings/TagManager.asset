@@ -9,6 +9,9 @@ TagManager:
   - NPC
   - Body
   - Spot
+  - Top
+  - Mid
+  - Bottom
   layers:
   - Default
   - TransparentFX
