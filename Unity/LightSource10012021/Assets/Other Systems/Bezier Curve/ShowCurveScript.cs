@@ -54,46 +54,46 @@ public class ShowCurveScript : MonoBehaviour
 
     private void Update()
     {
-        Vector3 startPoint;
-        Vector3 startControlPoint;
-        Vector3 endControlPoint;
-        Vector3 endPoint;
+        //Vector3 startPoint;
+        //Vector3 startControlPoint;
+        //Vector3 endControlPoint;
+        //Vector3 endPoint;
 
-        startPoint = gameObject.transform.position;
+        //startPoint = gameObject.transform.position;
 
+        ////float distanceToTarget = Vector2.Distance(startPoint, target.position);
         //float distanceToTarget = Vector2.Distance(startPoint, target.position);
-        float distanceToTarget = Vector2.Distance(startPoint, target.position);
 
-        float xDistance = target.position.x - startPoint.x;
-        float yDistance = target.position.y - startPoint.y;
+        //float xDistance = target.position.x - startPoint.x;
+        //float yDistance = target.position.y - startPoint.y;
 
-        if (Mathf.Abs(yDistance) < 10)
-        {
-           // endPoint = new Vector3(target.position.x + (xDistance / 3), endPoint.y);
+        //if (Mathf.Abs(yDistance) < 10)
+        //{
+        //   // endPoint = new Vector3(target.position.x + (xDistance / 3), endPoint.y);
 
-            if (Physics2D.OverlapCircle(new Vector2(target.position.x + (xDistance / 3), target.position.y), 0.5f, 3))
-            {
-                endPoint = new Vector3(target.position.x + (xDistance / 3), target.position.y + 2);
-            }
-            else
-            {
-                RaycastHit2D checkForGround = Physics2D.Raycast(new Vector2(target.position.x + (xDistance / 3), target.position.y), Vector2.down, 50f, 3);
+        //    if (Physics2D.OverlapCircle(new Vector2(target.position.x + (xDistance / 3), target.position.y), 0.5f, 3))
+        //    {
+        //        endPoint = new Vector3(target.position.x + (xDistance / 3), target.position.y + 2);
+        //    }
+        //    else
+        //    {
+        //        RaycastHit2D checkForGround = Physics2D.Raycast(new Vector2(target.position.x + (xDistance / 3), target.position.y), Vector2.down, 50f, 3);
 
-                if (checkForGround)
-                {
-                    endPoint = new Vector3(target.position.x + (xDistance / 3), target.position.y - checkForGround.distance);
-                }
-                else
-                {
-                    return;
-                }
-            }
+        //        if (checkForGround)
+        //        {
+        //            endPoint = new Vector3(target.position.x + (xDistance / 3), target.position.y - checkForGround.distance);
+        //        }
+        //        else
+        //        {
+        //            return;
+        //        }
+        //    }
 
-            startControlPoint = new Vector3(startPoint.x + xDistance * 0.75f, startPoint.y + 3);
-            endControlPoint = new Vector3(target.position.x + (xDistance / 3) * 0.25f, endPoint.y + 3);
+        //    startControlPoint = new Vector3(startPoint.x + xDistance * 0.75f, startPoint.y + 3);
+        //    endControlPoint = new Vector3(target.position.x + (xDistance / 3) * 0.25f, endPoint.y + 3);
 
-            DrawCurve(startPoint, startControlPoint, endControlPoint, endPoint);
-        }
+        //    DrawCurve(startPoint, startControlPoint, endControlPoint, endPoint);
+        //}
         //else
         //{
         //    if (Physics2D.OverlapCircle(new Vector2(target.position.x + xDistance, target.position.y), 0.5f, 3))
@@ -134,7 +134,7 @@ public class ShowCurveScript : MonoBehaviour
 
 
         //endPoint = 
-        //DrawCurve(controlPoints[0].transform.position, controlPoints[1].transform.position, controlPoints[2].transform.position, controlPoints[3].transform.position);
+        DrawCurve(controlPoints[0].transform.position, controlPoints[1].transform.position, controlPoints[2].transform.position, controlPoints[3].transform.position);
     }
 
     public void PositionPoints(Vector3 startPoint, Vector3 startControl, Vector3 endControl, Vector3 endPoint)
