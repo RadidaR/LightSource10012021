@@ -51,7 +51,7 @@ public class ShowCurveScript : MonoBehaviour
     private void Start()
     {
         //lineRenderer.SetVertexCount(numPoints);
-        lineRenderer.positionCount = numPoints;
+        //lineRenderer.positionCount = numPoints;
         positions = new Vector3[numPoints];
     }
 
@@ -90,8 +90,8 @@ public class ShowCurveScript : MonoBehaviour
         RaycastHit2D checkForWallsM = Physics2D.Raycast(targetMid.position, new Vector2(curveDirection, 0), Mathf.Abs(5f), groundLayer);
 
 
-        if (!checkForWallsB && !checkForWallsM)
-        {
+        //if (!checkForWallsB && !checkForWallsM)
+        //{
             endX = target.position.x + (xDistance * 0.75f);
 
             RaycastHit2D checkForGround = Physics2D.Raycast(new Vector2(endX, targetBot.position.y), Vector2.down, 250, groundLayer);
@@ -123,36 +123,36 @@ public class ShowCurveScript : MonoBehaviour
                     eControlX = target.position.x + ((endX - target.position.x) * 0.75f);
                     eControlY = targetMid.position.y - (yDistance * 0.25f);
                 }
-                else if (yDistance >= 40)
+                else/* if (yDistance >= 40)*/
                 {
                     sControlY = targetMid.position.y + (yDistance * 0.5f);
                     eControlX = target.position.x + ((endX - target.position.x));
                     eControlY = targetMid.position.y - (yDistance * 0.5f);
                 }
-                else
-                {
-                    sControlY = target.position.y + yDistance;
-                    eControlX = target.position.x + ((endX - target.position.x));
-                    eControlY = targetMid.position.y;
-                }
+                //else
+                //{
+                //    sControlY = target.position.y + yDistance;
+                //    eControlX = target.position.x + ((endX - target.position.x));
+                //    eControlY = targetMid.position.y;
+                //}
             }
             else
             {
-                if (checkForGround.distance >= 10)
-                {
-                    endX += yDistance * curveDirection * 0.5f;
+                //if (checkForGround.distance >= 10)
+                //{
+                //    endX += yDistance * curveDirection * 0.5f;
 
-                    if (Mathf.Abs(endX - startPoint.x) < Mathf.Abs(xDistance))
-                    {
-                        endX = target.position.x;
-                    }
-                }
-                else
-                {
-                    endX = target.position.x;
-                }
+                //    if (Mathf.Abs(endX - startPoint.x) < Mathf.Abs(xDistance))
+                //    {
+                //        endX = target.position.x;
+                //    }
+                //}
+                //else
+                //{
+                //    endX = target.position.x;
+                //}
 
-                if (yDistance < 0 && yDistance >= -5)
+                if (yDistance >= -5)
                 {
 
                     endX = target.position.x + (xDistance * 0.75f);
@@ -195,145 +195,145 @@ public class ShowCurveScript : MonoBehaviour
                     eControlX = endX;
                 }
             }
-        }
-        else
-        {
-            if (checkForWallsB)
-            {
-                endX = target.position.x + (checkForWallsB.distance * curveDirection);
-                endY = targetMid.position.y - checkForWallsB.distance;
-            }
-            else
-            {
-                endX = target.position.x + (checkForWallsM.distance * curveDirection);
-                endY = targetMid.position.y - checkForWallsM.distance;
-            }
-
-
-            RaycastHit2D checkForGround = Physics2D.Raycast(new Vector2(endX, targetBot.position.y), Vector2.down, 250, groundLayer);
-
-            //Debug.Log(checkForGround.distance.ToString());
-            //if (checkForGround.distance <= 5)
-            //{
-            //    endY = target.position.y - checkForGround.distance;
-            //}
-            //else
-            //{
-            //    endY = target.position.y - ;
-            //}
-
-            sControlX = target.position.x;
-
-            if (yDistance >= 0)
-            {
-                if (yDistance >= 0 && yDistance <= 5)
-                {
-                    sControlY = targetMid.position.y + yDistance;
-                    eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
-                    eControlY = targetMid.position.y + yDistance;
-                }
-                else if (yDistance > 5 && yDistance <= 10)
-                {
-                    sControlY = targetMid.position.y + yDistance;
-                    eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
-                    eControlY = targetMid.position.y;
-                }
-                else if (yDistance > 10)
-                {
-                    sControlY = targetMid.position.y + (yDistance * 0.75f);
-                    eControlX = target.position.x + ((endX - target.position.x) * 0.75f);
-                    eControlY = targetMid.position.y - (yDistance * 0.25f);
-                }
-                else if (yDistance >= 40)
-                {
-                    sControlY = targetMid.position.y + (yDistance * 0.5f);
-                    eControlX = target.position.x + ((endX - target.position.x));
-                    eControlY = targetMid.position.y - (yDistance * 0.5f);
-                }
-                else
-                {
-                    sControlY = target.position.y + yDistance;
-                    eControlX = target.position.x + ((endX - target.position.x));
-                    eControlY = targetMid.position.y;
-                }
-            }
-            else
-            {
-                //if (checkForGround.distance >= 10)
-                //{
-                //    endX += yDistance * curveDirection * 0.5f;
-
-                //    if (Mathf.Abs(endX - startPoint.x) < Mathf.Abs(xDistance))
-                //    {
-                //        endX = target.position.x;
-                //    }
-                //}
-                //else
-                //{
-                //    endX = target.position.x;
-                //}
-
-                if (yDistance < 0 && yDistance >= -5)
-                {
-
-                    //endX = target.position.x + (xDistance * 0.75f);
-                    //endX += yDistance * curveDirection * 0.5f;
-
-                    endX = target.position.x;
-
-                    sControlX = target.position.x;
-                    sControlY = targetMid.position.y + Mathf.Abs(yDistance);
-
-                    eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
-                    eControlY = targetBot.position.y + (-yDistance * 0.5f);
-                }
-                else if (yDistance < -5 && yDistance >= -12.5f)
-                {
-                    //endX = target.position.x + (xDistance * 0.75f);
-                    //endX += yDistance * curveDirection * 0.5f;
-
-                    endX = target.position.x;
-
-                    sControlX = target.position.x;
-                    sControlY = targetMid.position.y + (Mathf.Abs(yDistance) * 0.5f);
-
-                    eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
-                    //eControlY = endY + (-(endY - targetBot.position.y) /** 0.75f*/);
-                    eControlY = targetBot.position.y + (-yDistance * 0.75f);
-                }
-                else /*(yDistance < -10)*/    /* && yDistance >= -25*/
-                {
-                    endX = target.position.x;
-
-                    sControlX = target.position.x;
-                    sControlY = targetMid.position.y + (Mathf.Abs(yDistance));
-
-                    eControlX = target.position.x + ((endX - target.position.x) * 0.75f);
-                    eControlY = endY + (-(endY - targetBot.position.y) * 0.5f);
-                }
-                //else
-                //{
-                //    sControlY = target.position.y + yDistance;
-                //    eControlX = target.position.x + ((endX - target.position.x));
-                //    eControlY = targetMid.position.y;
-                //}
-
-                if (Mathf.Abs(eControlX - startPoint.x) > Mathf.Abs(endX - startPoint.x))
-                {
-                    eControlX = endX;
-                }
-            }
-        }
-
-        //if (eControlY <= endY)
+        //}
+        //else
         //{
-        //    eControlY = endY + 5;
+        //    if (checkForWallsB)
+        //    {
+        //        endX = target.position.x + (checkForWallsB.distance * curveDirection);
+        //        endY = targetMid.position.y - checkForWallsB.distance;
+        //    }
+        //    else
+        //    {
+        //        endX = target.position.x + (checkForWallsM.distance * curveDirection);
+        //        endY = targetMid.position.y - checkForWallsM.distance;
+        //    }
+
+
+        //    RaycastHit2D checkForGround = Physics2D.Raycast(new Vector2(endX, targetBot.position.y), Vector2.down, 250, groundLayer);
+
+        //    //Debug.Log(checkForGround.distance.ToString());
+        //    //if (checkForGround.distance <= 5)
+        //    //{
+        //    //    endY = target.position.y - checkForGround.distance;
+        //    //}
+        //    //else
+        //    //{
+        //    //    endY = target.position.y - ;
+        //    //}
+
+        //    sControlX = target.position.x;
+
+        //    if (yDistance >= 0)
+        //    {
+        //        if (yDistance >= 0 && yDistance <= 5)
+        //        {
+        //            sControlY = targetMid.position.y + yDistance;
+        //            eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
+        //            eControlY = targetMid.position.y + yDistance;
+        //        }
+        //        else if (yDistance > 5 && yDistance <= 10)
+        //        {
+        //            sControlY = targetMid.position.y + yDistance;
+        //            eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
+        //            eControlY = targetMid.position.y;
+        //        }
+        //        else if (yDistance > 10)
+        //        {
+        //            sControlY = targetMid.position.y + (yDistance * 0.75f);
+        //            eControlX = target.position.x + ((endX - target.position.x) * 0.75f);
+        //            eControlY = targetMid.position.y - (yDistance * 0.25f);
+        //        }
+        //        else if (yDistance >= 40)
+        //        {
+        //            sControlY = targetMid.position.y + (yDistance * 0.5f);
+        //            eControlX = target.position.x + ((endX - target.position.x));
+        //            eControlY = targetMid.position.y - (yDistance * 0.5f);
+        //        }
+        //        else
+        //        {
+        //            sControlY = target.position.y + yDistance;
+        //            eControlX = target.position.x + ((endX - target.position.x));
+        //            eControlY = targetMid.position.y;
+        //        }
+        //    }
+        //    else
+        //    {
+        //        //if (checkForGround.distance >= 10)
+        //        //{
+        //        //    endX += yDistance * curveDirection * 0.5f;
+
+        //        //    if (Mathf.Abs(endX - startPoint.x) < Mathf.Abs(xDistance))
+        //        //    {
+        //        //        endX = target.position.x;
+        //        //    }
+        //        //}
+        //        //else
+        //        //{
+        //        //    endX = target.position.x;
+        //        //}
+
+        //        if (yDistance < 0 && yDistance >= -5)
+        //        {
+
+        //            //endX = target.position.x + (xDistance * 0.75f);
+        //            //endX += yDistance * curveDirection * 0.5f;
+
+        //            endX = target.position.x;
+
+        //            sControlX = target.position.x;
+        //            sControlY = targetMid.position.y + Mathf.Abs(yDistance);
+
+        //            eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
+        //            eControlY = targetBot.position.y + (-yDistance * 0.5f);
+        //        }
+        //        else if (yDistance < -5 && yDistance >= -12.5f)
+        //        {
+        //            //endX = target.position.x + (xDistance * 0.75f);
+        //            //endX += yDistance * curveDirection * 0.5f;
+
+        //            endX = target.position.x;
+
+        //            sControlX = target.position.x;
+        //            sControlY = targetMid.position.y + (Mathf.Abs(yDistance) * 0.5f);
+
+        //            eControlX = target.position.x + ((endX - target.position.x) * 0.5f);
+        //            //eControlY = endY + (-(endY - targetBot.position.y) /** 0.75f*/);
+        //            eControlY = targetBot.position.y + (-yDistance * 0.75f);
+        //        }
+        //        else /*(yDistance < -10)*/    /* && yDistance >= -25*/
+        //        {
+        //            endX = target.position.x;
+
+        //            sControlX = target.position.x;
+        //            sControlY = targetMid.position.y + (Mathf.Abs(yDistance));
+
+        //            eControlX = target.position.x + ((endX - target.position.x) * 0.75f);
+        //            eControlY = endY + (-(endY - targetBot.position.y) * 0.5f);
+        //        }
+        //        //else
+        //        //{
+        //        //    sControlY = target.position.y + yDistance;
+        //        //    eControlX = target.position.x + ((endX - target.position.x));
+        //        //    eControlY = targetMid.position.y;
+        //        //}
+
+        //        if (Mathf.Abs(eControlX - startPoint.x) > Mathf.Abs(endX - startPoint.x))
+        //        {
+        //            eControlX = endX;
+        //        }
+        //    }
         //}
 
-        //if (eControlX - target.position.x > endX - eControlX)
-        //{
-        //    eControlX += (endX - target.position.x * curveDirection * 0.25f);
-        //}
+        ////if (eControlY <= endY)
+        ////{
+        ////    eControlY = endY + 5;
+        ////}
+
+        ////if (eControlX - target.position.x > endX - eControlX)
+        ////{
+        ////    eControlX += (endX - target.position.x * curveDirection * 0.25f);
+        ////}
 
         endPoint = new Vector3(endX, endY);
         startControlPoint = new Vector3(sControlX, sControlY);
@@ -365,7 +365,7 @@ public class ShowCurveScript : MonoBehaviour
     public void DrawCurve(Vector3 startPoint, Vector3 startControl, Vector3 endControl, Vector3 endPoint)
     {
         //positions = new Vector3[numPoints];
-        lineRenderer.positionCount = numPoints;
+        //lineRenderer.positionCount = numPoints;
 
         int drawOnGroundCount = 0;
         for (int i = 1; i < numPoints + 1; i++)
@@ -374,7 +374,7 @@ public class ShowCurveScript : MonoBehaviour
             positions[i - 1] = CalculateCurve(t, startPoint, startControl, endControl, endPoint);
             if (Physics2D.OverlapCircle(positions[i - 1], 1, groundLayer))
             {
-                Debug.Log("Position " + (i - 1).ToString() + " overlaps with ground");
+                //Debug.Log("Position " + (i - 1).ToString() + " overlaps with ground");
                 lineRenderer.positionCount = i - 1;
                 drawOnGroundCount++;
                 if (drawOnGroundCount > 3)
