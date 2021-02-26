@@ -19,10 +19,10 @@ MonoBehaviour:
   canClimb: 0
   avoidsLedges: 0
   canFly: 1
-  canAttack: 1
+  canAttack: 0
   hasCombo: 0
   usesWeapons: 0
-  standardAttack: 1
+  standardAttack: 0
   weaponAttack: 0
   rangedAttack: 0
   chargeAttack: 0

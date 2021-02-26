@@ -10,6 +10,8 @@ public class NPCAttackScript : MonoBehaviour
     public SeekTargetScript2 seekTarget;
     public Rigidbody2D rigidBody;
 
+    public NPCAwarenessScript awareness;
+
     public NPCData data;
     public NPCAbilities abilities;
 
@@ -55,6 +57,7 @@ public class NPCAttackScript : MonoBehaviour
             movement = npc.GetComponentInChildren<NPCMovementScript>();
             seekTarget = npc.GetComponentInChildren<SeekTargetScript2>();
             rigidBody = npc.GetComponent<Rigidbody2D>();
+            awareness = npc.GetComponentInChildren<NPCAwarenessScript>();
 
             data = npc.GetComponent<NPCStatesScript>().data;
             abilities = npc.GetComponent<NPCStatesScript>().abilities;
@@ -222,7 +225,7 @@ public class NPCAttackScript : MonoBehaviour
             //{
             //    Debug.Log("Target in sight");
             //}
-            
+
             //if (!targetInSight(target))
             //{
             //    Debug.Log("Target not in sight");
@@ -230,124 +233,42 @@ public class NPCAttackScript : MonoBehaviour
 
             //CHECK WHAT ATTACK TO MAKE
             //
+
             //JUMP ATTACK
             if (attack == jumpAttack)
             {
-                //SET UP 4 POINTS TO CALCULATE JUMP CURVE
-                Vector3 jumpStart = npc.transform.position;
-                Vector3 jumpStartControl = npc.transform.position;
-                Vector3 jumpEndControl = target.transform.position;
-                Vector3 jumpEnd = target.transform.position;
-
-                //GameObject top = target.transform.FindChild("Top").gameObject;
-                //Debug.Log(top.name.ToString());
-
-                //CHECK IF NOTHING OBSTRUCTS VIEW
-
-                //if (targetInSight(target))
-                //{
-                //    Debug.Log("I can see you");
-                //}
-                //else
-                //{
-                //    Debug.Log("it's hidden");
-                //}
-
-                //RaycastHit2D obstaclesToTarget;
-
-                //if (target.tag == "Player")
-                //{
-                //    obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), new Vector3(jumpEnd.x, jumpEnd.y + 4) - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
-                //}
-                //else
-                //{
-                //    obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), jumpEnd - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
-                //}
+                Vector3[] jumpPath;
 
                 if (states.isTelegraphing)
                 {
+
                     while (telegraph > 0)
                     {
                         movement.StopMoving();
 
-                        Vector3 curveStart = npc.transform.position;
-                        Vector3 curveEnd;
+                        
 
-                        if (target.tag == "Player")
+                        if (!awareness.targetInSight(target, target.transform.position))
                         {
-                            curveEnd = new Vector3(target.transform.position.x, target.transform.position.y + 4);
-                        }
-                        else
-                        {
-                            curveEnd = target.transform.position;
-                        }
-
-                        float distanceToTargetX = Mathf.Abs(curveStart.x - curveEnd.x);
-                        float distanceToTargetY = Mathf.Abs(curveStart.y - curveEnd.y);
-
-                        Vector3 curveStartControl;
-                        Vector3 curveEndControl;
-
-                        if (curveStart.y > curveEnd.y && Mathf.Abs(curveStart.y - curveEnd.y) > 10)
-                        {
-                            curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y/* + (distanceToTargetX / 5) + (distanceToTargetY / 2)*/);
-                            curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
-                        }
-                        else if (curveStart.y < curveEnd.y && Mathf.Abs(curveStart.y - curveEnd.y) > 5)
-                        {
-                            curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y + (distanceToTargetX / 5) + (distanceToTargetY / 4));
-                            curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y);
-                        }
-                        else
-                        {
-                            curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
-                            curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
-                        }
-
-                        //Vector3 curveStart = npc.transform.position;
-                        //Vector3 curveStartControl;
-                        //Vector3 curveEndControl;
-                        //Vector3 curveEnd;
-
-
-                        //Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
-
-                        //RaycastHit2D checkTargetAltitude = Physics2D.Raycast(target.transform.position, Vector2.down, jumpAttackData.data.range, groundLayer);
-
-                        //if (checkTargetAltitude)
-                        //{
-                        //    //Debug.Log(checkTargetAltitude.distance.ToString());
-                        //    if (checkTargetAltitude.distance < 5)
-                        //    {
-
-                        //    }
-                        //}
-
-                        //bool targetOnGround;
-
-                        if (!targetInSight(target, target.transform.position))
-                        {
-                            //Debug.Log("Target not in sight");
-                            //movement.Move(data.runSpeed, targetPosition);
                             states.isTelegraphing = false;
                             jumpAttackData.ResetCurve();
-                            //attackRunning = false;
-                            //StopCoroutine("Attack");
                             break;
                         }
                         else
                         {
                             movement.StopMoving();
-                            jumpAttackData.lineRenderer.enabled = true;
+                            //jumpAttackData.lineRenderer.enabled = true;
 
-                            if (Vector2.Distance(curveStart, curveEnd) < jumpAttackData.data.maxDistance)
+                            if (Vector3.Distance(npc.transform.position, target.transform.position) < jumpAttackData.data.maxDistance)
                             {
-                                jumpAttackData.DrawCurve(curveStart, curveStartControl, curveEndControl, curveEnd);
+                                jumpAttackData.CalculatePath(npc.transform.position, target, 150);
                             }
                             else
                             {
                                 jumpAttackData.ResetCurve();
                             }
+
+
                         }
 
                         telegraph -= Time.fixedDeltaTime;
@@ -355,12 +276,13 @@ public class NPCAttackScript : MonoBehaviour
 
                         if (telegraph <= 0)
                         {
-                            if (Vector2.Distance(curveStart, curveEnd) < jumpAttackData.data.maxDistance)
+                            if (Vector2.Distance(npc.transform.position, target.transform.position) < jumpAttackData.data.maxDistance)
                             {
-                                jumpStart = curveStart;
-                                jumpStartControl = curveStartControl;
-                                jumpEndControl = curveEndControl;
-                                jumpEnd = curveEnd;
+                                //jumpPath = new Vector3[jumpAttackData.lineRenderer.positionCount];
+                                //for (int i = 0; i < jumpAttackData.lineRenderer.positionCount - 1; i++)
+                                //{
+                                //    jumpPath[i] = jumpAttackData.lineRenderer.GetPosition(i);
+                                //}
                                 states.isAttacking = true;
                             }
                             states.isTelegraphing = false;
@@ -370,79 +292,51 @@ public class NPCAttackScript : MonoBehaviour
                     }
                 }
 
-                RaycastHit2D obstaclesBetweenControlPoints = Physics2D.Raycast(jumpStartControl, jumpEndControl - jumpStartControl, Vector2.Distance(jumpStartControl, jumpEndControl), groundLayer);
 
                 if (states.isAttacking)
                 {
-                    float tParam = 0;
-                    int currentFacingDirection = states.facingDirection;
+                    jumpPath = new Vector3[jumpAttackData.lineRenderer.positionCount];
+                    //jumpPath = new Vector3[jumpAttackData.positions.Length];
+                    //jumpPath = new Vector3[jumpAttackData.curvePositions.Count];
 
-                    Vector2 jumpTarget;
-                    Vector2 targetTop = GetNamedChild(target, "Top").transform.position;
-                    Vector2 targetMid = GetNamedChild(target, "Mid").transform.position;
-                    Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
-                    RaycastHit2D wall1 = Physics2D.Raycast(targetTop, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
-                    RaycastHit2D wall2 = Physics2D.Raycast(targetMid, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
-                    RaycastHit2D wall3 = Physics2D.Raycast(targetBot, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
 
-                    while (tParam < 1)
+                    for (int i = 0; i < jumpAttackData.lineRenderer.positionCount - 1; i++)
+                        //for (int i = 0; i < jumpAttackData.positions.Length; i++)
+
+                        //for (int i = 0; i < jumpAttackData.curvePositions.Count; i++)
                     {
-
-                        if (target.tag == "Player")
-                        {
-
-                            bool playerNextToWall;
-
-                            if (!wall1 && !wall2 && !wall3)
-                            {
-                                playerNextToWall = false;
-                            }
-                            else
-                            {
-                                playerNextToWall = true;
-                            }
-
-                            if (playerNextToWall)
-                            {
-                                jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x, jumpEnd.y + 1));
-                            }
-                            else
-                            {
-                                jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
-                            }
-                        }
-                        else
-                        {
-                            jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
-                        }                                           
-
-                        if (targetInSight(null, jumpStartControl) && !obstaclesBetweenControlPoints)
-                        {
-                            tParam += Time.fixedDeltaTime * 1 / length;
-                            rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-                            rigidBody.isKinematic = true;
-                            rigidBody.MovePosition(jumpTarget);
-                        }
-                        else
-                        {
-                            states.isAttacking = false;
-                            break;
-                        }                        
-
-                        yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+                        jumpPath[i] = jumpAttackData.lineRenderer.GetPosition(i);
+                        //jumpPath[i] = jumpAttackData.positions[i];
+                        //jumpPath[i] = jumpAttackData.curvePositions[i];
                     }
 
-                    if (tParam >= 1)
+                    for (int i = 0; i < jumpPath.Length; i++)
                     {
-                        cooldown = nextAttackData.cooldown;
-                        attackRunning = false;
-                        rigidBody.isKinematic = false;
-                        movement.StopMoving();
-                        StopCoroutine("Attack");
+                        rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                        rigidBody.isKinematic = true;
+                        //Debug.Log("Move to " + jumpPath[i].ToString());
+                        if (jumpPath[i] != Vector3.zero)
+                        {
+                            rigidBody.MovePosition(jumpPath[i]);
+                        }
+                        yield return new WaitForSecondsRealtime(Time.fixedDeltaTime * jumpAttackData.data.length);
+                        //if (npc.transform.position == jumpAttackData.lineRenderer.GetPosition(jumpAttackData.lineRenderer.positionCount - 1))
+                        //{
+                        //    Debug.Log("1");
+                        //    break;
+                        //}
                     }
+
+                    states.isAttacking = false;
+                    cooldown = nextAttackData.cooldown;
+                    attackRunning = false;
+                    rigidBody.isKinematic = false;
+                    movement.StopMoving();
+                    StopCoroutine("Attack");
                 }
 
-                if ((!targetInSight(target, target.transform.position) || obstaclesBetweenControlPoints) && !states.isTelegraphing && !states.isAttacking)
+
+                if (!awareness.targetInSight(target, target.transform.position) && !states.isTelegraphing && !states.isAttacking)
                 {
                     float findClearPath = 1f;
                     while (findClearPath > 0)
@@ -457,7 +351,7 @@ public class NPCAttackScript : MonoBehaviour
                         {
                             break;
                         }
-                        else if (targetInSight(target, target.transform.position) && !obstaclesBetweenControlPoints)
+                        else if (awareness.targetInSight(target, target.transform.position))
                         {
                             attackRunning = false;
                             rigidBody.isKinematic = false;
@@ -468,92 +362,336 @@ public class NPCAttackScript : MonoBehaviour
                     }
                 }
             }
+
+
+
+
+
+            ////JUMP ATTACK
+            //if (attack == jumpAttack)
+            //{
+            //    //SET UP 4 POINTS TO CALCULATE JUMP CURVE
+            //    Vector3 jumpStart = npc.transform.position;
+            //    Vector3 jumpStartControl = npc.transform.position;
+            //    Vector3 jumpEndControl = target.transform.position;
+            //    Vector3 jumpEnd = target.transform.position;
+
+            //    //GameObject top = target.transform.FindChild("Top").gameObject;
+            //    //Debug.Log(top.name.ToString());
+
+            //    //CHECK IF NOTHING OBSTRUCTS VIEW
+
+            //    //if (targetInSight(target))
+            //    //{
+            //    //    Debug.Log("I can see you");
+            //    //}
+            //    //else
+            //    //{
+            //    //    Debug.Log("it's hidden");
+            //    //}
+
+            //    //RaycastHit2D obstaclesToTarget;
+
+            //    //if (target.tag == "Player")
+            //    //{
+            //    //    obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), new Vector3(jumpEnd.x, jumpEnd.y + 4) - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
+            //    //}
+            //    //else
+            //    //{
+            //    //    obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), jumpEnd - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
+            //    //}
+
+            //    if (states.isTelegraphing)
+            //    {
+            //        while (telegraph > 0)
+            //        {
+            //            movement.StopMoving();
+
+            //            Vector3 curveStart = npc.transform.position;
+            //            Vector3 curveEnd;
+
+            //            if (target.tag == "Player")
+            //            {
+            //                curveEnd = new Vector3(target.transform.position.x, target.transform.position.y + 4);
+            //            }
+            //            else
+            //            {
+            //                curveEnd = target.transform.position;
+            //            }
+
+            //            float distanceToTargetX = Mathf.Abs(curveStart.x - curveEnd.x);
+            //            float distanceToTargetY = Mathf.Abs(curveStart.y - curveEnd.y);
+
+            //            Vector3 curveStartControl;
+            //            Vector3 curveEndControl;
+
+            //            if (curveStart.y > curveEnd.y && Mathf.Abs(curveStart.y - curveEnd.y) > 10)
+            //            {
+            //                curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y/* + (distanceToTargetX / 5) + (distanceToTargetY / 2)*/);
+            //                curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
+            //            }
+            //            else if (curveStart.y < curveEnd.y && Mathf.Abs(curveStart.y - curveEnd.y) > 5)
+            //            {
+            //                curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y + (distanceToTargetX / 5) + (distanceToTargetY / 4));
+            //                curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y);
+            //            }
+            //            else
+            //            {
+            //                curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
+            //                curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
+            //            }
+
+            //            //Vector3 curveStart = npc.transform.position;
+            //            //Vector3 curveStartControl;
+            //            //Vector3 curveEndControl;
+            //            //Vector3 curveEnd;
+
+
+            //            //Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
+
+            //            //RaycastHit2D checkTargetAltitude = Physics2D.Raycast(target.transform.position, Vector2.down, jumpAttackData.data.range, groundLayer);
+
+            //            //if (checkTargetAltitude)
+            //            //{
+            //            //    //Debug.Log(checkTargetAltitude.distance.ToString());
+            //            //    if (checkTargetAltitude.distance < 5)
+            //            //    {
+
+            //            //    }
+            //            //}
+
+            //            //bool targetOnGround;
+
+            //            if (!awareness.targetInSight(target, target.transform.position))
+            //            {
+            //                //Debug.Log("Target not in sight");
+            //                //movement.Move(data.runSpeed, targetPosition);
+            //                states.isTelegraphing = false;
+            //                jumpAttackData.ResetCurve();
+            //                //attackRunning = false;
+            //                //StopCoroutine("Attack");
+            //                break;
+            //            }
+            //            else
+            //            {
+            //                movement.StopMoving();
+            //                jumpAttackData.lineRenderer.enabled = true;
+
+            //                if (Vector2.Distance(curveStart, curveEnd) < jumpAttackData.data.maxDistance)
+            //                {
+            //                    jumpAttackData.DrawCurve(curveStart, curveStartControl, curveEndControl, curveEnd);
+            //                }
+            //                else
+            //                {
+            //                    jumpAttackData.ResetCurve();
+            //                }
+            //            }
+
+            //            telegraph -= Time.fixedDeltaTime;
+            //            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+
+            //            if (telegraph <= 0)
+            //            {
+            //                if (Vector2.Distance(curveStart, curveEnd) < jumpAttackData.data.maxDistance)
+            //                {
+            //                    jumpStart = curveStart;
+            //                    jumpStartControl = curveStartControl;
+            //                    jumpEndControl = curveEndControl;
+            //                    jumpEnd = curveEnd;
+            //                    states.isAttacking = true;
+            //                }
+            //                states.isTelegraphing = false;
+            //                jumpAttackData.ResetCurve();
+            //                break;
+            //            }
+            //        }
+            //    }
+
+            //    RaycastHit2D obstaclesBetweenControlPoints = Physics2D.Raycast(jumpStartControl, jumpEndControl - jumpStartControl, Vector2.Distance(jumpStartControl, jumpEndControl), groundLayer);
+
+            //    if (states.isAttacking)
+            //    {
+            //        float tParam = 0;
+            //        int currentFacingDirection = states.facingDirection;
+
+            //        Vector2 jumpTarget;
+            //        Vector2 targetTop = awareness.GetNamedChild(target, "Top").transform.position;
+            //        Vector2 targetMid = awareness.GetNamedChild(target, "Mid").transform.position;
+            //        Vector2 targetBot = awareness.GetNamedChild(target, "Bottom").transform.position;
+            //        RaycastHit2D wall1 = Physics2D.Raycast(targetTop, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
+            //        RaycastHit2D wall2 = Physics2D.Raycast(targetMid, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
+            //        RaycastHit2D wall3 = Physics2D.Raycast(targetBot, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
+
+            //        while (tParam < 1)
+            //        {
+
+            //            if (target.tag == "Player")
+            //            {
+
+            //                bool playerNextToWall;
+
+            //                if (!wall1 && !wall2 && !wall3)
+            //                {
+            //                    playerNextToWall = false;
+            //                }
+            //                else
+            //                {
+            //                    playerNextToWall = true;
+            //                }
+
+            //                if (playerNextToWall)
+            //                {
+            //                    jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x, jumpEnd.y + 1));
+            //                }
+            //                else
+            //                {
+            //                    jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
+            //                }
+            //            }
+            //            else
+            //            {
+            //                jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
+            //            }                                           
+
+            //            if (awareness.targetInSight(null, jumpStartControl) && !obstaclesBetweenControlPoints)
+            //            {
+            //                tParam += Time.fixedDeltaTime * 1 / length;
+            //                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+            //                rigidBody.isKinematic = true;
+            //                rigidBody.MovePosition(jumpTarget);
+            //            }
+            //            else
+            //            {
+            //                states.isAttacking = false;
+            //                break;
+            //            }                        
+
+            //            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+            //        }
+
+            //        if (tParam >= 1)
+            //        {
+            //            cooldown = nextAttackData.cooldown;
+            //            attackRunning = false;
+            //            rigidBody.isKinematic = false;
+            //            movement.StopMoving();
+            //            StopCoroutine("Attack");
+            //        }
+            //    }
+
+            //    if ((!awareness.targetInSight(target, target.transform.position) || obstaclesBetweenControlPoints) && !states.isTelegraphing && !states.isAttacking)
+            //    {
+            //        float findClearPath = 1f;
+            //        while (findClearPath > 0)
+            //        {
+            //            movement.Move(data.runSpeed, target.transform.position);
+            //            if (!states.isClimbing)
+            //            {
+            //                findClearPath -= Time.fixedDeltaTime;
+            //            }
+            //            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+            //            if (findClearPath <= 0)
+            //            {
+            //                break;
+            //            }
+            //            else if (awareness.targetInSight(target, target.transform.position) && !obstaclesBetweenControlPoints)
+            //            {
+            //                attackRunning = false;
+            //                rigidBody.isKinematic = false;
+            //                movement.StopMoving();
+            //                StopCoroutine("Attack");
+            //                break;
+            //            }
+            //        }
+            //    }
+            //}
             states.isAttacking = false;
             rigidBody.isKinematic = false;
             //cooldown = nextAttackData.cooldown;
             UpdateAttackPattern();
             attackRunning = false;
         }
+
     }
 
 
-    public bool targetInSight(GameObject target, Vector2 position)
-    {
-        Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;
+    //public bool targetInSight(GameObject target, Vector2 position)
+    //{
+    //    Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;
 
-        if (target != null)
-        {
-            Vector2 targetTop = GetNamedChild(target, "Top").transform.position;
-            Vector2 targetMid = GetNamedChild(target, "Mid").transform.position;
-            Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
+    //    if (target != null)
+    //    {
+    //        Vector2 targetTop = GetNamedChild(target, "Top").transform.position;
+    //        Vector2 targetMid = GetNamedChild(target, "Mid").transform.position;
+    //        Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
 
-            RaycastHit2D obstaclesToTop = Physics2D.Raycast(eyeLevel, targetTop - eyeLevel, Vector2.Distance(eyeLevel, targetTop), groundLayer);
-            RaycastHit2D obstaclesToMid = Physics2D.Raycast(eyeLevel, targetMid - eyeLevel, Vector2.Distance(eyeLevel, targetMid), groundLayer);
-            RaycastHit2D obstaclesToBot = Physics2D.Raycast(eyeLevel, targetBot - eyeLevel, Vector2.Distance(eyeLevel, targetBot), groundLayer);
+    //        RaycastHit2D obstaclesToTop = Physics2D.Raycast(eyeLevel, targetTop - eyeLevel, Vector2.Distance(eyeLevel, targetTop), groundLayer);
+    //        RaycastHit2D obstaclesToMid = Physics2D.Raycast(eyeLevel, targetMid - eyeLevel, Vector2.Distance(eyeLevel, targetMid), groundLayer);
+    //        RaycastHit2D obstaclesToBot = Physics2D.Raycast(eyeLevel, targetBot - eyeLevel, Vector2.Distance(eyeLevel, targetBot), groundLayer);
 
-            if (!obstaclesToTop || !obstaclesToMid || !obstaclesToBot)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        else
-        {
-            RaycastHit2D obstaclesToTarget = Physics2D.Raycast(eyeLevel, position - eyeLevel, Vector2.Distance(eyeLevel, position), groundLayer);
+    //        if (!obstaclesToTop || !obstaclesToMid || !obstaclesToBot)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        RaycastHit2D obstaclesToTarget = Physics2D.Raycast(eyeLevel, position - eyeLevel, Vector2.Distance(eyeLevel, position), groundLayer);
 
-            if (!obstaclesToTarget)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
+    //        if (!obstaclesToTarget)
+    //        {
+    //            return true;
+    //        }
+    //        else
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //}
 
-    public GameObject GetNamedChild(GameObject parentObject, string childName)
-    {
-        GameObject childObject = parentObject;
+    //public GameObject GetNamedChild(GameObject parentObject, string childName)
+    //{
+    //    GameObject childObject = parentObject;
 
-        if (parentObject.transform.childCount != 0)
-        {
-            for (int i = 0; i < parentObject.transform.childCount; i++)
-            {
-                if (parentObject.transform.GetChild(i).gameObject.name == childName)
-                {
-                    childObject = parentObject.transform.GetChild(i).gameObject;
-                    return childObject;
-                }
-                else if (parentObject.transform.GetChild(i).childCount != 0)
-                {
-                    for (int j = 0; j < parentObject.transform.GetChild(i).childCount; j++)
-                    {
-                        if (parentObject.transform.GetChild(i).transform.GetChild(j).gameObject.name == childName)
-                        {
-                            childObject = parentObject.transform.GetChild(i).transform.GetChild(j).gameObject;
-                            return childObject;
-                        }
-                        else if (parentObject.transform.GetChild(i).transform.GetChild(j).childCount != 0)
-                        {
-                            for (int k = 0; k < parentObject.transform.GetChild(i).transform.GetChild(j).childCount; k++)
-                            {
-                                if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject.name == childName)
-                                {
-                                    childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject;
-                                    return childObject;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return childObject;
-    }
+    //    if (parentObject.transform.childCount != 0)
+    //    {
+    //        for (int i = 0; i < parentObject.transform.childCount; i++)
+    //        {
+    //            if (parentObject.transform.GetChild(i).gameObject.name == childName)
+    //            {
+    //                childObject = parentObject.transform.GetChild(i).gameObject;
+    //                return childObject;
+    //            }
+    //            else if (parentObject.transform.GetChild(i).childCount != 0)
+    //            {
+    //                for (int j = 0; j < parentObject.transform.GetChild(i).childCount; j++)
+    //                {
+    //                    if (parentObject.transform.GetChild(i).transform.GetChild(j).gameObject.name == childName)
+    //                    {
+    //                        childObject = parentObject.transform.GetChild(i).transform.GetChild(j).gameObject;
+    //                        return childObject;
+    //                    }
+    //                    else if (parentObject.transform.GetChild(i).transform.GetChild(j).childCount != 0)
+    //                    {
+    //                        for (int k = 0; k < parentObject.transform.GetChild(i).transform.GetChild(j).childCount; k++)
+    //                        {
+    //                            if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject.name == childName)
+    //                            {
+    //                                childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject;
+    //                                return childObject;
+    //                            }
+    //                        }
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    //    return childObject;
+    //}
 
     void OnDrawGizmosSelected()
     {

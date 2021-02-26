@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ShowPatrollingAreaScript : MonoBehaviour
 {
-    NPCData data;
+    public NPCData data;
 
     private void OnValidate()
     {
@@ -16,10 +16,10 @@ public class ShowPatrollingAreaScript : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if ((data.idleBoundaryNegX != 0 || data.idleBoundaryPosX != 0) && (data.idleBoundaryNegY != 0 || data.idleBoundaryPosY != 0))
+        if ((data.idleBoundaryNegX != 0 || data.idleBoundaryPosX != 0) || (data.idleBoundaryNegY != 0 || data.idleBoundaryPosY != 0))
         {
             Vector2 centerpoint = gameObject.transform.position;
-            Gizmos.color = Color.black;
+            Gizmos.color = Color.red;
 
             if (Mathf.Abs(data.idleBoundaryPosX) > Mathf.Abs(data.idleBoundaryNegX))
             {

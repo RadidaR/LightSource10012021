@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6face027848483549b52667af4d584d2, type: 3}
   m_Name: Player Stamina Data
   m_EditorClassIdentifier: 
-  maxStamina: 30
-  currentStamina: 30
-  staminaCost: 3
+  maxStamina: 50
+  currentStamina: 50
+  staminaCost: 0.099999994
   pantingThreshold: 0.85
-  recoveryRate: 5
-  stillRecovery: 5
-  motionRecovery: 3
+  recoveryRate: 15
+  stillRecovery: 15
+  motionRecovery: 10
   pantingModifier: 0.75
   meditatingModifier: 0
