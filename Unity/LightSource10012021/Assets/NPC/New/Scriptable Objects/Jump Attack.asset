@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Jump Attack
   m_EditorClassIdentifier: 
   attackName: Jump Attack
-  range: 25
+  range: 50
   telegraph: 1
-  length: 0.65
+  length: 0.7
   cooldown: 0.35
   damage: 15
-  maxDistance: 50
+  maxDistance: 100
