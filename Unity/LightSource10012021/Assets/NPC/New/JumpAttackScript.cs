@@ -7,7 +7,6 @@ public class JumpAttackScript : MonoBehaviour
     public AttackData data;
 
     public GameObject npc;
-    //public NPCStatesScript states;
     public NPCAwarenessScript awareness;
 
     //LINE RENDERER STUFF
@@ -17,7 +16,6 @@ public class JumpAttackScript : MonoBehaviour
 
     public int numPoints;
     public Vector3[] positions;
-    //private Vector3[] jumpArc;
 
     
     private void OnValidate()
@@ -35,39 +33,61 @@ public class JumpAttackScript : MonoBehaviour
     }
 
     public void CalculatePath(Vector3 startPoint, GameObject target, int resolution)
-    //public Vector3[] CalculatePath(Vector3 startingPosition, GameObject target, int resolution)
     {
-
+        //LOCAL VARIABLES FOR FIRST CONTROL POINT
         Vector3 startControlPoint;
         float sControlX;
         float sControlY;
 
+        //LOCAL VARIABLES FOR SECOND CONTROL POINT
         Vector3 endControlPoint;
         float eControlX;
         float eControlY;
 
+        //LOCAL VARIABLES FOR END POINT
         Vector3 endPoint;
         float endX;
         float endY;
 
+        //GET TARGET'S MID AND BOTTOM SECTIONS
         Transform targetMid = awareness.GetNamedChild(target.gameObject, "Mid").transform;
         Transform targetBot = awareness.GetNamedChild(target.gameObject, "Bot").transform;
 
+        //CALCULATE X DISTANCE BETWEEN START POINT AND TARGET
         float xDistance = target.transform.position.x - startPoint.x;
+        //CALCULATE Y DISTANCE BETWEEN START POINT AND TARGET'S MID POINT
         float yDistance = targetMid.position.y - startPoint.y;
 
+        //KEEP TRACK OF CURVE'S FACING DIRECTION
         float curveDirection = xDistance / Mathf.Abs(xDistance);
 
-        endX = target.transform.position.x + (xDistance * 0.75f);
+        //CHECK HOW CLOSE TARGET IS ON X AXIS AND ASSIGN END X VALUE ACCORDINGLY
+        if (Mathf.Abs(xDistance) < 10)
+        {            
+            endX = target.transform.position.x + (xDistance * 2f);
+        }
+        else if (Mathf.Abs(xDistance) < 20)
+        {
+            endX = target.transform.position.x + (xDistance * 1.25f);
+        }
+        else
+        {
+            endX = target.transform.position.x + (xDistance * 0.75f);
+        }
 
+        //CHECK DISTANCE TO GROUND FROM END X
         RaycastHit2D checkForGround = Physics2D.Raycast(new Vector2(endX, targetBot.position.y), Vector2.down, 250, groundLayer);
 
+        //PUT END Y ON GROUND
         endY = target.transform.position.y - checkForGround.distance;
 
+        //FIRST CONTROL POINT'S X AT TARGET'S X
         sControlX = target.transform.position.x;
 
+        //CHECK IF TARGET IS HIGHER OR LOWER THAN START POINT
         if (yDistance >= 0)
         {
+            //CHECK THE Y DISTANCE TO TARGET AND ADJUST CONTROL POINTS ACCORDINGLY
             if (yDistance >= 0 && yDistance <= 5)
             {
                 sControlY = targetMid.position.y + yDistance;
@@ -131,35 +151,32 @@ public class JumpAttackScript : MonoBehaviour
 
             }
 
+            //MAKE SURE SECOND CONTROL POINT DOESN'T GO PAST END X
             if (Mathf.Abs(eControlX - startPoint.x) > Mathf.Abs(endX - startPoint.x))
             {
                 eControlX = endX;
             }
         }
 
-
+        //ASSIGN VALUES TO 3 POINTS
         endPoint = new Vector3(endX, endY);
         startControlPoint = new Vector3(sControlX, sControlY);
         endControlPoint = new Vector3(eControlX, eControlY);
 
+        //DRAW CURVE
         DrawCurve(startPoint, startControlPoint, endControlPoint, endPoint);
-
-        //curvePositions = new Vector3[lineRenderer.positionCount];
-        //for (int i = 0; i < lineRenderer.positionCount; i++)
-        //{
-        //    curvePositions[i] = lineRenderer.GetPosition(i);
-        //}
-
     }
 
     public void DrawCurve(Vector3 startPoint, Vector3 startControl, Vector3 endControl, Vector3 endPoint)
     {
+        //TURN LINE RENDERER ON
         lineRenderer.enabled = true;
         int drawOnGroundCount = 0;
         for (int i = 1; i < numPoints + 1; i++)
         {
             float t = i / (float)numPoints;
             positions[i - 1] = CalculateCurve(t, startPoint, startControl, endControl, endPoint);
+            //STOP DRAWING WHEN GROUND IS HIT
             if (Physics2D.OverlapCircle(positions[i - 1], 0.1f, groundLayer))
             {
                 drawOnGroundCount++;
@@ -187,31 +204,6 @@ public class JumpAttackScript : MonoBehaviour
         position += cubT * endPoint;
         return position;
     }
-
-    //public void DrawCurve(Vector3 startPoint, Vector3 startControl, Vector3 endControl, Vector3 endPoint)
-    //{
-    //    for (int i = 1; i < numPoints + 1; i++)
-    //    {
-    //        float t = i / (float)numPoints;
-    //        positions[i - 1] = CalculateCurve(t, startPoint, startControl, endControl, endPoint);
-    //    }
-    //    lineRenderer.SetPositions(positions);
-    //}
-
-    //public Vector3 CalculateCurve(float t, Vector2 startPoint, Vector2 startControl, Vector2 endControl, Vector2 endPoint)
-    //{
-    //    float u = 1 - t;
-    //    float tt = t * t;
-    //    float uu = u * u;
-    //    float uuu = uu * u;
-    //    float ttt = tt * t;
-
-    //    Vector2 p = uuu * startPoint;
-    //    p += 3 * uu * t * startControl;
-    //    p += 3 * u * tt * endControl;
-    //    p += ttt * endPoint;
-    //    return p;
-    //}
 
     public void ResetCurve()
     {

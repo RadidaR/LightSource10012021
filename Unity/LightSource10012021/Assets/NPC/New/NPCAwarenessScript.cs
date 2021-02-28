@@ -104,30 +104,147 @@ public class NPCAwarenessScript : MonoBehaviour
 
         if (parentObject.transform.childCount != 0)
         {
-            for (int i = 0; i < parentObject.transform.childCount; i++)
+            foreach (Transform childT1 in parentObject.transform)
             {
-                if (parentObject.transform.GetChild(i).gameObject.name == childName)
+                if (childT1.name == childName)
                 {
-                    childObject = parentObject.transform.GetChild(i).gameObject;
-                    return childObject;
+                    childObject = childT1.gameObject;
                 }
-                else if (parentObject.transform.GetChild(i).childCount != 0)
+                else if (childT1.childCount != 0)
                 {
-                    for (int j = 0; j < parentObject.transform.GetChild(i).childCount; j++)
+                    foreach (Transform subChildT2 in childT1.transform)
                     {
-                        if (parentObject.transform.GetChild(i).transform.GetChild(j).gameObject.name == childName)
+                        if (subChildT2.name == childName)
                         {
-                            childObject = parentObject.transform.GetChild(i).transform.GetChild(j).gameObject;
-                            return childObject;
+                            childObject = subChildT2.gameObject;
                         }
-                        else if (parentObject.transform.GetChild(i).transform.GetChild(j).childCount != 0)
+                        else if (subChildT2.childCount != 0)
                         {
-                            for (int k = 0; k < parentObject.transform.GetChild(i).transform.GetChild(j).childCount; k++)
+                            foreach (Transform subChildT3 in subChildT2.transform)
                             {
-                                if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject.name == childName)
+                                if (subChildT3.name == childName)
                                 {
-                                    childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject;
-                                    return childObject;
+                                    childObject = subChildT3.gameObject;
+                                }
+                                else if (subChildT3.childCount != 0)
+                                {
+                                    foreach (Transform subChildT4 in subChildT3.transform)
+                                    {
+                                        if (subChildT4.name == childName)
+                                        {
+                                            childObject = subChildT4.gameObject;
+                                        }
+                                        else if (subChildT4.childCount != 0)
+                                        {
+                                            foreach (Transform subChildT5 in subChildT4.transform)
+                                            {
+                                                if (subChildT5.name == childName)
+                                                {
+                                                    childObject = subChildT5.gameObject;
+                                                }
+                                                else if (subChildT5.childCount != 0)
+                                                {
+                                                    foreach (Transform subChildT6 in subChildT5.transform)
+                                                    {
+                                                        if (subChildT6.name == childName)
+                                                        {
+                                                            childObject = subChildT6.gameObject;
+                                                        }
+                                                        else if (subChildT6.childCount != 0)
+                                                        {
+                                                            foreach (Transform subChildT7 in subChildT6.transform)
+                                                            {
+                                                                if (subChildT7.name == childName)
+                                                                {
+                                                                    childObject = subChildT7.gameObject;
+                                                                }
+                                                                else if (subChildT7.childCount != 0)
+                                                                {
+                                                                    foreach (Transform subChildT8 in subChildT7.transform)
+                                                                    {
+                                                                        if (subChildT8.name == childName)
+                                                                        {
+                                                                            childObject = subChildT8.gameObject;
+                                                                        }
+                                                                        else if (subChildT8.childCount != 0)
+                                                                        {
+                                                                            foreach (Transform subChildT9 in subChildT8.transform)
+                                                                            {
+                                                                                if (subChildT9.name == childName)
+                                                                                {
+                                                                                    childObject = subChildT9.gameObject;
+                                                                                }
+                                                                                else if (subChildT9.childCount != 0)
+                                                                                {
+                                                                                    foreach (Transform subChildT10 in subChildT9.transform)
+                                                                                    {
+                                                                                        if (subChildT10.name == childName)
+                                                                                        {
+                                                                                            childObject = subChildT10.gameObject;
+                                                                                        }
+                                                                                        else if (subChildT10.childCount != 0)
+                                                                                        {
+                                                                                            foreach (Transform subChildT11 in subChildT10.transform)
+                                                                                            {
+                                                                                                if (subChildT11.name == childName)
+                                                                                                {
+                                                                                                    childObject = subChildT11.gameObject;
+                                                                                                }
+                                                                                                else if (subChildT11.childCount != 0)
+                                                                                                {
+                                                                                                    foreach (Transform subChildT12 in subChildT11.transform)
+                                                                                                    {
+                                                                                                        if (subChildT12.name == childName)
+                                                                                                        {
+                                                                                                            childObject = subChildT12.gameObject;
+                                                                                                        }
+                                                                                                        else if (subChildT12.childCount != 0)
+                                                                                                        {
+                                                                                                            foreach (Transform subChildT13 in subChildT12.transform)
+                                                                                                            {
+                                                                                                                if (subChildT13.name == childName)
+                                                                                                                {
+                                                                                                                    childObject = subChildT13.gameObject;
+                                                                                                                }
+                                                                                                                else if (subChildT13.childCount != 0)
+                                                                                                                {
+                                                                                                                    foreach (Transform subChildT14 in subChildT13.transform)
+                                                                                                                    {
+                                                                                                                        if (subChildT14.name == childName)
+                                                                                                                        {
+                                                                                                                            childObject = subChildT14.gameObject;
+                                                                                                                        }
+                                                                                                                        else if (subChildT14.childCount != 0)
+                                                                                                                        {
+                                                                                                                            foreach (Transform subChildT15 in subChildT14.transform)
+                                                                                                                            {
+                                                                                                                                if (subChildT15.name == childName)
+                                                                                                                                {
+                                                                                                                                    childObject = subChildT15.gameObject;
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        }
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -135,6 +252,71 @@ public class NPCAwarenessScript : MonoBehaviour
                 }
             }
         }
+
+        //for (int i = 0; i < parentObject.transform.childCount; i++)
+        //{
+        //    if (parentObject.transform.GetChild(i).gameObject.name == childName)
+        //    {
+        //        childObject = parentObject.transform.GetChild(i).gameObject;
+        //        return childObject;
+        //    }
+        //    else if (parentObject.transform.GetChild(i).childCount != 0)
+        //    {
+        //        for (int j = 0; j < parentObject.transform.GetChild(i).childCount; j++)
+        //        {
+        //            if (parentObject.transform.GetChild(i).transform.GetChild(j).gameObject.name == childName)
+        //            {
+        //                childObject = parentObject.transform.GetChild(i).transform.GetChild(j).gameObject;
+        //                return childObject;
+        //            }
+        //            else if (parentObject.transform.GetChild(i).transform.GetChild(j).childCount != 0)
+        //            {
+        //                for (int k = 0; k < parentObject.transform.GetChild(i).transform.GetChild(j).childCount; k++)
+        //                {
+        //                    if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject.name == childName)
+        //                    {
+        //                        childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject;
+        //                        return childObject;
+        //                    }
+        //                    else if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).childCount != 0)
+        //                    {
+        //                        for (int l = 0; l < parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).childCount; l++)
+        //                        {
+        //                            if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).gameObject.name == childName)
+        //                            {
+        //                                childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).gameObject;
+        //                                return childObject;
+        //                            }
+        //                            else if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).childCount != 0)
+        //                            {
+        //                                for (int o = 0; o < parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).childCount; o++)
+        //                                {
+        //                                    if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).transform.GetChild(o).gameObject.name == childName)
+        //                                    {
+        //                                        childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).transform.GetChild(o).gameObject;
+        //                                        return childObject;
+        //                                    }
+        //                                    else if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).transform.GetChild(o).childCount != 0)
+        //                                    {
+        //                                        for (int p = 0; p < parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).transform.GetChild(o).childCount; p++)
+        //                                        {
+        //                                            if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).transform.GetChild(o).transform.GetChild(p).gameObject.name == childName)
+        //                                            {
+        //                                                childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).transform.GetChild(l).transform.GetChild(o).transform.GetChild(p).gameObject;
+        //                                                return childObject;
+        //                                            }
+        //                                        }
+        //                                    }
+        //                                }
+        //                            }
+        //                        }
+        //                    }
+
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
         return childObject;
     }
 

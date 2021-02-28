@@ -46,7 +46,7 @@ public class NPCAttackScript : MonoBehaviour
 
     public Vector2 targetPosition;
     //public string targetType;
-    public float cooldown;
+    public float currentCooldown;
 
     private void OnValidate()
     {
@@ -145,23 +145,23 @@ public class NPCAttackScript : MonoBehaviour
 
     private void Update()
     {
-        if (cooldown > 0)
+        if (currentCooldown > 0)
         {
-            cooldown -= Time.deltaTime;
+            currentCooldown -= Time.deltaTime;
         }
         else
         {
-            cooldown = 0;
+            currentCooldown = 0;
         }
     }
 
     public void LaunchAttack(GameObject target)
     {
         //CHECK IF ATTACK IS ON COOL DOWN
-        if (cooldown == 0)
+        if (currentCooldown == 0)
         {
             //START ATTACK AT GIVEN TARGET, PASSES ATTACK DATA
-            StartCoroutine(Attack(target, nextAttack, nextAttackData.telegraph, nextAttackData.damage, nextAttackData.length));
+            StartCoroutine(Attack(target, nextAttack, nextAttackData.telegraph, nextAttackData.damage, nextAttackData.length, nextAttackData.cooldown));
         }
     }
 
@@ -200,498 +200,186 @@ public class NPCAttackScript : MonoBehaviour
     }
 
 
-    public IEnumerator Attack(GameObject target, int attack, float telegraph, int damage, float length)
+    public IEnumerator Attack(GameObject target, int attack, float telegraph, int damage, float length, float cooldown)
     {        
         //MAKE SURE ATTACK ISN'T RUNNING ALREADY
         if (!attackRunning)
         {
-            //RUN THE ATTACK
+            //TURN COROUTINE BOOLEAN ON
             attackRunning = true;
             //STOP IN PLACE
             movement.StopMoving();
 
-            ////CHECK STATE
-            if (!states.isTelegraphing && !states.isAttacking)
-            {
-                //IF NEITHER ATTACKING NOR 
-                states.isTelegraphing = true;
-                states.isAttacking = false;
-            }
-
             //START TELEGRAPHING
-            //states.isTelegraphing = true;
-
-            //if (targetInSight(target))
-            //{
-            //    Debug.Log("Target in sight");
-            //}
-
-            //if (!targetInSight(target))
-            //{
-            //    Debug.Log("Target not in sight");
-            //}
+            states.isTelegraphing = true;
 
             //CHECK WHAT ATTACK TO MAKE
             //
-
             //JUMP ATTACK
             if (attack == jumpAttack)
             {
+                //ARRAY OF POINTS THAT WILL DETERMINE MOVEMENT LATER
                 Vector3[] jumpPath;
 
+                //WHILE TELEGRAPHING
                 if (states.isTelegraphing)
                 {
-
                     while (telegraph > 0)
                     {
-                        movement.StopMoving();
+                        //STAY STILL
+                        movement.StopMoving();                        
 
-                        
-
+                        //IF TARGET IS NOT VISIBLE
                         if (!awareness.targetInSight(target, target.transform.position))
                         {
+                            //STOP TELEGRAPHING
                             states.isTelegraphing = false;
+                            //RESET CURVE
                             jumpAttackData.ResetCurve();
+                            //AND BREAK
                             break;
                         }
+                        //IF VISIBLE
                         else
                         {
+                            //STAY STILL
                             movement.StopMoving();
-                            //jumpAttackData.lineRenderer.enabled = true;
 
+                            //IF DISTANCE TO TARGET IS LESS THAN JUMP'S MAX DISTANCE
                             if (Vector3.Distance(npc.transform.position, target.transform.position) < jumpAttackData.data.maxDistance)
                             {
+                                //CALCULATE AND DRAW PATH
                                 jumpAttackData.CalculatePath(npc.transform.position, target, 150);
                             }
+                            //IF BEYOND MAX JUMP DISTANCE
                             else
                             {
+                                //RESET CURVE
                                 jumpAttackData.ResetCurve();
                             }
-
-
                         }
 
+                        //TICK AWAY FROM TELEGRAPHING TIME
                         telegraph -= Time.fixedDeltaTime;
+                        //WAIT THE TICKET AWAY TIME
                         yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
 
+                        //IF TELEGRAPH HAS COUNTED DOWN
                         if (telegraph <= 0)
                         {
+                            //CHECK IF TARGET STILL IN JUMPING RANGE
                             if (Vector2.Distance(npc.transform.position, target.transform.position) < jumpAttackData.data.maxDistance)
                             {
-                                //jumpPath = new Vector3[jumpAttackData.lineRenderer.positionCount];
-                                //for (int i = 0; i < jumpAttackData.lineRenderer.positionCount - 1; i++)
-                                //{
-                                //    jumpPath[i] = jumpAttackData.lineRenderer.GetPosition(i);
-                                //}
+                                //START ATTACKING
                                 states.isAttacking = true;
                             }
+                            //STOP TELEGRAPHING
                             states.isTelegraphing = false;
+                            //RESET CURVE
                             jumpAttackData.ResetCurve();
+                            //AND BREAK
                             break;
                         }
                     }
                 }
 
-
+                //WHILE ATTACKING
                 if (states.isAttacking)
                 {
+                    //MAKE JUMP PATH ARRAY THE SAME SIZE AS JUMP ATTACK'S LINE RENDERER POSITIONS
                     jumpPath = new Vector3[jumpAttackData.lineRenderer.positionCount];
-                    //jumpPath = new Vector3[jumpAttackData.positions.Length];
-                    //jumpPath = new Vector3[jumpAttackData.curvePositions.Count];
 
-
+                    //ASSIGN EACH POSITION TO JUMP PATH
                     for (int i = 0; i < jumpAttackData.lineRenderer.positionCount - 1; i++)
-                        //for (int i = 0; i < jumpAttackData.positions.Length; i++)
-
-                        //for (int i = 0; i < jumpAttackData.curvePositions.Count; i++)
                     {
                         jumpPath[i] = jumpAttackData.lineRenderer.GetPosition(i);
-                        //jumpPath[i] = jumpAttackData.positions[i];
-                        //jumpPath[i] = jumpAttackData.curvePositions[i];
                     }
 
+                    //CHECK EACH POSITION
                     for (int i = 0; i < jumpPath.Length; i++)
                     {
+                        //ASSIGN CONSTRAINT SO NPC CAN JUMP OFF WALLS
                         rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
+                        //MAKE KINEMATIC
                         rigidBody.isKinematic = true;
-                        //Debug.Log("Move to " + jumpPath[i].ToString());
+                        //MAKE SURE CHECKED POINT ISN'T 0,0,0
                         if (jumpPath[i] != Vector3.zero)
                         {
+                            //MOVE TO POINT
                             rigidBody.MovePosition(jumpPath[i]);
                         }
-                        yield return new WaitForSecondsRealtime(Time.fixedDeltaTime * jumpAttackData.data.length);
-                        //if (npc.transform.position == jumpAttackData.lineRenderer.GetPosition(jumpAttackData.lineRenderer.positionCount - 1))
-                        //{
-                        //    Debug.Log("1");
-                        //    break;
-                        //}
+                        //WAIT TIME BASED ON JUMP ATTACK'S LENGTH
+                        yield return new WaitForSecondsRealtime(Time.fixedDeltaTime * length);
                     }
-
+                    //WHEN DONE
+                    //END ATTACK
                     states.isAttacking = false;
-                    cooldown = nextAttackData.cooldown;
+                    //SET COOLDOWN
+                    currentCooldown = cooldown;
+                    //STOP COROUTINE BOOLEAN
                     attackRunning = false;
+                    //MAKE RIGIDBODY DYNAMIC AGAIN
                     rigidBody.isKinematic = false;
+                    //STOP MOVING
                     movement.StopMoving();
+                    //AND END COROUTINE
                     StopCoroutine("Attack");
                 }
 
-
+                //IF NEITHER TELEGRAPHING, NOR ATTACKING & TARGET IS OUT OF SIGHT
                 if (!awareness.targetInSight(target, target.transform.position) && !states.isTelegraphing && !states.isAttacking)
                 {
+                    //LOOK FOR CLEAR PATH FOR 1 SECOND
                     float findClearPath = 1f;
+
+                    //WHILE FIND PATH TIMER HAS NOT RUN OUT
                     while (findClearPath > 0)
                     {
+                        //MOVE IN FACING DIRECTION AT RUN SPEED
                         movement.Move(data.runSpeed, target.transform.position);
+
+                        //TICK AWAY AT FIND PATH TIMER IF NOT CLIMBING (PREVENTS IT FROM FALLING OFF WALLS)
                         if (!states.isClimbing)
                         {
                             findClearPath -= Time.fixedDeltaTime;
                         }
+                        //WAIT TICKED TIME 
                         yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
+                        //IF TIMER HAS RUN OUT
                         if (findClearPath <= 0)
                         {
+                            //BREAK
                             break;
                         }
+                        //ELSE IF TARGET IS IN SIGHT
                         else if (awareness.targetInSight(target, target.transform.position))
                         {
+                            //STOP COROUTINE BOOLEAN
                             attackRunning = false;
+                            //MAKE RIGIDBODY DYNAMIC
                             rigidBody.isKinematic = false;
+                            //STOP MOVING
                             movement.StopMoving();
+                            //END COROUTINE 
                             StopCoroutine("Attack");
+                            //BREAK
                             break;
                         }
                     }
                 }
             }
 
-
-
-
-
-            ////JUMP ATTACK
-            //if (attack == jumpAttack)
-            //{
-            //    //SET UP 4 POINTS TO CALCULATE JUMP CURVE
-            //    Vector3 jumpStart = npc.transform.position;
-            //    Vector3 jumpStartControl = npc.transform.position;
-            //    Vector3 jumpEndControl = target.transform.position;
-            //    Vector3 jumpEnd = target.transform.position;
-
-            //    //GameObject top = target.transform.FindChild("Top").gameObject;
-            //    //Debug.Log(top.name.ToString());
-
-            //    //CHECK IF NOTHING OBSTRUCTS VIEW
-
-            //    //if (targetInSight(target))
-            //    //{
-            //    //    Debug.Log("I can see you");
-            //    //}
-            //    //else
-            //    //{
-            //    //    Debug.Log("it's hidden");
-            //    //}
-
-            //    //RaycastHit2D obstaclesToTarget;
-
-            //    //if (target.tag == "Player")
-            //    //{
-            //    //    obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), new Vector3(jumpEnd.x, jumpEnd.y + 4) - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
-            //    //}
-            //    //else
-            //    //{
-            //    //    obstaclesToTarget = Physics2D.Raycast(new Vector2(jumpStart.x, jumpStart.y + 3), jumpEnd - jumpStart, Vector2.Distance(jumpStart, jumpEnd), groundLayer);
-            //    //}
-
-            //    if (states.isTelegraphing)
-            //    {
-            //        while (telegraph > 0)
-            //        {
-            //            movement.StopMoving();
-
-            //            Vector3 curveStart = npc.transform.position;
-            //            Vector3 curveEnd;
-
-            //            if (target.tag == "Player")
-            //            {
-            //                curveEnd = new Vector3(target.transform.position.x, target.transform.position.y + 4);
-            //            }
-            //            else
-            //            {
-            //                curveEnd = target.transform.position;
-            //            }
-
-            //            float distanceToTargetX = Mathf.Abs(curveStart.x - curveEnd.x);
-            //            float distanceToTargetY = Mathf.Abs(curveStart.y - curveEnd.y);
-
-            //            Vector3 curveStartControl;
-            //            Vector3 curveEndControl;
-
-            //            if (curveStart.y > curveEnd.y && Mathf.Abs(curveStart.y - curveEnd.y) > 10)
-            //            {
-            //                curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y/* + (distanceToTargetX / 5) + (distanceToTargetY / 2)*/);
-            //                curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
-            //            }
-            //            else if (curveStart.y < curveEnd.y && Mathf.Abs(curveStart.y - curveEnd.y) > 5)
-            //            {
-            //                curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y + (distanceToTargetX / 5) + (distanceToTargetY / 4));
-            //                curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y);
-            //            }
-            //            else
-            //            {
-            //                curveStartControl = new Vector3(curveStart.x + (distanceToTargetX * 0.25f * states.facingDirection), curveStart.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
-            //                curveEndControl = new Vector3(curveEnd.x - (distanceToTargetX * 0.25f * states.facingDirection), curveEnd.y + (distanceToTargetX / 5) + (distanceToTargetY / 2));
-            //            }
-
-            //            //Vector3 curveStart = npc.transform.position;
-            //            //Vector3 curveStartControl;
-            //            //Vector3 curveEndControl;
-            //            //Vector3 curveEnd;
-
-
-            //            //Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
-
-            //            //RaycastHit2D checkTargetAltitude = Physics2D.Raycast(target.transform.position, Vector2.down, jumpAttackData.data.range, groundLayer);
-
-            //            //if (checkTargetAltitude)
-            //            //{
-            //            //    //Debug.Log(checkTargetAltitude.distance.ToString());
-            //            //    if (checkTargetAltitude.distance < 5)
-            //            //    {
-
-            //            //    }
-            //            //}
-
-            //            //bool targetOnGround;
-
-            //            if (!awareness.targetInSight(target, target.transform.position))
-            //            {
-            //                //Debug.Log("Target not in sight");
-            //                //movement.Move(data.runSpeed, targetPosition);
-            //                states.isTelegraphing = false;
-            //                jumpAttackData.ResetCurve();
-            //                //attackRunning = false;
-            //                //StopCoroutine("Attack");
-            //                break;
-            //            }
-            //            else
-            //            {
-            //                movement.StopMoving();
-            //                jumpAttackData.lineRenderer.enabled = true;
-
-            //                if (Vector2.Distance(curveStart, curveEnd) < jumpAttackData.data.maxDistance)
-            //                {
-            //                    jumpAttackData.DrawCurve(curveStart, curveStartControl, curveEndControl, curveEnd);
-            //                }
-            //                else
-            //                {
-            //                    jumpAttackData.ResetCurve();
-            //                }
-            //            }
-
-            //            telegraph -= Time.fixedDeltaTime;
-            //            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
-
-            //            if (telegraph <= 0)
-            //            {
-            //                if (Vector2.Distance(curveStart, curveEnd) < jumpAttackData.data.maxDistance)
-            //                {
-            //                    jumpStart = curveStart;
-            //                    jumpStartControl = curveStartControl;
-            //                    jumpEndControl = curveEndControl;
-            //                    jumpEnd = curveEnd;
-            //                    states.isAttacking = true;
-            //                }
-            //                states.isTelegraphing = false;
-            //                jumpAttackData.ResetCurve();
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    RaycastHit2D obstaclesBetweenControlPoints = Physics2D.Raycast(jumpStartControl, jumpEndControl - jumpStartControl, Vector2.Distance(jumpStartControl, jumpEndControl), groundLayer);
-
-            //    if (states.isAttacking)
-            //    {
-            //        float tParam = 0;
-            //        int currentFacingDirection = states.facingDirection;
-
-            //        Vector2 jumpTarget;
-            //        Vector2 targetTop = awareness.GetNamedChild(target, "Top").transform.position;
-            //        Vector2 targetMid = awareness.GetNamedChild(target, "Mid").transform.position;
-            //        Vector2 targetBot = awareness.GetNamedChild(target, "Bottom").transform.position;
-            //        RaycastHit2D wall1 = Physics2D.Raycast(targetTop, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
-            //        RaycastHit2D wall2 = Physics2D.Raycast(targetMid, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
-            //        RaycastHit2D wall3 = Physics2D.Raycast(targetBot, new Vector2(currentFacingDirection, 0), 5.5f, groundLayer);
-
-            //        while (tParam < 1)
-            //        {
-
-            //            if (target.tag == "Player")
-            //            {
-
-            //                bool playerNextToWall;
-
-            //                if (!wall1 && !wall2 && !wall3)
-            //                {
-            //                    playerNextToWall = false;
-            //                }
-            //                else
-            //                {
-            //                    playerNextToWall = true;
-            //                }
-
-            //                if (playerNextToWall)
-            //                {
-            //                    jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x, jumpEnd.y + 1));
-            //                }
-            //                else
-            //                {
-            //                    jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, new Vector2(jumpEnd.x + 5 * currentFacingDirection, jumpEnd.y - 3));
-            //                }
-            //            }
-            //            else
-            //            {
-            //                jumpTarget = jumpAttackData.CalculateCurve(tParam, jumpStart, jumpStartControl, jumpEndControl, jumpEnd);
-            //            }                                           
-
-            //            if (awareness.targetInSight(null, jumpStartControl) && !obstaclesBetweenControlPoints)
-            //            {
-            //                tParam += Time.fixedDeltaTime * 1 / length;
-            //                rigidBody.constraints = RigidbodyConstraints2D.FreezeRotation;
-            //                rigidBody.isKinematic = true;
-            //                rigidBody.MovePosition(jumpTarget);
-            //            }
-            //            else
-            //            {
-            //                states.isAttacking = false;
-            //                break;
-            //            }                        
-
-            //            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
-            //        }
-
-            //        if (tParam >= 1)
-            //        {
-            //            cooldown = nextAttackData.cooldown;
-            //            attackRunning = false;
-            //            rigidBody.isKinematic = false;
-            //            movement.StopMoving();
-            //            StopCoroutine("Attack");
-            //        }
-            //    }
-
-            //    if ((!awareness.targetInSight(target, target.transform.position) || obstaclesBetweenControlPoints) && !states.isTelegraphing && !states.isAttacking)
-            //    {
-            //        float findClearPath = 1f;
-            //        while (findClearPath > 0)
-            //        {
-            //            movement.Move(data.runSpeed, target.transform.position);
-            //            if (!states.isClimbing)
-            //            {
-            //                findClearPath -= Time.fixedDeltaTime;
-            //            }
-            //            yield return new WaitForSecondsRealtime(Time.fixedDeltaTime);
-            //            if (findClearPath <= 0)
-            //            {
-            //                break;
-            //            }
-            //            else if (awareness.targetInSight(target, target.transform.position) && !obstaclesBetweenControlPoints)
-            //            {
-            //                attackRunning = false;
-            //                rigidBody.isKinematic = false;
-            //                movement.StopMoving();
-            //                StopCoroutine("Attack");
-            //                break;
-            //            }
-            //        }
-            //    }
-            //}
+            //END ATTACK
             states.isAttacking = false;
+            //MAKE RIGIDBODY DYNAMIC AGAIN
             rigidBody.isKinematic = false;
-            //cooldown = nextAttackData.cooldown;
+            //UPDATE ATTACK PATTERN
             UpdateAttackPattern();
+            //AND TURN COROUTINE BOOLEAN OFF
             attackRunning = false;
         }
 
     }
-
-
-    //public bool targetInSight(GameObject target, Vector2 position)
-    //{
-    //    Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;
-
-    //    if (target != null)
-    //    {
-    //        Vector2 targetTop = GetNamedChild(target, "Top").transform.position;
-    //        Vector2 targetMid = GetNamedChild(target, "Mid").transform.position;
-    //        Vector2 targetBot = GetNamedChild(target, "Bottom").transform.position;
-
-    //        RaycastHit2D obstaclesToTop = Physics2D.Raycast(eyeLevel, targetTop - eyeLevel, Vector2.Distance(eyeLevel, targetTop), groundLayer);
-    //        RaycastHit2D obstaclesToMid = Physics2D.Raycast(eyeLevel, targetMid - eyeLevel, Vector2.Distance(eyeLevel, targetMid), groundLayer);
-    //        RaycastHit2D obstaclesToBot = Physics2D.Raycast(eyeLevel, targetBot - eyeLevel, Vector2.Distance(eyeLevel, targetBot), groundLayer);
-
-    //        if (!obstaclesToTop || !obstaclesToMid || !obstaclesToBot)
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            return false;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        RaycastHit2D obstaclesToTarget = Physics2D.Raycast(eyeLevel, position - eyeLevel, Vector2.Distance(eyeLevel, position), groundLayer);
-
-    //        if (!obstaclesToTarget)
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            return false;
-    //        }
-    //    }
-    //}
-
-    //public GameObject GetNamedChild(GameObject parentObject, string childName)
-    //{
-    //    GameObject childObject = parentObject;
-
-    //    if (parentObject.transform.childCount != 0)
-    //    {
-    //        for (int i = 0; i < parentObject.transform.childCount; i++)
-    //        {
-    //            if (parentObject.transform.GetChild(i).gameObject.name == childName)
-    //            {
-    //                childObject = parentObject.transform.GetChild(i).gameObject;
-    //                return childObject;
-    //            }
-    //            else if (parentObject.transform.GetChild(i).childCount != 0)
-    //            {
-    //                for (int j = 0; j < parentObject.transform.GetChild(i).childCount; j++)
-    //                {
-    //                    if (parentObject.transform.GetChild(i).transform.GetChild(j).gameObject.name == childName)
-    //                    {
-    //                        childObject = parentObject.transform.GetChild(i).transform.GetChild(j).gameObject;
-    //                        return childObject;
-    //                    }
-    //                    else if (parentObject.transform.GetChild(i).transform.GetChild(j).childCount != 0)
-    //                    {
-    //                        for (int k = 0; k < parentObject.transform.GetChild(i).transform.GetChild(j).childCount; k++)
-    //                        {
-    //                            if (parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject.name == childName)
-    //                            {
-    //                                childObject = parentObject.transform.GetChild(i).transform.GetChild(j).transform.GetChild(k).gameObject;
-    //                                return childObject;
-    //                            }
-    //                        }
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //    return childObject;
-    //}
 
     void OnDrawGizmosSelected()
     {

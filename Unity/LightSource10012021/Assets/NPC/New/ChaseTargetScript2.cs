@@ -10,6 +10,7 @@ public class ChaseTargetScript2 : MonoBehaviour
     public NPCAbilities abilities;
 
     public NPCStatesScript states;
+    public NPCAwarenessScript awareness;
 
     public SeekTargetScript2 seekTarget;
 
@@ -29,6 +30,7 @@ public class ChaseTargetScript2 : MonoBehaviour
         {
             npc = GetComponentInParent<OfInterest>().gameObject;
             states = npc.GetComponent<NPCStatesScript>();
+            awareness = npc.GetComponentInChildren<NPCAwarenessScript>();
 
             data = states.data;
             abilities = states.abilities;
@@ -47,15 +49,42 @@ public class ChaseTargetScript2 : MonoBehaviour
 
     private void FixedUpdate()
     {
+
         //IF THERE IS A TARGET
         if (seekTarget.currentTarget != null)
         {
+            //Debug.Log(seekTarget.directionToTarget(npc.transform, seekTarget.currentTarget.transform).ToString());
             //FOR MOBILE UNITS
             if (abilities.canMove)
             {
-                //CHASE TARGETS POSITION
-                ChaseTarget(seekTarget.currentTarget.transform.position);
+                if (!states.isChasing)
+                {
+                    if (awareness.targetInSight(seekTarget.currentTarget, seekTarget.currentTarget.transform.position))
+                    {
+                        //CHASE TARGETS POSITION
+                        ChaseTarget(seekTarget.currentTarget.transform.position);
+                    }
+                    else
+                    {
+                        //FLIP NPC TO FACE IT
+                        if (seekTarget.directionToTarget(npc.transform, seekTarget.currentTarget.transform) != 0)
+                        {
+                            movement.FlipNPC(seekTarget.directionToTarget(npc.transform, seekTarget.currentTarget.transform));
+                            movement.Move(data.moveSpeed, seekTarget.currentTarget.transform.position);
+                        }
+                        else
+                        {
+                            movement.Move(data.moveSpeed, seekTarget.currentTarget.transform.position);
+                        }
+                    }
+                }
+                else
+                {
+                    ChaseTarget(seekTarget.currentTarget.transform.position);
+                }
+
             }
+
         }
         //IF NO TARGET, BUT LAST KNOWN POSITION ISN'T EMPTY
         else if (seekTarget.lastKnownPosition != Vector2.zero)

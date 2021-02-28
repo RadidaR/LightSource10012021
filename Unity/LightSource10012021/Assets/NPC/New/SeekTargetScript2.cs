@@ -41,10 +41,57 @@ public class SeekTargetScript2 : MonoBehaviour
         }
     }
 
+    public int directionToTarget(Transform position, Transform target)
+    {
+        int direction;
+
+        //TRACK DIRECTION TO TARGET
+        if (currentTarget != null)
+        {
+            if (npc.transform.position.x - currentTarget.transform.position.x <= -5)
+            {
+                direction = 1;
+            }
+            else if (npc.transform.position.x - currentTarget.transform.position.x >= 5)
+            {
+                direction = -1;
+            }
+            else
+            {
+                direction = 0;
+            }
+        }
+        else if (lastKnownPosition != Vector2.zero)
+        {
+            if (npc.transform.position.x - lastKnownPosition.x <= -5)
+            {
+                direction = 1;
+            }
+            else if (npc.transform.position.x - lastKnownPosition.x >= 5)
+            {
+                direction = -1;
+            }
+            else
+            {
+                direction = 0;
+            }
+        }
+        else
+        {
+            direction = states.facingDirection;
+        }
+        
+        return direction;
+    }
+
     void Update()
     {
         //GATHERS ALL TARGETS WITHIN VISION RANGE
         targetsInSight = Physics2D.OverlapCircleAll(gameObject.transform.position, visionRange, targetLayers);
+
+        //Light2D lightInSight = targetsInSight[0].gameObject.GetComponent<Light2D>();
+
+        //lightInSight.
 
         //IF THERE'S ANY TARGETS IN SIGHT - PICK ONE
         if (targetsInSight != null)
