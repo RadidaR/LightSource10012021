@@ -12,6 +12,8 @@ TagManager:
   - Top
   - Mid
   - Bottom
+  - LightRayEnd
+  - LightRayMid
   layers:
   - Default
   - TransparentFX
