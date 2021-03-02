@@ -45,6 +45,8 @@ public class NPCAwarenessScript : MonoBehaviour
         }
     }
 
+
+
     public bool targetInSight(GameObject target, Vector2 position)
     {
         Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;

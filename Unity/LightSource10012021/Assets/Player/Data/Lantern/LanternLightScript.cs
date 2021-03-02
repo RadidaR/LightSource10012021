@@ -39,6 +39,7 @@ public class LanternLightScript : MonoBehaviour
                     rayEnds[i] = transform.GetChild(i).transform;
                 }
             }
+
         }
     }
 
@@ -49,10 +50,11 @@ public class LanternLightScript : MonoBehaviour
         lightSource.pointLightOuterRadius = playerStaminaData.currentStamina;
         lightSource.pointLightInnerRadius = playerStaminaData.currentStamina / 10;
 
+
         foreach (Transform rayEnd in rayEnds)
         {
             RaycastHit2D ray = Physics2D.Raycast(gameObject.transform.position, rayEnd.position - gameObject.transform.position, lightSource.pointLightOuterRadius, groundLayer);
-            
+
             if (!ray)
             {
                 rayEnd.position = gameObject.transform.position + (rayEnd.position - gameObject.transform.position).normalized * lightSource.pointLightOuterRadius;
@@ -68,11 +70,11 @@ public class LanternLightScript : MonoBehaviour
                     rayEnd.position = gameObject.transform.position + (rayEnd.position - gameObject.transform.position).normalized;
                 }
             }
-            rayEnd.transform.GetChild(0).position = gameObject.transform.position + (rayEnd.position - gameObject.transform.position).normalized * Vector2.Distance(transform.position, rayEnd.position) * 0.75f;
-            rayEnd.transform.GetChild(1).position = gameObject.transform.position + (rayEnd.position - gameObject.transform.position).normalized * Vector2.Distance(transform.position, rayEnd.position) * 0.5f;
+            rayEnd.transform.GetChild(0).position = gameObject.transform.position + (rayEnd.position - gameObject.transform.position).normalized * Vector2.Distance(transform.position, rayEnd.position) * 0.33f;
+            rayEnd.transform.GetChild(1).position = gameObject.transform.position + (rayEnd.position - gameObject.transform.position).normalized * Vector2.Distance(transform.position, rayEnd.position) * 0.67f;
         }
-        
-        
+
+
     }
 
     private void OnDrawGizmos()
