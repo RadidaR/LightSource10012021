@@ -16,8 +16,8 @@ MonoBehaviour:
   currentStamina: 30
   staminaCost: 0.099999994
   pantingThreshold: 0.85
-  recoveryRate: 15
-  stillRecovery: 15
-  motionRecovery: 10
+  recoveryRate: 5
+  stillRecovery: 5
+  motionRecovery: 3
   pantingModifier: 0.75
   meditatingModifier: 0
