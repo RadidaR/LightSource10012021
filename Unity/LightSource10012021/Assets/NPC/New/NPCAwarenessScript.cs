@@ -17,14 +17,14 @@ public class NPCAwarenessScript : MonoBehaviour
     public GameObject target1;
 
     public bool seesTop;
-    bool seesTop1;
-    bool seesTop2;
-    bool seesTop3;
-    bool seesMid;
-    bool seesBot1;
-    bool seesBot2;
-    bool seesBot3;
-    bool seesBot;
+    public bool seesTop1;
+    public bool seesTop2;
+    public bool seesTop3;
+    public bool seesMid;
+    public bool seesBot1;
+    public bool seesBot2;
+    public bool seesBot3;
+    public bool seesBot;
     // Start is called before the first frame update
 
     public void OnValidate()
@@ -49,6 +49,7 @@ public class NPCAwarenessScript : MonoBehaviour
 
     public bool targetInSight(GameObject target, Vector2 position)
     {
+
         Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;
 
         if (target != null)
@@ -324,112 +325,112 @@ public class NPCAwarenessScript : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        if (target1 != null)
-        {
-            Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;
+        //if (target1 != null)
+        //{
+        //    Vector2 eyeLevel = GetNamedChild(npc, "EyeLevel").transform.position;
 
-            Vector2 targetTop = GetNamedChild(target1, "Top").transform.position;
-            Vector2 targetMid = GetNamedChild(target1, "Mid").transform.position;
-            Vector2 targetBot = GetNamedChild(target1, "Bot").transform.position;
+        //    Vector2 targetTop = GetNamedChild(target1, "Top").transform.position;
+        //    Vector2 targetMid = GetNamedChild(target1, "Mid").transform.position;
+        //    Vector2 targetBot = GetNamedChild(target1, "Bot").transform.position;
 
-            float topHeight = targetTop.y - targetMid.y;
-            float botHeight = targetMid.y - targetBot.y;
+        //    float topHeight = targetTop.y - targetMid.y;
+        //    float botHeight = targetMid.y - targetBot.y;
 
-            Gizmos.color = Color.blue;
+        //    Gizmos.color = Color.blue;
 
-            if (targetInSight(target1, target1.transform.position))
-            {
-                if (seesTop)
-                {
-                    Gizmos.DrawRay(eyeLevel, targetTop - eyeLevel);
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, targetTop - eyeLevel, Vector2.Distance(eyeLevel, targetTop), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //    if (targetInSight(target1, target1.transform.position))
+        //    {
+        //        if (seesTop)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, targetTop - eyeLevel);
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, targetTop - eyeLevel, Vector2.Distance(eyeLevel, targetTop), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesTop3)
-                {
-                    Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.75f) - eyeLevel));
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.75f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y + topHeight * 0.75f)), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        if (seesTop3)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.75f) - eyeLevel));
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.75f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y + topHeight * 0.75f)), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesTop2)
-                {
-                    Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.5f) - eyeLevel));
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.5f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y + topHeight * 0.5f)), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        if (seesTop2)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.5f) - eyeLevel));
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.5f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y + topHeight * 0.5f)), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesTop1)
-                {
-                    Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.25f) - eyeLevel));
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.25f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y + topHeight * 0.25f)), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        if (seesTop1)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.25f) - eyeLevel));
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y + topHeight * 0.25f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y + topHeight * 0.25f)), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesMid)
-                {
-                    Gizmos.DrawRay(eyeLevel, targetMid - eyeLevel);
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, targetMid - eyeLevel, Vector2.Distance(eyeLevel, targetMid), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        if (seesMid)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, targetMid - eyeLevel);
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, targetMid - eyeLevel, Vector2.Distance(eyeLevel, targetMid), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesBot1)
-                {
-                    Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.25f) - eyeLevel));
+        //        if (seesBot1)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.25f) - eyeLevel));
 
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.25f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y - botHeight * 0.25f)), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.25f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y - botHeight * 0.25f)), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesBot2)
-                {
-                    Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.5f) - eyeLevel));
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.5f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y - botHeight * 0.5f)), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        if (seesBot2)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.5f) - eyeLevel));
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.5f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y - botHeight * 0.5f)), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesBot3)
-                {
-                    Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.75f) - eyeLevel));
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.75f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y - botHeight * 0.75f)), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
+        //        if (seesBot3)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.75f) - eyeLevel));
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, (new Vector2(targetMid.x, targetMid.y - botHeight * 0.75f) - eyeLevel), Vector2.Distance(eyeLevel, new Vector2(targetMid.x, targetMid.y - botHeight * 0.75f)), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
 
-                if (seesBot)
-                {
-                    Gizmos.DrawRay(eyeLevel, targetBot - eyeLevel);
-                }
-                else
-                {
-                    RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, targetBot - eyeLevel, Vector2.Distance(eyeLevel, targetBot), groundLayer);
-                    Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
-                }
-            }
-        }
+        //        if (seesBot)
+        //        {
+        //            Gizmos.DrawRay(eyeLevel, targetBot - eyeLevel);
+        //        }
+        //        else
+        //        {
+        //            RaycastHit2D obstacle = Physics2D.Raycast(eyeLevel, targetBot - eyeLevel, Vector2.Distance(eyeLevel, targetBot), groundLayer);
+        //            Gizmos.DrawRay(eyeLevel, obstacle.point - eyeLevel);
+        //        }
+        //    }
+        //}
     }
 }

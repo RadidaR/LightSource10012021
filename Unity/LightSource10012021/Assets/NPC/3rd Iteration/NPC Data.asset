@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfd43ae857023f14cba53c2191e6acf1, type: 3}
+  m_Name: NPC Data
+  m_EditorClassIdentifier: 
+  npcName: 
+  eyeSpawn: 0
+  guard: 0
+  bandit: 0
+  civilian: 0
+  maxHealth: 0
+  groundUnit: 0
+  flyingUnit: 0
+  isMobile: 0
+  walkSpeed: 0
+  canRun: 0
+  runSpeed: 0
+  canJump: 0
+  jumpForce: 0
+  jumpDelay: 0
+  canLeap: 0
+  leapDistance: 0
+  canClimb: 0
+  climbSpeed: 0
+  avoidsLedges: 0
+  flySpeed: 0
+  flyAcceleration: 0
+  idleVision: 0
+  focusedVision: 0
+  idleBehaviour: 
+  idleStayMin: 0
+  idleStayMax: 0
+  idleMoveMin: 0
+  idleMoveMax: 0
+  idleBoundaryPosX: 0
+  idleBoundaryNegX: 0
+  idleBoundaryPosY: 0
+  idleBoundaryNegY: 0
+  abandonChaseAfter: 0
+  collisionDamage: 0
+  canFight: 0
+  meleeUnit: 0
+  rangedUnit: 0
+  usesWeapons: 0
+  hasCombo: 0
+  hasMeleeAttack: 0
+  meleeAttack: {fileID: 0}
+  hasRangedAttack: 0
+  rangedAttack: {fileID: 0}
+  hasChargeAttack: 0
+  chargeAttack: {fileID: 0}
+  hasJumpAttack: 0
+  jumpAttack: {fileID: 0}
+  hasDiveAttack: 0
+  diveAttack: {fileID: 0}
+  hasBurrowAttack: 0
+  burrowAttack: {fileID: 0}
+  attackPattern: 

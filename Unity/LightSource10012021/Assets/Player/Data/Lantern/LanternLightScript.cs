@@ -9,19 +9,6 @@ public class LanternLightScript : MonoBehaviour
 
     public LayerMask groundLayer;
 
-    public Transform pos1;
-    public Transform pos2;
-    public Transform pos3;
-    public Transform pos4;
-    public Transform pos5;
-    public Transform pos6;
-    public Transform pos7;
-    public Transform pos8;
-    public Transform pos9;
-    public Transform pos10;
-    public Transform pos11;
-    public Transform pos12;
-
     public Transform[] rayEnds;
     // Start is called before the first frame update
     void OnValidate()

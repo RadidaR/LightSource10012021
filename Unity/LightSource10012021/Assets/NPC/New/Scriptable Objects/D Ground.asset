@@ -69,5 +69,5 @@ MonoBehaviour:
   burrowAttackTelegraph: 0
   burrowAttackDuration: 0
   burrowFullAttackDuration: 0
-  visionRange: 25
+  visionRange: 30
   visionExpansion: 5
