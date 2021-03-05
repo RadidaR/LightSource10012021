@@ -74,8 +74,8 @@ public class NPCType : ScriptableObject
     public AttackData rangedAttack;
     public bool hasChargeAttack;
     public AttackData chargeAttack;
-    public bool hasJumpAttack;
-    public AttackData jumpAttack;
+    public bool hasLeapAttack;
+    public AttackData leapAttack;
     public bool hasDiveAttack;
     public AttackData diveAttack;
     public bool hasBurrowAttack;

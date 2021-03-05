@@ -58,8 +58,8 @@ MonoBehaviour:
   rangedAttack: {fileID: 0}
   hasChargeAttack: 0
   chargeAttack: {fileID: 0}
-  hasJumpAttack: 0
-  jumpAttack: {fileID: 0}
+  hasLeapAttack: 0
+  leapAttack: {fileID: 0}
   hasDiveAttack: 0
   diveAttack: {fileID: 0}
   hasBurrowAttack: 0
