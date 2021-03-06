@@ -19,7 +19,7 @@ MonoBehaviour:
   canClimb: 1
   avoidsLedges: 0
   canFly: 0
-  canAttack: 0
+  canAttack: 1
   hasCombo: 0
   usesWeapons: 0
   standardAttack: 0

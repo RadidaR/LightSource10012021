@@ -80,6 +80,7 @@ public class NPCStatesScript : MonoBehaviour
 
     private void Update()
     {
+        ////
         if (gameObject.transform.localScale.x > 0)
         {
             facingDirection = 1;
@@ -88,7 +89,7 @@ public class NPCStatesScript : MonoBehaviour
         {
             facingDirection = -1;
         }
-
+        
         if (!isChasing && !isTelegraphing && !isAttacking && !isHurt/* && !isClimbing && !onLedge*/)
         {
             isIdle = true;
@@ -97,7 +98,9 @@ public class NPCStatesScript : MonoBehaviour
         {
             isIdle = false;
         }
-        
+        /////
+
+
         if (hurtDuration > 0)
         {
             isHurt = true;
