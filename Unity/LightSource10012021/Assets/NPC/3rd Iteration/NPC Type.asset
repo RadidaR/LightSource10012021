@@ -34,8 +34,8 @@ MonoBehaviour:
   avoidsLedges: 0
   flySpeed: 0
   flyAcceleration: 0
-  idleVision: 0
-  focusedVision: 0
+  idleVision: 15
+  focusedVision: 30
   idleBehaviour: 
   idleStayMin: 0
   idleStayMax: 0

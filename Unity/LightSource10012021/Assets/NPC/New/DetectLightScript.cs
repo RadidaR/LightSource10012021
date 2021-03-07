@@ -105,7 +105,7 @@ public class DetectLightScript : MonoBehaviour
 
         foreach (Collider2D interest in interestsInSight)
         {
-            if (interest.gameObject.tag == "LightRayEnd")
+            if (interest.gameObject.tag == "Light")
             {
                 List<Transform> rayEnds = new List<Transform>();
                 List<float> distances = new List<float>();

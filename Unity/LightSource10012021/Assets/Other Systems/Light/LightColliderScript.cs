@@ -16,12 +16,15 @@ public class LightColliderScript : MonoBehaviour
 
     //[SerializeField] Light2D[] particleLights;
 
-    private void Start()
+    private void OnValidate()
     {
-        lightSource = GetComponentInParent<Light2D>();
-        lightRange = GetComponentInParent<CircleCollider2D>();
-        particleSys = lightRange.gameObject.GetComponentInChildren<ParticleSystem>();
-        emmisionMod = particleSys.emission;
+        if (gameObject.activeInHierarchy)
+        {
+            lightSource = GetComponentInParent<OfInterest>().gameObject.GetComponentInChildren<Light2D>();
+            lightRange = GetComponentInParent<OfInterest>().gameObject.GetComponentInParent<CircleCollider2D>();
+            particleSys = GetComponentInParent<OfInterest>().gameObject.GetComponentInChildren<ParticleSystem>();
+            emmisionMod = particleSys.emission;
+        }
     }
 
     private void Update()

@@ -6,7 +6,7 @@ using UnityEditor;
 public class ExportSlicedTexture : EditorWindow
 {
     private Texture2D texture;
-    private string name;
+    private string textureName;
     [MenuItem("Window/Export Sliced Texture")]
     public static void ShowWindow()
     {
@@ -16,10 +16,10 @@ public class ExportSlicedTexture : EditorWindow
     private void OnGUI()
     {
         texture = (Texture2D)EditorGUILayout.ObjectField(texture, typeof(Texture2D), allowSceneObjects: false);
-        name = EditorGUILayout.TextField("File name: ", name);
+        textureName = EditorGUILayout.TextField("File name: ", textureName);
         if (GUILayout.Button("Run Function") && texture != null)
         {
-            SaveTextureAsPNG(texture, name);
+            SaveTextureAsPNG(texture, textureName);
         }
     }
 
